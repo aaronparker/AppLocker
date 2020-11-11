@@ -37,5 +37,6 @@ ehthumbs.db
 Thumbs.db
 
 # Generated AaronLocker files
-AaronLocker/Outputs/WDAC*
-AaronLocker/MergeRules-Dynamic/WDAC*
+AaronLocker/Outputs/*
+# AaronLocker/MergeRules-Dynamic/*
+

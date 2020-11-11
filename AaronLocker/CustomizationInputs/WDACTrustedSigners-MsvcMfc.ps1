@@ -1,17 +1,16 @@
 ﻿<#
-.SYNOPSIS
-Script designed to be dot-sourced into TrustedSigners.ps1 that supports the creation of publisher rules for observed MSVC*.DLL and MFC*.DLL files.
+    .SYNOPSIS
+    Script designed to be dot-sourced into TrustedSigners.ps1 that supports the creation of publisher rules for observed MSVC*.DLL and MFC*.DLL files.
 
-.DESCRIPTION
-There are already MSVC* and MFC* DLLs in Windows - this script also allows redistributable DLLs that often ship with other products and are installed into user-writable directories.
-This output allows any version of signed MSVC* or MFC* DLLs that shipped with a known version of Visual Studio.
-This is not the same as allowing anything signed by Microsoft or is part of Visual Studio - just the runtime library support DLLs.
+    .DESCRIPTION
+    There are already MSVC* and MFC* DLLs in Windows - this script also allows redistributable DLLs that often ship with other products and are installed into user-writable directories.
+    This output allows any version of signed MSVC* or MFC* DLLs that shipped with a known version of Visual Studio.
+    This is not the same as allowing anything signed by Microsoft or is part of Visual Studio - just the runtime library support DLLs.
 
-This file can be updated as additional MSVC* and MFC* DLLs appear in event logs when observed executing from user-writable directories.
-Add more files as they are identified.
+    This file can be updated as additional MSVC* and MFC* DLLs appear in event logs when observed executing from user-writable directories.
+    Add more files as they are identified.
 
-See TrustedSigners.ps1 for details about how this input is used.
-
+    See TrustedSigners.ps1 for details about how this input is used.
 #>
 
 ###########################################################################

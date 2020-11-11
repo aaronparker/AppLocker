@@ -53,5 +53,4 @@ if ($null -ne $cs) {
 "%PROGRAMFILES%\Microsoft Intune Management Extension\Content\*"
 
 # More paths
-"%OSDRIVE%\Temp\TaskbarX_1.6.2.0\*"
 "%OSDRIVE%\Users\*\AppData\Local\GitHubDesktop\*"
