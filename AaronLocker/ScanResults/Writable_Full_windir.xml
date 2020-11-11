@@ -1,0 +1,30 @@
+<root>
+<dir name="C:\Windows\Tasks">
+<Grantee>NT AUTHORITY\Authenticated Users</Grantee>
+</dir>
+<dir name="C:\Windows\tracing">
+<Grantee>BUILTIN\Users</Grantee>
+</dir>
+<dir name="C:\Windows\debug\WIA">
+<Grantee>NT AUTHORITY\Authenticated Users</Grantee>
+</dir>
+<dir name="C:\Windows\Registration\CRMLog">
+<Grantee>BUILTIN\Users</Grantee>
+</dir>
+<dir name="C:\Windows\System32\Tasks">
+<Grantee>NT AUTHORITY\Authenticated Users</Grantee>
+</dir>
+<dir name="C:\Windows\System32\Tasks_Migrated">
+<Grantee>NT AUTHORITY\Authenticated Users</Grantee>
+</dir>
+<dir name="C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys">
+<Grantee>Everyone</Grantee>
+<Grantee>BUILTIN\Users</Grantee>
+</dir>
+<dir name="C:\Windows\System32\spool\drivers\color">
+<Grantee>BUILTIN\Users</Grantee>
+</dir>
+<dir name="C:\Windows\SysWOW64\Tasks">
+<Grantee>NT AUTHORITY\Authenticated Users</Grantee>
+</dir>
+</root>

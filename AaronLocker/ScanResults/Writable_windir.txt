@@ -1,0 +1,12 @@
+C:\Windows\debug\WIA\*
+C:\Windows\debug\WIA:*
+C:\Windows\Registration\CRMLog\*
+C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys\*
+C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys:*
+C:\Windows\System32\spool\drivers\color\*
+C:\Windows\System32\Tasks\*
+C:\Windows\System32\Tasks_Migrated\*
+C:\Windows\SysWOW64\Tasks\*
+C:\Windows\Tasks\*
+C:\Windows\tracing\*
+C:\Windows\tracing:*
