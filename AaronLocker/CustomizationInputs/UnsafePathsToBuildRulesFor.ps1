@@ -78,17 +78,16 @@
   pubruleGranularity = "pubProduct";
 }
 
-<# @{
-  label              = "Microsoft Teams";
-  paths              = "$env:LOCALAPPDATA\Microsoft\Teams"
-  noRecurse          = $true;
-  pubruleGranularity = "pubProduct";
-} #>
-
 @{
   label              = "Microsoft Teams";
   paths              = "$env:LOCALAPPDATA\Microsoft\Teams\current",
                         "$env:LOCALAPPDATA\Microsoft\TeamsMeetingAddin",
                         "$env:LOCALAPPDATA\Microsoft\TeamsPresenceAddin";
   pubruleGranularity = "pubProduct";
+}
+
+@{
+  label              = "Packer plugins";
+  paths              = "$env:AppData\packer.d\plugins";
+  pubruleGranularity = "pubProdBinVer"
 }

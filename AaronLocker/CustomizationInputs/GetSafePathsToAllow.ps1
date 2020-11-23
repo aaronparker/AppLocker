@@ -54,3 +54,4 @@ if ($null -ne $cs) {
 
 # More paths
 "%OSDRIVE%\Users\*\AppData\Local\GitHubDesktop\*"
+"%OSDRIVE%\PROGRAMDATA\chocolatey\*"
