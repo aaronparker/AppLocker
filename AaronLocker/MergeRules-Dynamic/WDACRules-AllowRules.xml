@@ -53,52 +53,62 @@
     <Allow ID="ID_ALLOW_A_5_1" FriendlyName="%windir%\* FileRule" MinimumFileVersion="0.0.0.0" FilePath="%windir%\*" />
     <Allow ID="ID_ALLOW_A_6_1" FriendlyName="C:\Program Files\* FileRule" MinimumFileVersion="0.0.0.0" FilePath="C:\Program Files\*" />
     <Allow ID="ID_ALLOW_A_7_1" FriendlyName="C:\Program Files (x86)\* FileRule" MinimumFileVersion="0.0.0.0" FilePath="C:\Program Files (x86)\*" />
-    <Allow ID="ID_ALLOW_A_1E_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\FileSyncService.dll Hash Sha1" Hash="3C27E98EA11C7AB0AD80C1CD3E8ECF499CFADF15" />
-    <Allow ID="ID_ALLOW_A_1F_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\FileSyncService.dll Hash Sha256" Hash="DDE2D4B95E68878E245B7D346F094384CAF019C89C40FC654DE7ED2B481F36BF" />
-    <Allow ID="ID_ALLOW_A_20_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\FileSyncService.dll Hash Page Sha1" Hash="767567269634E5AED991FCF8FD04AD0DCAD0A36D" />
-    <Allow ID="ID_ALLOW_A_21_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\FileSyncService.dll Hash Page Sha256" Hash="B9C503945405316FC3024FD2DFF000A50A379A83365171EBCBD67B9545B5C845" />
-    <Allow ID="ID_ALLOW_A_22_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\FileSyncSqlite3.dll Hash Sha1" Hash="D77624DE0AFEF59BF71A67A51807837CE3B1648E" />
-    <Allow ID="ID_ALLOW_A_23_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\FileSyncSqlite3.dll Hash Sha256" Hash="93541C448F87A0AF2AC285398DD74534DA42B59BA7EF2B498E250E8F1AA04A58" />
-    <Allow ID="ID_ALLOW_A_24_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\FileSyncSqlite3.dll Hash Page Sha1" Hash="5D80021CA156DD0957539489D673FEFC5398F8CE" />
-    <Allow ID="ID_ALLOW_A_25_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\FileSyncSqlite3.dll Hash Page Sha256" Hash="2BF78C9AD45DAFCB544B4B87702C2370C2A9CBC3A375B463CB38CF11FF6E79AE" />
-    <Allow ID="ID_ALLOW_A_26_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\MicrosoftListSyncHttpSvr.dll Hash Sha1" Hash="6000EC79BC629778048281FF214C02BCCCAA14E4" />
-    <Allow ID="ID_ALLOW_A_27_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\MicrosoftListSyncHttpSvr.dll Hash Sha256" Hash="11137664721B90142C2550077D76FCB5C39341AADCC5C2DAA5697A495DA2A1B7" />
-    <Allow ID="ID_ALLOW_A_28_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\MicrosoftListSyncHttpSvr.dll Hash Page Sha1" Hash="EBD0E1019450DD49912B845366963909E678027F" />
-    <Allow ID="ID_ALLOW_A_29_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\MicrosoftListSyncHttpSvr.dll Hash Page Sha256" Hash="6335560370A217A051E482696840DE117996A181144E3C3495AF4F19422C4185" />
-    <Allow ID="ID_ALLOW_A_2A_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\qml\QtQuick\Controls\Private\CalendarUtils.js Hash Sha1" Hash="2E98D524FB217A7A9E2FA97EBE1EEA6A2DC013A8" />
-    <Allow ID="ID_ALLOW_A_2B_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\qml\QtQuick\Controls\Private\CalendarUtils.js Hash Sha256" Hash="71E7B220AF9B62B2EBCAEE5B93D435C5A33BC6848CF29F785BCE082858C100AB" />
-    <Allow ID="ID_ALLOW_A_2C_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\qml\QtQuick\Controls\Private\CalendarUtils.js Hash Authenticode SIP Sha256" Hash="1CBFF5D3FEB1A0A251B83D58C66C097293B25040DA9B9FD9166A080EA29057A5" />
-    <Allow ID="ID_ALLOW_A_2D_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\qml\QtQuick\Controls\Private\StackView.js Hash Sha1" Hash="28DFDEFC398241ACA453C5403716C8971BFAFBBB" />
-    <Allow ID="ID_ALLOW_A_2E_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\qml\QtQuick\Controls\Private\StackView.js Hash Sha256" Hash="48180D35E367EFF46892D99E5BB05210F0930F87F1AB2EE12C9F642288E03836" />
-    <Allow ID="ID_ALLOW_A_2F_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\qml\QtQuick\Controls\Private\StackView.js Hash Authenticode SIP Sha256" Hash="B361BCC39049C593EA8D34BA3B72282E6E19E76220675F0A149A5DB13A567A4B" />
-    <Allow ID="ID_ALLOW_A_30_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\qml\QtQuick\Controls\Private\style.js Hash Sha1" Hash="5D8142C39D0960F4E6B58ADC62FFF561AEAF70F9" />
-    <Allow ID="ID_ALLOW_A_31_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\qml\QtQuick\Controls\Private\style.js Hash Sha256" Hash="E337C73325AE18763172A328B819B036E6F42C412A77454731B14AC5F05A1E3D" />
-    <Allow ID="ID_ALLOW_A_32_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\qml\QtQuick\Controls\Private\style.js Hash Authenticode SIP Sha256" Hash="9F748428690218C1E2FEF3D76C6339CAF7E939BCB210B6506246755B64BCBB5C" />
+    <Allow ID="ID_ALLOW_A_1E_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\FileSyncService.dll Hash Sha1" Hash="1B876B3000166E16BE65DDA464B23AD926484FAB" />
+    <Allow ID="ID_ALLOW_A_1F_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\FileSyncService.dll Hash Sha256" Hash="4F244F36D96657AFF32D72DC19487FA2866765144B4EB2D79AB2E176BCA36DB3" />
+    <Allow ID="ID_ALLOW_A_20_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\FileSyncService.dll Hash Page Sha1" Hash="1C39D024240B62C09F2B66967CB1EEC3111F67DB" />
+    <Allow ID="ID_ALLOW_A_21_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\FileSyncService.dll Hash Page Sha256" Hash="AA56E745119E540ED4F472FB948DDA3B6C31DAB09FB3E4D2AE9E3B710401603C" />
+    <Allow ID="ID_ALLOW_A_22_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\FileSyncSqlite3.dll Hash Sha1" Hash="52383C2C63D7DB50E6CDEC58B50B56DE2B68ECAA" />
+    <Allow ID="ID_ALLOW_A_23_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\FileSyncSqlite3.dll Hash Sha256" Hash="82E06C77B8FC13EFBED81157852A87A50576ADAAC49C2C02457D05A9B383737B" />
+    <Allow ID="ID_ALLOW_A_24_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\FileSyncSqlite3.dll Hash Page Sha1" Hash="933AEF2751E3A72971B89ADD15062D9DA8E6943D" />
+    <Allow ID="ID_ALLOW_A_25_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\FileSyncSqlite3.dll Hash Page Sha256" Hash="4B4BC14C85129091393C6C84F3EDCE625D000FA1244CC7B16662E3D9108458BB" />
+    <Allow ID="ID_ALLOW_A_26_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\Microsoft.Nucleus.HttpSvr.dll Hash Sha1" Hash="942CA0AB0F9AAF5C9FF29199093180DE82E76F1B" />
+    <Allow ID="ID_ALLOW_A_27_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\Microsoft.Nucleus.HttpSvr.dll Hash Sha256" Hash="FB1D10C3D38AC1DE71307CB63305043AEE8B2B782DFC16312B55A86B4AC10495" />
+    <Allow ID="ID_ALLOW_A_28_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\Microsoft.Nucleus.HttpSvr.dll Hash Page Sha1" Hash="8E287E089D91DCA20D89C98E0CC1CF778887F9C9" />
+    <Allow ID="ID_ALLOW_A_29_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\Microsoft.Nucleus.HttpSvr.dll Hash Page Sha256" Hash="2FA1C3AF0AF1B4C8CA54FD615E3E3BD533E62CD19D0F82B3407C5E41C467D913" />
+    <Allow ID="ID_ALLOW_A_2A_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\Microsoft.Nucleus.WebSocketClient.dll Hash Sha1" Hash="68A6A293E23AE345A2BCEBC721777C7AFCF571CA" />
+    <Allow ID="ID_ALLOW_A_2B_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\Microsoft.Nucleus.WebSocketClient.dll Hash Sha256" Hash="63CC41D8773AE84B70491ED25B917117F825D4874A2646CEBE2EC43DE2742735" />
+    <Allow ID="ID_ALLOW_A_2C_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\Microsoft.Nucleus.WebSocketClient.dll Hash Page Sha1" Hash="DD295138E5501B7E45E521BE759DA22915798B2F" />
+    <Allow ID="ID_ALLOW_A_2D_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\Microsoft.Nucleus.WebSocketClient.dll Hash Page Sha256" Hash="3F781D74F1071EBD3762925B1A9CEE908D4539FBAEB52CD1902A710BFCD47FCB" />
+    <Allow ID="ID_ALLOW_A_2E_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\OneDriveFileLauncher.exe Hash Sha1" Hash="5304A592AE6458487B9B6D9E13B22AAFA44B5541" />
+    <Allow ID="ID_ALLOW_A_2F_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\OneDriveFileLauncher.exe Hash Sha256" Hash="B49E112859370991878D9C6D5B45AF849C3C8FB8320AD6271D285C96B442F25F" />
+    <Allow ID="ID_ALLOW_A_30_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\OneDriveFileLauncher.exe Hash Page Sha1" Hash="41A99F5E9C945C33BF3300CEA786B9DBBF27D4DD" />
+    <Allow ID="ID_ALLOW_A_31_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\OneDriveFileLauncher.exe Hash Page Sha256" Hash="7C3F871EB37383EC274209103156FD4DE2DE5DF838841FF5A412385CDD19FA23" />
+    <Allow ID="ID_ALLOW_A_32_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\qml\QtQuick\Controls\Private\CalendarUtils.js Hash Sha1" Hash="2E98D524FB217A7A9E2FA97EBE1EEA6A2DC013A8" />
+    <Allow ID="ID_ALLOW_A_33_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\qml\QtQuick\Controls\Private\CalendarUtils.js Hash Sha256" Hash="71E7B220AF9B62B2EBCAEE5B93D435C5A33BC6848CF29F785BCE082858C100AB" />
+    <Allow ID="ID_ALLOW_A_34_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\qml\QtQuick\Controls\Private\CalendarUtils.js Hash Authenticode SIP Sha256" Hash="1CBFF5D3FEB1A0A251B83D58C66C097293B25040DA9B9FD9166A080EA29057A5" />
+    <Allow ID="ID_ALLOW_A_35_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\qml\QtQuick\Controls\Private\StackView.js Hash Sha1" Hash="28DFDEFC398241ACA453C5403716C8971BFAFBBB" />
+    <Allow ID="ID_ALLOW_A_36_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\qml\QtQuick\Controls\Private\StackView.js Hash Sha256" Hash="48180D35E367EFF46892D99E5BB05210F0930F87F1AB2EE12C9F642288E03836" />
+    <Allow ID="ID_ALLOW_A_37_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\qml\QtQuick\Controls\Private\StackView.js Hash Authenticode SIP Sha256" Hash="B361BCC39049C593EA8D34BA3B72282E6E19E76220675F0A149A5DB13A567A4B" />
+    <Allow ID="ID_ALLOW_A_38_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\qml\QtQuick\Controls\Private\style.js Hash Sha1" Hash="5D8142C39D0960F4E6B58ADC62FFF561AEAF70F9" />
+    <Allow ID="ID_ALLOW_A_39_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\qml\QtQuick\Controls\Private\style.js Hash Sha256" Hash="E337C73325AE18763172A328B819B036E6F42C412A77454731B14AC5F05A1E3D" />
+    <Allow ID="ID_ALLOW_A_3A_MICROSOFT_ONEDRIVE_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\qml\QtQuick\Controls\Private\style.js Hash Authenticode SIP Sha256" Hash="9F748428690218C1E2FEF3D76C6339CAF7E939BCB210B6506246755B64BCBB5C" />
     <FileAttrib ID="ID_FILEATTRIB_F_8_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\OneDrive.exe FileAttribute" MinimumFileVersion="18.65.329.1" ProductName="Microsoft OneDrive" />
-    <FileAttrib ID="ID_FILEATTRIB_F_9_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\adal.dll FileAttribute" MinimumFileVersion="2.3.0.1501" ProductName="Microsoft© ADAL" />
-    <FileAttrib ID="ID_FILEATTRIB_F_B_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\api-ms-win-core-console-l1-1-0.dll FileAttribute" MinimumFileVersion="10.0.17134.12" ProductName="Microsoft® Windows® Operating System" />
-    <FileAttrib ID="ID_FILEATTRIB_F_D_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\FloodgateClientLibraryDllWin32Client.dll FileAttribute" MinimumFileVersion="16.0.11619.10000" ProductName="Microsoft Office" />
-    <FileAttrib ID="ID_FILEATTRIB_F_E_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\ipcfile.dll FileAttribute" MinimumFileVersion="1.0.3557.524" ProductName="Microsoft AD RMS" />
-    <FileAttrib ID="ID_FILEATTRIB_F_F_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\libeay32.dll FileAttribute" MinimumFileVersion="1.0.2.19" ProductName="The OpenSSL Toolkit" />
-    <FileAttrib ID="ID_FILEATTRIB_F_10_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\libEGL.dll FileAttribute" MinimumFileVersion="5.14.1.0" ProductName="libEGL" />
-    <FileAttrib ID="ID_FILEATTRIB_F_11_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\libGLESv2.dll FileAttribute" MinimumFileVersion="5.14.1.0" ProductName="libGLESv2" />
-    <FileAttrib ID="ID_FILEATTRIB_F_12_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\MicrosoftListSync.dll FileAttribute" MinimumFileVersion="20.169.823.8" ProductName="Microsoft List Sync" />
-    <FileAttrib ID="ID_FILEATTRIB_F_13_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\MicrosoftListSyncNativeMessagingClient.exe FileAttribute" MinimumFileVersion="20.169.823.8" ProductName="Microsoft List Sync Native Messaging Client" />
-    <FileAttrib ID="ID_FILEATTRIB_F_14_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\msvcp140.dll FileAttribute" MinimumFileVersion="14.24.28127.4" ProductName="Microsoft® Visual Studio®" />
-    <FileAttrib ID="ID_FILEATTRIB_F_15_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\Qt5Core.dll FileAttribute" MinimumFileVersion="5.14.1.0" ProductName="Qt5" />
-    <FileAttrib ID="ID_FILEATTRIB_F_17_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\xh-ZA\FileSync.LocalizedResources.dll.mui FileAttribute" MinimumFileVersion="18.65.329.1" ProductName="I-Microsoft OneDrive" />
-    <FileAttrib ID="ID_FILEATTRIB_F_19_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\lb-LU\FileSync.LocalizedResources.dll.mui FileAttribute" MinimumFileVersion="20.168.820.1" ProductName="Microsoft OneDrive" />
-    <FileAttrib ID="ID_FILEATTRIB_F_1A_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\IRMProtectors\Microsoft.Office.Irm.MsoProtector.dll FileAttribute" MinimumFileVersion="1.0.3557.524" ProductName="Microsoft.Office.Irm.MsoProtector" />
-    <FileAttrib ID="ID_FILEATTRIB_F_1B_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\IRMProtectors\Microsoft.Office.Irm.OfcProtector.dll FileAttribute" MinimumFileVersion="1.0.3557.524" ProductName="Microsoft.Office.Irm.OfcProtector" />
-    <FileAttrib ID="ID_FILEATTRIB_F_1C_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\20.169.0823.0008\IRMProtectors\microsoft.office.irm.pdfprotector.dll FileAttribute" MinimumFileVersion="1.0.3557.524" ProductName="microsoft.office.irm.pdfprotector" />
-    <FileAttrib ID="ID_FILEATTRIB_F_33_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\api-ms-win-core-console-l1-1-0.dll FileAttribute" MinimumFileVersion="1.0.0.1" ProductName="Microsoft Teams" />
-    <FileAttrib ID="ID_FILEATTRIB_F_34_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\api-ms-win-core-console-l1-1-0.dll FileAttribute" MinimumFileVersion="0.0.0.0" ProductName="Microsoft Teams" />
-    <FileAttrib ID="ID_FILEATTRIB_F_35_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\resources\meeting-addin\1.0.20244.4\x86\msvcp140.dll FileAttribute" MinimumFileVersion="14.0.24210.0" ProductName="Microsoft® Visual Studio® 2015" />
-    <FileAttrib ID="ID_FILEATTRIB_F_37_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\TeamsMeetingAddin\1.0.20244.4\x86\api-ms-win-core-console-l1-1-0.dll FileAttribute" MinimumFileVersion="1.0.20244.4" ProductName="Microsoft Teams" />
-    <Allow ID="ID_ALLOW_A_39_PACKER_PLUGINS_1" FriendlyName="C:\Users\aparker\AppData\Roaming\packer.d\plugins\packer-provisioner-windows-update.exe Hash Sha1" Hash="8B9CB5D0661FBD6ACE7586FB6A3F8DE29FFFB75F" />
-    <Allow ID="ID_ALLOW_A_3A_PACKER_PLUGINS_1" FriendlyName="C:\Users\aparker\AppData\Roaming\packer.d\plugins\packer-provisioner-windows-update.exe Hash Sha256" Hash="6A0AB542B56D14CE8D39756717438598752FCF290C4AC4A1A14712E901D1D241" />
-    <Allow ID="ID_ALLOW_A_3B_PACKER_PLUGINS_1" FriendlyName="C:\Users\aparker\AppData\Roaming\packer.d\plugins\packer-provisioner-windows-update.exe Hash Page Sha1" Hash="BCF6A306C3B0662B85A42045D33BEBBBFABEE5F0" />
-    <Allow ID="ID_ALLOW_A_3C_PACKER_PLUGINS_1" FriendlyName="C:\Users\aparker\AppData\Roaming\packer.d\plugins\packer-provisioner-windows-update.exe Hash Page Sha256" Hash="8EEB84CA06601A8AAF9391E6CA0D45CEFD04BDEADF1F73350259BD38955BB3A4" />
+    <FileAttrib ID="ID_FILEATTRIB_F_9_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\adal.dll FileAttribute" MinimumFileVersion="2.3.0.1501" ProductName="Microsoft© ADAL" />
+    <FileAttrib ID="ID_FILEATTRIB_F_B_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\api-ms-win-core-console-l1-1-0.dll FileAttribute" MinimumFileVersion="10.0.17134.12" ProductName="Microsoft® Windows® Operating System" />
+    <FileAttrib ID="ID_FILEATTRIB_F_D_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\FloodgateClientLibraryDllWin32Client.dll FileAttribute" MinimumFileVersion="16.0.11619.10000" ProductName="Microsoft Office" />
+    <FileAttrib ID="ID_FILEATTRIB_F_E_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\ipcfile.dll FileAttribute" MinimumFileVersion="1.0.3557.524" ProductName="Microsoft AD RMS" />
+    <FileAttrib ID="ID_FILEATTRIB_F_F_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\libeay32.dll FileAttribute" MinimumFileVersion="1.0.2.19" ProductName="The OpenSSL Toolkit" />
+    <FileAttrib ID="ID_FILEATTRIB_F_10_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\libEGL.dll FileAttribute" MinimumFileVersion="5.14.1.0" ProductName="libEGL" />
+    <FileAttrib ID="ID_FILEATTRIB_F_11_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\libGLESv2.dll FileAttribute" MinimumFileVersion="5.14.1.0" ProductName="libGLESv2" />
+    <FileAttrib ID="ID_FILEATTRIB_F_12_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\Microsoft.Nucleus.dll FileAttribute" MinimumFileVersion="21.16.124.3" ProductName="Microsoft Nucleus" />
+    <FileAttrib ID="ID_FILEATTRIB_F_13_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\Microsoft.Nucleus.NativeMessagingClient.exe FileAttribute" MinimumFileVersion="21.16.124.3" ProductName="Microsoft Nucleus Native Messaging Client" />
+    <FileAttrib ID="ID_FILEATTRIB_F_14_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\msvcp140.dll FileAttribute" MinimumFileVersion="14.24.28127.4" ProductName="Microsoft® Visual Studio®" />
+    <FileAttrib ID="ID_FILEATTRIB_F_15_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\Qt5Core.dll FileAttribute" MinimumFileVersion="5.14.1.0" ProductName="Qt5" />
+    <FileAttrib ID="ID_FILEATTRIB_F_17_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\xh-ZA\FileSync.LocalizedResources.dll.mui FileAttribute" MinimumFileVersion="18.65.329.1" ProductName="I-Microsoft OneDrive" />
+    <FileAttrib ID="ID_FILEATTRIB_F_19_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\lb-LU\FileSync.LocalizedResources.dll.mui FileAttribute" MinimumFileVersion="21.15.121.1" ProductName="Microsoft OneDrive" />
+    <FileAttrib ID="ID_FILEATTRIB_F_1A_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\IRMProtectors\Microsoft.Office.Irm.MsoProtector.dll FileAttribute" MinimumFileVersion="1.0.3557.524" ProductName="Microsoft.Office.Irm.MsoProtector" />
+    <FileAttrib ID="ID_FILEATTRIB_F_1B_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\IRMProtectors\Microsoft.Office.Irm.OfcProtector.dll FileAttribute" MinimumFileVersion="1.0.3557.524" ProductName="Microsoft.Office.Irm.OfcProtector" />
+    <FileAttrib ID="ID_FILEATTRIB_F_1C_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\OneDrive\21.016.0124.0003\IRMProtectors\microsoft.office.irm.pdfprotector.dll FileAttribute" MinimumFileVersion="1.0.3557.524" ProductName="microsoft.office.irm.pdfprotector" />
+    <FileAttrib ID="ID_FILEATTRIB_F_3B_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\api-ms-win-core-console-l1-1-0.dll FileAttribute" MinimumFileVersion="1.0.0.1" ProductName="Microsoft Teams" />
+    <FileAttrib ID="ID_FILEATTRIB_F_41_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\resources\meeting-addin\1.0.20289.5\x86\Microsoft.Bond.dll FileAttribute" MinimumFileVersion="3.0.3.0" ProductName="Microsoft Bond" />
+    <FileAttrib ID="ID_FILEATTRIB_F_43_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\resources\meeting-addin\1.0.20289.5\x86\Microsoft.IdentityModel.JsonWebTokens.dll FileAttribute" MinimumFileVersion="6.5.1.10424" ProductName="Microsoft IdentityModel" />
+    <FileAttrib ID="ID_FILEATTRIB_F_46_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\resources\meeting-addin\1.0.20289.5\x86\Newtonsoft.Json.dll FileAttribute" MinimumFileVersion="9.0.1.19813" ProductName="Json.NET" />
+    <FileAttrib ID="ID_FILEATTRIB_F_48_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\resources\meeting-addin\1.0.20289.5\x86\System.Net.Http.Formatting.dll FileAttribute" MinimumFileVersion="5.2.30128.0" ProductName="Microsoft ASP.NET MVC" />
+    <FileAttrib ID="ID_FILEATTRIB_F_3C_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\api-ms-win-core-console-l1-1-0.dll FileAttribute" MinimumFileVersion="0.0.0.0" ProductName="Microsoft Teams" />
+    <FileAttrib ID="ID_FILEATTRIB_F_3D_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\resources\meeting-addin\1.0.20289.5\x86\adal2-meetingaddin.dll FileAttribute" MinimumFileVersion="2.2.2.31102" ProductName="Microsoft© ADAL" />
+    <FileAttrib ID="ID_FILEATTRIB_F_40_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\resources\meeting-addin\1.0.20289.5\x86\Microsoft.Applications.Telemetry.Windows.dll FileAttribute" MinimumFileVersion="1.8.292.2" ProductName="Microsoft Applications Telemetry SDK" />
+    <FileAttrib ID="ID_FILEATTRIB_F_45_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\Teams\current\resources\meeting-addin\1.0.20289.5\x86\msvcp140.dll FileAttribute" MinimumFileVersion="14.0.24210.0" ProductName="Microsoft® Visual Studio® 2015" />
+    <FileAttrib ID="ID_FILEATTRIB_F_53_1" FriendlyName="C:\Users\aparker\AppData\Local\Microsoft\TeamsMeetingAddin\1.0.20289.5\x86\Microsoft.Teams.AuthLib.dll FileAttribute" MinimumFileVersion="1.0.20289.5" ProductName="Microsoft Teams" />
   </FileRules>
   <!--Signers-->
   <Signers>
@@ -242,24 +252,30 @@
       <CertPublisher Value="Microsoft Corporation" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_1_0" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_9_1" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_14_1" />
     </Signer>
     <Signer ID="ID_SIGNER_S_3_MSVC_RUNTIME_DLL_0" Name="Microsoft Code Signing PCA 2011">
       <CertRoot Type="TBS" Value="F6F717A43AD9ABDDC8CEFDDE1C505462535E7D1307E630F9544A2D14FE8BF26E" />
       <CertPublisher Value="Microsoft Corporation" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_3_0" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_34_1" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_35_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_3C_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_3D_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_B_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_40_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_41_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_43_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_45_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_46_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_48_1" />
     </Signer>
-    <Signer ID="ID_SIGNER_F_281_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" Name="Microsoft Code Signing PCA 2011">
+    <Signer ID="ID_SIGNER_F_20A_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" Name="Microsoft Code Signing PCA 2011">
       <CertRoot Type="TBS" Value="F6F717A43AD9ABDDC8CEFDDE1C505462535E7D1307E630F9544A2D14FE8BF26E" />
       <CertPublisher Value="Microsoft 3rd Party Application Component" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_34_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_3C_1" />
     </Signer>
-    <Signer ID="ID_SIGNER_F_28C_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" Name="Microsoft Code Signing PCA 2011">
+    <Signer ID="ID_SIGNER_F_215_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" Name="Microsoft Code Signing PCA 2011">
       <CertRoot Type="TBS" Value="F6F717A43AD9ABDDC8CEFDDE1C505462535E7D1307E630F9544A2D14FE8BF26E" />
       <CertPublisher Value="Microsoft 3rd Party Application Component" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_33_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_3B_1" />
     </Signer>
     <Signer ID="ID_SIGNER_F_1_MICROSOFT_ONEDRIVE_1" Name="Microsoft Code Signing PCA 2010">
       <CertRoot Type="TBS" Value="121AF4B922A74247EA49DF50DE37609CC1451A1FE06B2CB7E1E079B492BD8195" />
@@ -281,16 +297,29 @@
       <FileAttribRef RuleID="ID_FILEATTRIB_F_1A_1" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_1B_1" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_1C_1" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_34_1" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_35_1" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_33_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_3C_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_3D_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_40_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_41_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_43_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_45_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_46_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_48_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_3B_1" />
     </Signer>
     <Signer ID="ID_SIGNER_S_4_MSVC_RUNTIME_DLL_0" Name="Microsoft Code Signing PCA 2011">
       <CertRoot Type="TBS" Value="F6F717A43AD9ABDDC8CEFDDE1C505462535E7D1307E630F9544A2D14FE8BF26E" />
       <CertPublisher Value="Microsoft Corporation" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_4_0" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_33_1" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_35_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_3D_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_B_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_40_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_41_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_43_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_3B_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_45_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_46_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_48_1" />
     </Signer>
     <Signer ID="ID_SIGNER_F_8_MICROSOFT_ONEDRIVE_1" Name="Microsoft Code Signing PCA 2010">
       <CertRoot Type="TBS" Value="121AF4B922A74247EA49DF50DE37609CC1451A1FE06B2CB7E1E079B492BD8195" />
@@ -300,28 +329,42 @@
       <FileAttribRef RuleID="ID_FILEATTRIB_F_17_1" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_19_1" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_E_1" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_33_1" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_37_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_3B_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_41_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_43_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_46_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_48_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_53_1" />
     </Signer>
-    <Signer ID="ID_SIGNER_F_1DC_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" Name="Microsoft Code Signing PCA 2011">
+    <Signer ID="ID_SIGNER_F_165_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" Name="Microsoft Code Signing PCA 2011">
       <CertRoot Type="TBS" Value="F6F717A43AD9ABDDC8CEFDDE1C505462535E7D1307E630F9544A2D14FE8BF26E" />
       <CertPublisher Value="Microsoft Corporation" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_33_1" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_37_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_3B_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_B_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_41_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_43_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_46_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_48_1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_53_1" />
+    </Signer>
+    <Signer ID="ID_SIGNER_F_2F8_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" Name="Microsoft Windows Third Party Component CA 2012">
+      <CertRoot Type="TBS" Value="CEC1AFD0E310C55C1DCC601AB8E172917706AA32FB5EAF826813547FDF02DD46" />
+      <CertPublisher Value="Microsoft Windows Hardware Compatibility Publisher" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_45_1" />
     </Signer>
   </Signers>
   <!--Driver Signing Scenarios-->
   <SigningScenarios>
-    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 11-19-2020">
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 03-11-2021">
       <ProductSigners>
         <AllowedSigners>
-          <AllowedSigner SignerId="ID_SIGNER_F_28C_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" />
+          <AllowedSigner SignerId="ID_SIGNER_F_215_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" />
           <AllowedSigner SignerId="ID_SIGNER_F_8_MICROSOFT_ONEDRIVE_1" />
-          <AllowedSigner SignerId="ID_SIGNER_F_1DC_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" />
+          <AllowedSigner SignerId="ID_SIGNER_F_165_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" />
         </AllowedSigners>
       </ProductSigners>
     </SigningScenario>
-    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Auto generated policy on 11-19-2020">
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Auto generated policy on 03-11-2021">
       <ProductSigners>
         <AllowedSigners>
           <AllowedSigner SignerId="ID_SIGNER_S_2_MFC_RUNTIME_DLL_0" />
@@ -353,9 +396,10 @@
           <AllowedSigner SignerId="ID_SIGNER_S_30_MFC_RUNTIME_DLL_0" />
           <AllowedSigner SignerId="ID_SIGNER_S_1_MICROSOFT_TEAMS_0" />
           <AllowedSigner SignerId="ID_SIGNER_S_3_MSVC_RUNTIME_DLL_0" />
-          <AllowedSigner SignerId="ID_SIGNER_F_281_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" />
+          <AllowedSigner SignerId="ID_SIGNER_F_20A_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" />
           <AllowedSigner SignerId="ID_SIGNER_F_1_MICROSOFT_ONEDRIVE_1" />
           <AllowedSigner SignerId="ID_SIGNER_S_4_MSVC_RUNTIME_DLL_0" />
+          <AllowedSigner SignerId="ID_SIGNER_F_2F8_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" />
         </AllowedSigners>
         <FileRulesRef>
           <FileRuleRef RuleID="ID_ALLOW_A_1_1" />
@@ -386,10 +430,14 @@
           <FileRuleRef RuleID="ID_ALLOW_A_30_MICROSOFT_ONEDRIVE_1" />
           <FileRuleRef RuleID="ID_ALLOW_A_31_MICROSOFT_ONEDRIVE_1" />
           <FileRuleRef RuleID="ID_ALLOW_A_32_MICROSOFT_ONEDRIVE_1" />
-          <FileRuleRef RuleID="ID_ALLOW_A_39_PACKER_PLUGINS_1" />
-          <FileRuleRef RuleID="ID_ALLOW_A_3A_PACKER_PLUGINS_1" />
-          <FileRuleRef RuleID="ID_ALLOW_A_3B_PACKER_PLUGINS_1" />
-          <FileRuleRef RuleID="ID_ALLOW_A_3C_PACKER_PLUGINS_1" />
+          <FileRuleRef RuleID="ID_ALLOW_A_33_MICROSOFT_ONEDRIVE_1" />
+          <FileRuleRef RuleID="ID_ALLOW_A_34_MICROSOFT_ONEDRIVE_1" />
+          <FileRuleRef RuleID="ID_ALLOW_A_35_MICROSOFT_ONEDRIVE_1" />
+          <FileRuleRef RuleID="ID_ALLOW_A_36_MICROSOFT_ONEDRIVE_1" />
+          <FileRuleRef RuleID="ID_ALLOW_A_37_MICROSOFT_ONEDRIVE_1" />
+          <FileRuleRef RuleID="ID_ALLOW_A_38_MICROSOFT_ONEDRIVE_1" />
+          <FileRuleRef RuleID="ID_ALLOW_A_39_MICROSOFT_ONEDRIVE_1" />
+          <FileRuleRef RuleID="ID_ALLOW_A_3A_MICROSOFT_ONEDRIVE_1" />
         </FileRulesRef>
       </ProductSigners>
     </SigningScenario>
@@ -425,9 +473,10 @@
     <CiSigner SignerId="ID_SIGNER_S_30_MFC_RUNTIME_DLL_0" />
     <CiSigner SignerId="ID_SIGNER_S_1_MICROSOFT_TEAMS_0" />
     <CiSigner SignerId="ID_SIGNER_S_3_MSVC_RUNTIME_DLL_0" />
-    <CiSigner SignerId="ID_SIGNER_F_281_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" />
+    <CiSigner SignerId="ID_SIGNER_F_20A_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" />
     <CiSigner SignerId="ID_SIGNER_F_1_MICROSOFT_ONEDRIVE_1" />
     <CiSigner SignerId="ID_SIGNER_S_4_MSVC_RUNTIME_DLL_0" />
+    <CiSigner SignerId="ID_SIGNER_F_2F8_MICROSOFT_TEAMS_MICROSOFT_TEAMS_MICROSOFT_TEAMS_1" />
   </CiSigners>
   <HvciOptions>0</HvciOptions>
   <BasePolicyID>{A244370E-44C9-4C06-B551-F6016E563076}</BasePolicyID>
