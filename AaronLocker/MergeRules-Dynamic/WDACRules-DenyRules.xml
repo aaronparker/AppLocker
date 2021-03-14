@@ -42,7 +42,7 @@
   </FileRules>
   <!--Signers-->
   <Signers>
-    <Signer ID="ID_SIGNER_F_8A8" Name="Microsoft Code Signing PCA 2011">
+    <Signer ID="ID_SIGNER_F_8AA" Name="Microsoft Code Signing PCA 2011">
       <CertRoot Type="TBS" Value="F6F717A43AD9ABDDC8CEFDDE1C505462535E7D1307E630F9544A2D14FE8BF26E" />
       <CertPublisher Value="Microsoft Corporation" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_59" />
@@ -51,7 +51,7 @@
       <FileAttribRef RuleID="ID_FILEATTRIB_F_5F" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_61" />
     </Signer>
-    <Signer ID="ID_SIGNER_F_8AA" Name="Microsoft Windows Production PCA 2011">
+    <Signer ID="ID_SIGNER_F_8AC" Name="Microsoft Windows Production PCA 2011">
       <CertRoot Type="TBS" Value="4E80BE107C860DE896384B3EFF50504DC2D76AC7151DF3102A4450637A032146" />
       <CertPublisher Value="Microsoft Windows" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_59" />
@@ -61,7 +61,7 @@
       <FileAttribRef RuleID="ID_FILEATTRIB_F_61" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_65" />
     </Signer>
-    <Signer ID="ID_SIGNER_F_8AE" Name="Microsoft Code Signing PCA 2011">
+    <Signer ID="ID_SIGNER_F_8B0" Name="Microsoft Code Signing PCA 2011">
       <CertRoot Type="TBS" Value="F6F717A43AD9ABDDC8CEFDDE1C505462535E7D1307E630F9544A2D14FE8BF26E" />
       <CertPublisher Value="Microsoft Corporation" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_5A" />
@@ -70,7 +70,7 @@
       <FileAttribRef RuleID="ID_FILEATTRIB_F_60" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_62" />
     </Signer>
-    <Signer ID="ID_SIGNER_F_8B0" Name="Microsoft Windows Production PCA 2011">
+    <Signer ID="ID_SIGNER_F_8B2" Name="Microsoft Windows Production PCA 2011">
       <CertRoot Type="TBS" Value="4E80BE107C860DE896384B3EFF50504DC2D76AC7151DF3102A4450637A032146" />
       <CertPublisher Value="Microsoft Windows" />
       <FileAttribRef RuleID="ID_FILEATTRIB_F_5A" />
@@ -87,29 +87,29 @@
   </Signers>
   <!--Driver Signing Scenarios-->
   <SigningScenarios>
-    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 03-11-2021">
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 03-12-2021">
       <ProductSigners>
         <DeniedSigners>
-          <DeniedSigner SignerId="ID_SIGNER_F_8A8" />
           <DeniedSigner SignerId="ID_SIGNER_F_8AA" />
+          <DeniedSigner SignerId="ID_SIGNER_F_8AC" />
         </DeniedSigners>
       </ProductSigners>
     </SigningScenario>
-    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Auto generated policy on 03-11-2021">
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Auto generated policy on 03-12-2021">
       <ProductSigners>
         <DeniedSigners>
-          <DeniedSigner SignerId="ID_SIGNER_F_8AE" />
           <DeniedSigner SignerId="ID_SIGNER_F_8B0" />
+          <DeniedSigner SignerId="ID_SIGNER_F_8B2" />
         </DeniedSigners>
       </ProductSigners>
     </SigningScenario>
   </SigningScenarios>
   <UpdatePolicySigners />
   <CiSigners>
-    <CiSigner SignerId="ID_SIGNER_F_8AE" />
     <CiSigner SignerId="ID_SIGNER_F_8B0" />
+    <CiSigner SignerId="ID_SIGNER_F_8B2" />
   </CiSigners>
   <HvciOptions>0</HvciOptions>
-  <BasePolicyID>{B2C92DB3-BD5F-43A2-815A-84F709078AE4}</BasePolicyID>
-  <PolicyID>{B2C92DB3-BD5F-43A2-815A-84F709078AE4}</PolicyID>
+  <BasePolicyID>{8F527B86-3C0F-4EBF-BB9D-B7C0A6B9BE41}</BasePolicyID>
+  <PolicyID>{8F527B86-3C0F-4EBF-BB9D-B7C0A6B9BE41}</PolicyID>
 </SiPolicy>
