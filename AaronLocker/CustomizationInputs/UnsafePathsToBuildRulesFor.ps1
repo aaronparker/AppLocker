@@ -91,3 +91,9 @@
   paths              = "$env:AppData\packer.d\plugins";
   pubruleGranularity = "pubProdBinVer"
 }
+
+@{
+  label              = "Zoom";
+  paths              = "$env:LOCALAPPDATA\Zoom";
+  pubruleGranularity = "pubProduct";
+}
