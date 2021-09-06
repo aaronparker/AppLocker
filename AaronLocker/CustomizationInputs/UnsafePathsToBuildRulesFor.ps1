@@ -87,9 +87,9 @@
 }
 
 @{
-  label              = "Packer plugins";
-  paths              = "$env:AppData\packer.d\plugins";
-  pubruleGranularity = "pubProdBinVer"
+  label              = "Squirrel Update";
+  paths              = "$env:LOCALAPPDATA\SquirrelTemp";
+  pubruleGranularity = "pubProduct";
 }
 
 @{

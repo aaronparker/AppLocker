@@ -23,93 +23,93 @@
   <EKUs />
   <!--File Rules-->
   <FileRules>
-    <FileAttrib ID="ID_FILEATTRIB_F_5B" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe FileAttribute" FileName="InstallUtil.exe" MinimumFileVersion="4.8.4084.0" />
-    <FileAttrib ID="ID_FILEATTRIB_F_5D" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe FileAttribute" FileName="RegAsm.exe" MinimumFileVersion="4.8.4084.0" />
-    <FileAttrib ID="ID_FILEATTRIB_F_5F" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegSvcs.exe FileAttribute" FileName="RegSvcs.exe" MinimumFileVersion="4.8.4084.0" />
-    <FileAttrib ID="ID_FILEATTRIB_F_61" FriendlyName="C:\Windows\Microsoft.NET\assembly\GAC_32\MSBuild\v4.0_4.0.0.0__b03f5f7f11d50a3a\MSBuild.exe FileAttribute" FileName="MSBuild.exe" MinimumFileVersion="4.8.4084.0" />
-    <FileAttrib ID="ID_FILEATTRIB_F_63" FriendlyName="C:\Windows\Microsoft.NET\assembly\GAC_MSIL\Microsoft.Workflow.Compiler\v4.0_4.0.0.0__31bf3856ad364e35\Microsoft.Workflow.Compiler.exe FileAttribute" FileName="Microsoft.Workflow.Compiler.exe" MinimumFileVersion="4.8.4084.0" />
-    <FileAttrib ID="ID_FILEATTRIB_F_67" FriendlyName="C:\Windows\System32\wbem\WMIC.exe FileAttribute" FileName="wmic.exe" MinimumFileVersion="10.0.19041.1" />
-    <FileAttrib ID="ID_FILEATTRIB_F_5C" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe FileAttribute" FileName="InstallUtil.exe" MinimumFileVersion="4.8.4084.0" />
-    <FileAttrib ID="ID_FILEATTRIB_F_5E" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe FileAttribute" FileName="RegAsm.exe" MinimumFileVersion="4.8.4084.0" />
-    <FileAttrib ID="ID_FILEATTRIB_F_60" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegSvcs.exe FileAttribute" FileName="RegSvcs.exe" MinimumFileVersion="4.8.4084.0" />
-    <FileAttrib ID="ID_FILEATTRIB_F_62" FriendlyName="C:\Windows\Microsoft.NET\assembly\GAC_32\MSBuild\v4.0_4.0.0.0__b03f5f7f11d50a3a\MSBuild.exe FileAttribute" FileName="MSBuild.exe" MinimumFileVersion="4.8.4084.0" />
-    <FileAttrib ID="ID_FILEATTRIB_F_64" FriendlyName="C:\Windows\Microsoft.NET\assembly\GAC_MSIL\Microsoft.Workflow.Compiler\v4.0_4.0.0.0__31bf3856ad364e35\Microsoft.Workflow.Compiler.exe FileAttribute" FileName="Microsoft.Workflow.Compiler.exe" MinimumFileVersion="4.8.4084.0" />
-    <FileAttrib ID="ID_FILEATTRIB_F_65" FriendlyName="C:\Windows\System32\mshta.exe FileAttribute" FileName="MSHTA.EXE" MinimumFileVersion="11.0.19041.1" />
-    <FileAttrib ID="ID_FILEATTRIB_F_66" FriendlyName="C:\Windows\System32\PresentationHost.exe FileAttribute" FileName="PresentationHost.exe" MinimumFileVersion="10.0.19041.1" />
-    <FileAttrib ID="ID_FILEATTRIB_F_68" FriendlyName="C:\Windows\System32\wbem\WMIC.exe FileAttribute" FileName="wmic.exe" MinimumFileVersion="10.0.19041.1" />
-    <FileAttrib ID="ID_FILEATTRIB_F_69" FriendlyName="C:\Windows\System32\cipher.exe FileAttribute" FileName="CIPHER.EXE" MinimumFileVersion="10.0.19041.1" />
-    <FileAttrib ID="ID_FILEATTRIB_F_6A" FriendlyName="C:\Windows\System32\runas.exe FileAttribute" FileName="RUNAS.EXE" MinimumFileVersion="10.0.19041.1" />
+    <FileAttrib ID="ID_FILEATTRIB_F_9B" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe FileAttribute" FileName="InstallUtil.exe" MinimumFileVersion="4.8.4084.0" />
+    <FileAttrib ID="ID_FILEATTRIB_F_9D" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe FileAttribute" FileName="RegAsm.exe" MinimumFileVersion="4.8.4084.0" />
+    <FileAttrib ID="ID_FILEATTRIB_F_9F" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegSvcs.exe FileAttribute" FileName="RegSvcs.exe" MinimumFileVersion="4.8.4084.0" />
+    <FileAttrib ID="ID_FILEATTRIB_F_A1" FriendlyName="C:\Windows\Microsoft.NET\assembly\GAC_32\MSBuild\v4.0_4.0.0.0__b03f5f7f11d50a3a\MSBuild.exe FileAttribute" FileName="MSBuild.exe" MinimumFileVersion="4.8.4084.0" />
+    <FileAttrib ID="ID_FILEATTRIB_F_A3" FriendlyName="C:\Windows\Microsoft.NET\assembly\GAC_MSIL\Microsoft.Workflow.Compiler\v4.0_4.0.0.0__31bf3856ad364e35\Microsoft.Workflow.Compiler.exe FileAttribute" FileName="Microsoft.Workflow.Compiler.exe" MinimumFileVersion="4.8.4084.0" />
+    <FileAttrib ID="ID_FILEATTRIB_F_A7" FriendlyName="C:\Windows\System32\wbem\WMIC.exe FileAttribute" FileName="wmic.exe" MinimumFileVersion="10.0.19041.1" />
+    <FileAttrib ID="ID_FILEATTRIB_F_9C" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe FileAttribute" FileName="InstallUtil.exe" MinimumFileVersion="4.8.4084.0" />
+    <FileAttrib ID="ID_FILEATTRIB_F_9E" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe FileAttribute" FileName="RegAsm.exe" MinimumFileVersion="4.8.4084.0" />
+    <FileAttrib ID="ID_FILEATTRIB_F_A0" FriendlyName="C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegSvcs.exe FileAttribute" FileName="RegSvcs.exe" MinimumFileVersion="4.8.4084.0" />
+    <FileAttrib ID="ID_FILEATTRIB_F_A2" FriendlyName="C:\Windows\Microsoft.NET\assembly\GAC_32\MSBuild\v4.0_4.0.0.0__b03f5f7f11d50a3a\MSBuild.exe FileAttribute" FileName="MSBuild.exe" MinimumFileVersion="4.8.4084.0" />
+    <FileAttrib ID="ID_FILEATTRIB_F_A4" FriendlyName="C:\Windows\Microsoft.NET\assembly\GAC_MSIL\Microsoft.Workflow.Compiler\v4.0_4.0.0.0__31bf3856ad364e35\Microsoft.Workflow.Compiler.exe FileAttribute" FileName="Microsoft.Workflow.Compiler.exe" MinimumFileVersion="4.8.4084.0" />
+    <FileAttrib ID="ID_FILEATTRIB_F_A5" FriendlyName="C:\Windows\System32\mshta.exe FileAttribute" FileName="MSHTA.EXE" MinimumFileVersion="11.0.19041.1" />
+    <FileAttrib ID="ID_FILEATTRIB_F_A6" FriendlyName="C:\Windows\System32\PresentationHost.exe FileAttribute" FileName="PresentationHost.exe" MinimumFileVersion="10.0.19041.1" />
+    <FileAttrib ID="ID_FILEATTRIB_F_A8" FriendlyName="C:\Windows\System32\wbem\WMIC.exe FileAttribute" FileName="wmic.exe" MinimumFileVersion="10.0.19041.1" />
+    <FileAttrib ID="ID_FILEATTRIB_F_A9" FriendlyName="C:\Windows\System32\cipher.exe FileAttribute" FileName="CIPHER.EXE" MinimumFileVersion="10.0.19041.1" />
+    <FileAttrib ID="ID_FILEATTRIB_F_AA" FriendlyName="C:\Windows\System32\runas.exe FileAttribute" FileName="RUNAS.EXE" MinimumFileVersion="10.0.19041.1" />
   </FileRules>
   <!--Signers-->
   <Signers>
-    <Signer ID="ID_SIGNER_F_8A7" Name="Microsoft Code Signing PCA 2011">
+    <Signer ID="ID_SIGNER_F_893" Name="Microsoft Code Signing PCA 2011">
       <CertRoot Type="TBS" Value="F6F717A43AD9ABDDC8CEFDDE1C505462535E7D1307E630F9544A2D14FE8BF26E" />
       <CertPublisher Value="Microsoft Corporation" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_5B" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_5D" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_5F" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_61" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_63" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_9B" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_9D" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_9F" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A3" />
     </Signer>
-    <Signer ID="ID_SIGNER_F_8A9" Name="Microsoft Windows Production PCA 2011">
+    <Signer ID="ID_SIGNER_F_895" Name="Microsoft Windows Production PCA 2011">
       <CertRoot Type="TBS" Value="4E80BE107C860DE896384B3EFF50504DC2D76AC7151DF3102A4450637A032146" />
       <CertPublisher Value="Microsoft Windows" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_5B" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_5D" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_5F" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_61" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_63" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_67" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_9B" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_9D" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_9F" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A1" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A3" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A7" />
     </Signer>
-    <Signer ID="ID_SIGNER_F_8AB" Name="Microsoft Code Signing PCA 2011">
+    <Signer ID="ID_SIGNER_F_897" Name="Microsoft Code Signing PCA 2011">
       <CertRoot Type="TBS" Value="F6F717A43AD9ABDDC8CEFDDE1C505462535E7D1307E630F9544A2D14FE8BF26E" />
       <CertPublisher Value="Microsoft Corporation" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_5C" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_5E" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_60" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_62" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_64" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_9C" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_9E" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A0" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A2" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A4" />
     </Signer>
-    <Signer ID="ID_SIGNER_F_8AD" Name="Microsoft Windows Production PCA 2011">
+    <Signer ID="ID_SIGNER_F_899" Name="Microsoft Windows Production PCA 2011">
       <CertRoot Type="TBS" Value="4E80BE107C860DE896384B3EFF50504DC2D76AC7151DF3102A4450637A032146" />
       <CertPublisher Value="Microsoft Windows" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_5C" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_5E" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_60" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_62" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_64" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_65" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_66" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_68" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_69" />
-      <FileAttribRef RuleID="ID_FILEATTRIB_F_6A" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_9C" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_9E" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A0" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A2" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A4" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A5" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A6" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A8" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_A9" />
+      <FileAttribRef RuleID="ID_FILEATTRIB_F_AA" />
     </Signer>
   </Signers>
   <!--Driver Signing Scenarios-->
   <SigningScenarios>
-    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 04-30-2021">
+    <SigningScenario Value="131" ID="ID_SIGNINGSCENARIO_DRIVERS_1" FriendlyName="Auto generated policy on 09-06-2021">
       <ProductSigners>
         <DeniedSigners>
-          <DeniedSigner SignerId="ID_SIGNER_F_8A7" />
-          <DeniedSigner SignerId="ID_SIGNER_F_8A9" />
+          <DeniedSigner SignerId="ID_SIGNER_F_893" />
+          <DeniedSigner SignerId="ID_SIGNER_F_895" />
         </DeniedSigners>
       </ProductSigners>
     </SigningScenario>
-    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Auto generated policy on 04-30-2021">
+    <SigningScenario Value="12" ID="ID_SIGNINGSCENARIO_WINDOWS" FriendlyName="Auto generated policy on 09-06-2021">
       <ProductSigners>
         <DeniedSigners>
-          <DeniedSigner SignerId="ID_SIGNER_F_8AB" />
-          <DeniedSigner SignerId="ID_SIGNER_F_8AD" />
+          <DeniedSigner SignerId="ID_SIGNER_F_897" />
+          <DeniedSigner SignerId="ID_SIGNER_F_899" />
         </DeniedSigners>
       </ProductSigners>
     </SigningScenario>
   </SigningScenarios>
   <UpdatePolicySigners />
   <CiSigners>
-    <CiSigner SignerId="ID_SIGNER_F_8AB" />
-    <CiSigner SignerId="ID_SIGNER_F_8AD" />
+    <CiSigner SignerId="ID_SIGNER_F_897" />
+    <CiSigner SignerId="ID_SIGNER_F_899" />
   </CiSigners>
   <HvciOptions>0</HvciOptions>
-  <BasePolicyID>{4F800CEA-31E7-492B-8E11-F254392EE076}</BasePolicyID>
-  <PolicyID>{4F800CEA-31E7-492B-8E11-F254392EE076}</PolicyID>
+  <BasePolicyID>{4880F6F8-6513-4B92-B3D3-2B843CF9BC73}</BasePolicyID>
+  <PolicyID>{4880F6F8-6513-4B92-B3D3-2B843CF9BC73}</PolicyID>
 </SiPolicy>

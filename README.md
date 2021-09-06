@@ -1,3 +1,3 @@
-# AaronLocker
+# AppLocker
 
-Copy of the [AaronLocker](https://github.com/microsoft/AaronLocker) module with customisations. Used for testing AppLocker and Microsoft Defender Application Control with Windows 10, Intune etc.
+AppLocker baseline configuration using the [AaronLocker](https://github.com/microsoft/AaronLocker) module with customisations. Used for testing AppLocker and Microsoft Defender Application Control with Windows 10, Intune etc.
