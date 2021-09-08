@@ -94,6 +94,19 @@
 
 @{
   label              = "Zoom";
-  paths              = "$env:LOCALAPPDATA\Zoom";
+  paths              = "$env:LOCALAPPDATA\Zoom",
+                        "$env:AppData\Zoom\bin";
+  pubruleGranularity = "pubProduct";
+}
+
+@{
+  label              = "GoToMeeting";
+  paths              = "$env:LOCALAPPDATA\GoToMeeting";
+  pubruleGranularity = "pubProduct";
+}
+
+@{
+  label              = "Cisco WebEx";
+  paths              = "$env:LOCALAPPDATA\Programs\Cisco Spark";
   pubruleGranularity = "pubProduct";
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-16"?>
+<AppLockerPolicy Version="1">
+    <RuleCollection Type="Msi" EnforcementMode="NotConfigured">
+        <FilePublisherRule Id="105c2110-42dd-4147-8353-e741c6547e1c" Name="Cisco WebEx: WEBEX signed by O=CISCO SYSTEMS, INC., L=SAN JOSE, S=CALIFORNIA, C=US" Description="" UserOrGroupSid="S-1-1-0" Action="Allow">
+            <Conditions>
+                <FilePublisherCondition PublisherName="O=CISCO SYSTEMS, INC., L=SAN JOSE, S=CALIFORNIA, C=US" ProductName="WEBEX" BinaryName="*">
+                    <BinaryVersionRange LowSection="41.9.0.0" HighSection="*" />
+                </FilePublisherCondition>
+            </Conditions>
+        </FilePublisherRule>
+    </RuleCollection>
+</AppLockerPolicy>
