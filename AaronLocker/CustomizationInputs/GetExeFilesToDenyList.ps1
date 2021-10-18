@@ -38,6 +38,8 @@ $dotnetProgramsToDenyList | ForEach-Object {
 # --------------------------------------------------------------------------------
 # Files used by ransomware
 "$env:windir\System32\cipher.exe"
+"$env:windir\System32\certreq.exe"
+"$env:windir\System32\certutil.exe"
 
 # --------------------------------------------------------------------------------
 # Block common credential exposure risk (also need to disable GUI option via registry, and SecondaryLogon service)
