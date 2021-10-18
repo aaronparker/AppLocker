@@ -19,12 +19,27 @@
 # Find the multiple instances of .NET executables that have been identified as AllowList bypasses.
 # Create-Policies.ps1 will remove redundant information.
 $dotnetProgramsToDenyList =
-"InstallUtil.exe", 
-"IEExec.exe", 
-"RegAsm.exe", 
-"RegSvcs.exe", 
+"AddInProcess.exe",
+"AddInProcess32.exe",
+"AddInUtil.exe",
+"aspnet_compiler.exe",
+"bash.exe",
+"cscript.exe",
+"IEExec.exe",
+"InstallUtil.exe",
+"lxssmanager.dll",
+"Microsoft.Build.dll",
+"Microsoft.Build.Framework.dll",
+"Microsoft.Workflow.Compiler.exe",
 "MSBuild.exe",
-"Microsoft.Workflow.Compiler.exe"
+"RegAsm.exe",
+"RegSvcs.exe",
+"System.Management.Automation.dll",
+"wscript.exe",
+"wsl.exe",
+"wslconfig.exe",
+"wslhost.exe"
+
     
 $dotnetProgramsToDenyList | ForEach-Object {
     Get-ChildItem -Path $env:windir\Microsoft.NET -Recurse -Include $_ | ForEach-Object { $_.FullName }
