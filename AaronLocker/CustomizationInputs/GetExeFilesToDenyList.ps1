@@ -23,26 +23,28 @@ $dotnetProgramsToDenyList =
 "AddInProcess32.exe",
 "AddInUtil.exe",
 "aspnet_compiler.exe",
-"bash.exe",
-"cscript.exe",
 "IEExec.exe",
 "InstallUtil.exe",
-"lxssmanager.dll",
 "Microsoft.Build.dll",
 "Microsoft.Build.Framework.dll",
 "Microsoft.Workflow.Compiler.exe",
 "MSBuild.exe",
 "RegAsm.exe",
 "RegSvcs.exe",
-"System.Management.Automation.dll",
-"wscript.exe",
-"wsl.exe",
-"wslconfig.exe",
-"wslhost.exe"
-
-    
+"System.Management.Automation.dll"
 $dotnetProgramsToDenyList | ForEach-Object {
-    Get-ChildItem -Path $env:windir\Microsoft.NET -Recurse -Include $_ | ForEach-Object { $_.FullName }
+    Get-ChildItem -Path "$env:windir\Microsoft.NET" -Recurse -Include $_ | ForEach-Object { $_.FullName }
+}
+
+# Additional Microsoft recommended executables to deny
+"Microsoft.Build.Framework.dll", "System.Management.Automation.dll" | ForEach-Object {
+    Get-ChildItem -Path "$Env:SystemRoot\assembly\GAC_MSIL" -Recurse -Include $_ | ForEach-Object { $_.FullName }
+}
+
+# Additional Microsoft recommended executables to deny
+"bash.exe", "wsl.exe", "wslconfig.exe", "wslhost.exe", "system.management.automation.dll", "lxssmanager.dll", "cscript.exe", "wscript.exe" | `
+    ForEach-Object {
+    Get-ChildItem -Path "$Env:SystemRoot\servicing\LCU" -Recurse -Include $_ | ForEach-Object { $_.FullName }
 }
 
 "$env:windir\System32\mshta.exe"
@@ -60,3 +62,6 @@ $dotnetProgramsToDenyList | ForEach-Object {
 # Block common credential exposure risk (also need to disable GUI option via registry, and SecondaryLogon service)
 "$env:windir\System32\runas.exe"
 
+# Block Scripting host
+"$env:windir\System32\cscript.exe"
+"$env:windir\System32\wscript.exe"
