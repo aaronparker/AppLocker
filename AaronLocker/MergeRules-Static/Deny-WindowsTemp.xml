@@ -1,0 +1,25 @@
+<AppLockerPolicy Version="1">
+  <RuleCollection Type="Exe" EnforcementMode="NotConfigured">
+    <FilePathRule Id="ca980d44-b907-44ea-953d-6ac51eecad91" Name="Deny C:\Windows\Temp" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+      <Conditions>
+        <FilePathCondition Path="C:\Windows\Temp" />
+      </Conditions>
+    </FilePathRule>
+  </RuleCollection>
+  <RuleCollection Type="Msi" EnforcementMode="NotConfigured">
+    <FilePathRule Id="f79995bc-1a01-4b99-a178-b0f0725397be" Name="Deny C:\Windows\Temp" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+      <Conditions>
+        <FilePathCondition Path="C:\Windows\Temp" />
+      </Conditions>
+    </FilePathRule>
+  </RuleCollection>
+  <RuleCollection Type="Script" EnforcementMode="NotConfigured">
+    <FilePathRule Id="0fb507fe-9136-4a05-9cb6-ebc0c0189c5f" Name="Deny C:\Windows\Temp" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+      <Conditions>
+        <FilePathCondition Path="C:\Windows\Temp" />
+      </Conditions>
+    </FilePathRule>
+  </RuleCollection>
+  <RuleCollection Type="Dll" EnforcementMode="NotConfigured" />
+  <RuleCollection Type="Appx" EnforcementMode="NotConfigured" />
+</AppLockerPolicy>
