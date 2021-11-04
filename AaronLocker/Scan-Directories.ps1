@@ -93,63 +93,63 @@ Searches the user's profile directory and the H: drive.
 #TODO: Need automation to turn selected results into rules.
 
 param(
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $WritableWindir = $false,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $WritablePF = $false,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $SearchProgramData = $false,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $SearchOneUserProfile = $false,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $SearchAllUserProfiles = $false,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $SearchNonDefaultRootDirs = $false,
 
-    [parameter(ParameterSetName="SearchDirectories", Mandatory=$false)]
-	[String[]]
-	$DirsToSearch,
+    [parameter(ParameterSetName = "SearchDirectories", Mandatory = $false)]
+    [String[]]
+    $DirsToSearch,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $NoPEFiles = $false,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $NoScripts = $false,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $NoMSIs = $false,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $JS = $false,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $DirectoryNamesOnly = $false,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $Excel = $false,
 
-    [parameter(ParameterSetName="SearchDirectories")]
+    [parameter(ParameterSetName = "SearchDirectories")]
     [switch]
     $GridView = $false,
 
-    [parameter(ParameterSetName="NonDefaultRootDirs")]
+    [parameter(ParameterSetName = "NonDefaultRootDirs")]
     [switch]
     $FindNonDefaultRootDirs = $false
 )
@@ -164,31 +164,29 @@ Set-StrictMode -Version Latest
 ### It searches the SystemDrive root directory and enumerates non-default directory names.
 ### SearchNonDefaultRootDirs also uses that information.
 $nondefaultRootDirs = $null
-if ($FindNonDefaultRootDirs -or $SearchNonDefaultRootDirs)
-{
+if ($FindNonDefaultRootDirs -or $SearchNonDefaultRootDirs) {
     $defaultRootDirs =
-        '$Recycle.Bin',
-        'Config.Msi',
-        'MSOCache',
-        'MSOTraceLite',
-        'OneDriveTemp',
-        'PerfLogs',
-        'Program Files',
-        'Program Files (x86)',
-        'ProgramData',
-        'Recovery',
-        'System Volume Information',
-        'Users',
-        'Windows',
-        'Windows.old'
+    '$Recycle.Bin',
+    'Config.Msi',
+    'MSOCache',
+    'MSOTraceLite',
+    'OneDriveTemp',
+    'PerfLogs',
+    'Program Files',
+    'Program Files (x86)',
+    'ProgramData',
+    'Recovery',
+    'System Volume Information',
+    'Users',
+    'Windows',
+    'Windows.old'
 
     # Enumerate root-level directories whether hidden or not, but exclude junctions and symlinks.
     # Output the ones that don't exist in a default Windows installation.
     $nondefaultRootDirs = (Get-ChildItem -Directory -Force ($env:SystemDrive + "\") | 
         Where-Object { !$_.Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint) -and !($_ -in $defaultRootDirs) })
 
-    if ($FindNonDefaultRootDirs)
-    {
+    if ($FindNonDefaultRootDirs) {
         $nondefaultRootDirs | foreach { $_.FullName }
         return
     }
@@ -202,40 +200,36 @@ $rootDir = [System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path)
 . $rootDir\Support\Config.ps1
 
 # Define some constants
-Set-Variable UnsafeDir  -option Constant -value "UnsafeDir"
-Set-Variable SafeDir    -option Constant -value "SafeDir"
-Set-Variable UnknownDir -option Constant -value "UnknownDir"
+Set-Variable UnsafeDir  -Option Constant -Value "UnsafeDir"
+Set-Variable SafeDir    -Option Constant -Value "SafeDir"
+Set-Variable UnknownDir -Option Constant -Value "UnknownDir"
 
 
 $scriptExtensions =
-    ".bat",
-    ".cmd",
-    ".vbs",
-    ".wsf",
-    ".wsh",
-    ".ps1"
+".bat",
+".cmd",
+".vbs",
+".wsf",
+".wsh",
+".ps1"
 # Include .js files only if specifically requested. Too many false positives otherwise; AppLocker restrictions applied only within Windows Script Host.
-if ($JS)
-{
+if ($JS) {
     $scriptExtensions += ".js"
 }
 $MsiExtensions =
-    ".msi",
-    ".msp",
-    ".mst"
+".msi",
+".msp",
+".mst"
 
 # Hashtable: key is path to inspect; value is indicator whether safe/unsafe
 $dirsToInspect = @{}
 
 # Writable directories under \Windows; known to be unsafe paths
-if ($WritableWindir)
-{
-    if (!(Test-Path($windirTxt)))
-    {
+if ($WritableWindir) {
+    if (!(Test-Path($windirTxt))) {
         Write-Warning "$windirTxt does not exist yet. Run Create-Policies.ps1."
     }
-    else
-    {
+    else {
         Get-Content $windirTxt | foreach {
             $dirsToInspect.Add($_, $UnsafeDir)
         }
@@ -243,38 +237,31 @@ if ($WritableWindir)
 }
 
 # Writable directories under ProgramFiles; known to be unsafe paths
-if ($WritablePF)
-{
-    if (!(Test-Path($PfTxt)))
-    {
+if ($WritablePF) {
+    if (!(Test-Path($PfTxt))) {
         Write-Warning "$PfTxt does not exist yet. Run Create-Policies.ps1."
     }
-    elseif (!(Test-Path($Pf86Txt)))
-    {
+    elseif (!(Test-Path($Pf86Txt))) {
         Write-Warning "$Pf86Txt does not exist yet. Run Create-Policies.ps1."
     }
-    else
-    {
+    else {
         Get-Content $PfTxt, $Pf86Txt | foreach {
             $dirsToInspect.Add($_, $UnsafeDir)
         }
     }
 }
 
-if ($SearchProgramData)
-{
+if ($SearchProgramData) {
     # Probably a mix of safe and unsafe paths
     $dirsToInspect.Add($env:ProgramData, $UnknownDir)
 }
 
-if ($SearchOneUserProfile)
-{
+if ($SearchOneUserProfile) {
     #Assume all unsafe paths
     $dirsToInspect.Add($env:USERPROFILE, $UnsafeDir)
 }
 
-if ($SearchAllUserProfiles)
-{
+if ($SearchAllUserProfiles) {
     #Assume all unsafe paths
     # No special folder or environment variable available. Get user-profiles' root directory from the parent directory of the "all users" profile directory
     $UsersRoot = [System.IO.Path]::GetDirectoryName($env:PUBLIC)
@@ -286,27 +273,23 @@ if ($SearchAllUserProfiles)
     }
 }
 
-if ($SearchNonDefaultRootDirs)
-{
+if ($SearchNonDefaultRootDirs) {
     $nondefaultRootDirs | foreach { $dirsToInspect.Add($_.FullName, $UnknownDir) }
 }
 
-if ($DirsToSearch)
-{
+if ($DirsToSearch) {
     $DirsToSearch | foreach { $dirsToInspect.Add($_, $UnknownDir) }
 }
 
 [System.Collections.ArrayList]$csv = @()
 
 # Output column headers
-if ($DirectoryNamesOnly)
-{
+if ($DirectoryNamesOnly) {
     $csv.Add(
         "IsSafeDir" + "`t" + 
         "Parent directory") | Out-Null
 }
-else
-{
+else {
     $csv.Add(
         "IsSafeDir" + "`t" + 
         "File type" + "`t" + 
@@ -326,8 +309,7 @@ else
 }
 
 
-function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writableDirs)
-{
+function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writableDirs) {
     $doNoMore = $false
 
     # Don't waste cycles looking at file types that are not of interest. (A .txt should never be a PE...)
@@ -336,26 +318,21 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
     foreach {
 
         # Work around Get-AppLockerFileInformation bug that vomits on zero-length input files
-        if ($_.Length -gt 0 -and !$doNoMore)
-        {
+        if ($_.Length -gt 0 -and !$doNoMore) {
             $filetype = $null
-            if ((!($NoScripts)) -and ($file.Extension -in $scriptExtensions))
-            {
+            if ((!($NoScripts)) -and ($file.Extension -in $scriptExtensions)) {
                 $filetype = "Script"
             }
-            elseif ((!($NoMSIs)) -and ($file.Extension -in $MsiExtensions))
-            {
+            elseif ((!($NoMSIs)) -and ($file.Extension -in $MsiExtensions)) {
                 $filetype = "MSI"
             }
             # Don't waste cycles inspecting .js files here if they haven't been evaluated.
-            elseif (!($NoPEFiles) -and ($file.Extension -ne ".js"))
-            {
+            elseif (!($NoPEFiles) -and ($file.Extension -ne ".js")) {
                 $filetype = IsWin32Executable($file.FullName)
             }
 
             # Output
-            if ($null -ne $filetype)
-            {
+            if ($null -ne $filetype) {
                 $fullname = $file.FullName
                 $fileext = $file.Extension
                 $filename = $file.Name
@@ -363,16 +340,13 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
                 $pubName = $prodName = $binName = $binVer = [String]::Empty
                 $alfi = Get-AppLockerFileInformation $file.FullName -ErrorAction SilentlyContinue -ErrorVariable alfiErr
                 # Diagnostics. Seeing sharing violations on some operations
-                if ($alfiErr.Count -gt 0)
-                {
+                if ($alfiErr.Count -gt 0) {
                     Write-Host ($file.FullName + "`tLength = " + $file.Length.ToString()) -ForegroundColor Yellow -BackgroundColor Black
-                    $alfiErr | foreach { Write-Host $_.Exception -ForegroundColor Red -BackgroundColor Black}
+                    $alfiErr | foreach { Write-Host $_.Exception -ForegroundColor Red -BackgroundColor Black }
                 }
-                if ($null -ne $alfi)
-                {
+                if ($null -ne $alfi) {
                     $pub = $alfi.Publisher
-                    if ($null -ne $pub)
-                    {
+                    if ($null -ne $pub) {
                         $pubName = $pub.PublisherName
                         $prodName = $pub.ProductName
                         $binName = $pub.BinaryName
@@ -381,32 +355,27 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
                     $hash = $alfi.Hash.HashDataString
                 }
                 $safetyOut = $safety
-                if ($safety -eq $UnknownDir)
-                {
+                if ($safety -eq $UnknownDir) {
                     #$dbgInfo = $fullname + "`t" + $parentDir
-                    if ($parentDir -in $writableDirs.Value)
-                    {
+                    if ($parentDir -in $writableDirs.Value) {
                         #$dbgInfo = $UnsafeDir + "`t" + $dbgInfo
                         $safetyOut = $UnsafeDir
                     }
-                    else
-                    {
+                    else {
                         #$dbgInfo = ($SafeDir + "`t" + $dbgInfo)
                         $safetyOut = $SafeDir
                     }
                     #$dbgInfo
                 }
 
-                if ($DirectoryNamesOnly)
-                {
+                if ($DirectoryNamesOnly) {
                     $safetyOut + "`t" + 
                     $parentDir
 
                     # Found one file - don't need to continue inspection of files in this directory
                     $doNoMore = $true
                 }
-                else
-                {
+                else {
                     $safetyOut + "`t" + 
                     $filetype + "`t" + 
                     $fileext + "`t" + 
@@ -419,7 +388,7 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
                     $binVer + "`t" +
                     $hash + "`t" +
                     $file.CreationTime + "`t" + 
-                    $file.LastAccessTime  + "`t" + 
+                    $file.LastAccessTime + "`t" + 
                     $file.LastWriteTime + "`t" +
                     $file.Length
                 }
@@ -428,8 +397,7 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
     }
 }
 
-function InspectDirectories([string]$directory, [string]$safety, [ref][string[]]$writableDirs)
-{
+function InspectDirectories([string]$directory, [string]$safety, [ref][string[]]$writableDirs) {
     InspectFiles $directory $safety $writableDirs
 
     Get-ChildItem -Directory $directory -Force -ErrorAction SilentlyContinue | foreach {
@@ -437,13 +405,11 @@ function InspectDirectories([string]$directory, [string]$safety, [ref][string[]]
         # Decide here whether to recurse into the subdirectory:
         # * Skip junctions and symlinks (typically app-compat junctions).
         # * Can add criteria here to skip browser caches, etc.
-        if (!$subdir.Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint))
-        {
+        if (!$subdir.Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint)) {
             Write-Verbose ("... subdir " + $subdir.FullName)
             InspectDirectories $subdir.FullName $safety $writableDirs
         }
-        else
-        {
+        else {
             Write-Verbose ("SKIPPING " + $subdir.FullName)
         }
     }
@@ -458,8 +424,7 @@ function InspectDirectories([string]$directory, [string]$safety, [ref][string[]]
 # Variable for restoring original Path, if necessary.
 $origPath = ""
 # Check for accesschk.exe in the rootdir.
-if (Test-Path -Path $rootDir\AccessChk.exe)
-{
+if (Test-Path -Path $rootDir\AccessChk.exe) {
     # Found it in this script's directory. Temporarily prepend it to the path.
     $origPath = $env:Path
     $env:Path = "$rootDir;" + $origPath
@@ -474,26 +439,22 @@ $dirsToInspect.Keys | foreach {
 
     $dirToInspect = $_
     $safety = $dirsToInspect[$dirToInspect]
-    if ($safety -eq $UnknownDir)
-    {
+    if ($safety -eq $UnknownDir) {
         Write-Host "about to inspect $dirToInspect for writable directories..." -ForegroundColor Cyan
-        if ((Get-Command AccessChk.exe -ErrorAction SilentlyContinue) -eq $null)
-        {
+        if ((Get-Command AccessChk.exe -ErrorAction SilentlyContinue) -eq $null) {
             $errMsg = "Scanning for writable subdirectories requires that Sysinternals AccessChk.exe be in the Path or in the same directory with this script.`n" +
-                "AccessChk.exe was not found.`n" +
-                "(See .\Support\DownloadAccesschk.ps1 for help.)`n" +
-                "Exiting..."
+            "AccessChk.exe was not found.`n" +
+            "(See .\Support\DownloadAccesschk.ps1 for help.)`n" +
+            "Exiting..."
             Write-Error $errMsg
             return
         }
         $writableDirs = [ref] ( & $ps1_EnumWritableDirs -RootDirectory $dirToInspect -KnownAdmins $knownAdmins)
-        if ($null -eq $writableDirs)
-        {
+        if ($null -eq $writableDirs) {
             $writableDirs = [ref]@()
         }
     }
-    else
-    {
+    else {
         $writableDirs = [ref]@()
     }
 
@@ -502,14 +463,12 @@ $dirsToInspect.Keys | foreach {
 }
 
 # Restore original Path if it was altered for AccessChk.exe
-if ($origPath.Length -gt 0)
-{
+if ($origPath.Length -gt 0) {
     $env:Path = $origPath
 }
 
 
-if ($Excel)
-{
+if ($Excel) {
     $OutputEncodingPrevious = $OutputEncoding
     $OutputEncoding = [System.Text.ASCIIEncoding]::Unicode
 
@@ -525,12 +484,10 @@ if ($Excel)
 
     $OutputEncoding = $OutputEncodingPrevious
 }
-elseif ($GridView)
-{
+elseif ($GridView) {
     $csv | ConvertFrom-Csv -Delimiter "`t" | Out-GridView -Title $MyInvocation.MyCommand.Name
 }
-else
-{
+else {
     # Just output the CSV raw
     $csv
 }

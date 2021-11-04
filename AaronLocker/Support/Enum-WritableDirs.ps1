@@ -125,7 +125,7 @@ C:\Windows\System32\Tasks\WPD                                                   
 
 param(
 	# Name of root directory for permission search
-	[parameter(Mandatory=$true)]
+	[parameter(Mandatory = $true)]
 	[String]
 	$RootDirectory,
 
@@ -143,10 +143,10 @@ param(
 	[switch]
 	$OutputXML = $false,
 
-    # If provided, adds list of known administrative users/groups to ignore write permissions granted to
-    [parameter(Mandatory=$false)]
-    [String[]]
-    $KnownAdmins
+	# If provided, adds list of known administrative users/groups to ignore write permissions granted to
+	[parameter(Mandatory = $false)]
+	[String[]]
+	$KnownAdmins
 )
 
 # If RootDirectory has a trailing backslash, remove it (AccessChk doesn't handle it correctly).
@@ -180,12 +180,11 @@ $FilterOut = ($FilterOut0.Split("`n`r") + $KnownAdmins | Where-Object { $_.Lengt
 # APIs consider them to be administrators also.
 # For some reason, Get-LocalGroup/Get-LocalGroupMember aren't available on WMFv5.0 on Win7;
 # Verify whether command exists before using it. The commands are available on Win7 in v5.1.
-if ($null -ne (Get-Command Get-LocalGroupMember -ErrorAction SilentlyContinue))
-{
-    #TODO: Detect and handle case where this cmdlet fails - disconnected and the admins group contains domain SIDs that can't be resolved.
-    #FWIW, NET LOCALGROUP Administrators doesn't report these entries either.
-    #Also fails on AAD-joined, with unresolved SIDs beginning with S-1-12-1-...
-    Get-LocalGroupMember -SID S-1-5-32-544 -ErrorAction SilentlyContinue | ForEach-Object { $FilterOut += "," + $_.SID.Value }
+if ($null -ne (Get-Command Get-LocalGroupMember -ErrorAction SilentlyContinue)) {
+	#TODO: Detect and handle case where this cmdlet fails - disconnected and the admins group contains domain SIDs that can't be resolved.
+	#FWIW, NET LOCALGROUP Administrators doesn't report these entries either.
+	#Also fails on AAD-joined, with unresolved SIDs beginning with S-1-12-1-...
+	Get-LocalGroupMember -SID S-1-5-32-544 -ErrorAction SilentlyContinue | ForEach-Object { $FilterOut += "," + $_.SID.Value }
 }
 
 $currfile = ""
@@ -195,43 +194,33 @@ if ($OutputXML) { "<root>" }
 $bInElem = $false
 
 AccessChk.exe /accepteula -nobanner -w -d -s -f $FilterOut $RootDirectory | ForEach-Object {
-	if ($_.StartsWith("  ") -or $_.Length -eq 0)
-	{
-        if ($_.StartsWith("  RW ") -or $_.StartsWith("   W "))
-		{
+	if ($_.StartsWith("  ") -or $_.Length -eq 0) {
+		if ($_.StartsWith("  RW ") -or $_.StartsWith("   W ")) {
 			$grantee = $_.Substring(5).Trim()
-			if ($DontFilterNTService -or (!$grantee.StartsWith("NT SERVICE\") -and !$grantee.StartsWith("S-1-5-80-")))
-			{
-				if ($currfile.Length -gt 0)
-				{
-					if ($OutputXML)
-					{
-                        # Path name has to be escaped for XML
+			if ($DontFilterNTService -or (!$grantee.StartsWith("NT SERVICE\") -and !$grantee.StartsWith("S-1-5-80-"))) {
+				if ($currfile.Length -gt 0) {
+					if ($OutputXML) {
+						# Path name has to be escaped for XML
 						"<dir name=`"" + [Security.SecurityElement]::Escape($currfile) + "`">"
 					}
-					else
-					{
+					else {
 						$currfile
 					}
 					$currfile = ""
 					$bInElem = $true
 				}
-				if ($ShowGrantees)
-				{
-					if ($OutputXML)
-					{
+				if ($ShowGrantees) {
+					if ($OutputXML) {
 						"<Grantee>" + $grantee + "</Grantee>"
 					}
-					else
-					{
+					else {
 						"  " + $grantee
 					}
 				}
 			}
 		}
 	}
-	else
-	{
+	else {
 		if ($bInElem -and $OutputXML) { "</dir>" }
 		$currfile = $_
 		$bInElem = $false

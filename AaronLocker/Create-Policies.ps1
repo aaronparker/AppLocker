@@ -76,12 +76,12 @@ Specifies whether to trust executables deemed reputable by Microsoft's Intellige
 ####################################################################################################
 
 param(
-	# If set, forces rescans for user-writable directories under Windows and ProgramFiles
-	[switch]
-	$Rescan = $false,
+    # If set, forces rescans for user-writable directories under Windows and ProgramFiles
+    [switch]
+    $Rescan = $false,
 
     # If set, replaces current user name with another in "unsafe paths"
-    [parameter(Mandatory=$false)]
+    [parameter(Mandatory = $false)]
     [String]
     $ForUser,
 
@@ -90,17 +90,17 @@ param(
     $Excel,
     
     # Specifies whether to create policies for WDAC only, AppLocker only, or Both (default)
-    [ValidateSet("Both","AppLocker","WDAC")]
+    [ValidateSet("Both", "AppLocker", "WDAC")]
     [String]
-    $AppLockerOrWDAC = "Both",
+    $AppLockerOrWDAC = "AppLocker",
 
     # If set, enables managed installer(s) for WDAC
-	[switch]
-	$WDACTrustManagedInstallers = $true,
+    [switch]
+    $WDACTrustManagedInstallers = $true,
 
     # If set, enables the option to trust reputable apps based on Microsoft's ISG
-	[switch]
-	$WDACTrustISG = $false
+    [switch]
+    $WDACTrustISG = $false
 )
 
 ####################################################################################################
@@ -112,16 +112,14 @@ param(
 # PS Core v6.x doesn't include AppLocker cmdlets; string .Split() has new overloads that need to be dealt with.
 # (At some point, may also need to check $PSVersionTable.PSEdition)
 $psv = $PSVersionTable.PSVersion
-if ($psv.Major -ne 5 -or $psv.Minor -ne 1)
-{
+if ($psv.Major -ne 5 -or $psv.Minor -ne 1) {
     $errMsg = "This script requires PowerShell v5.1.`nCurrent version = " + $PSVersionTable.PSVersion.ToString()
     Write-Error $errMsg
     return
 }
 
 # Make sure this script is running in FullLanguage mode
-if ($ExecutionContext.SessionState.LanguageMode -ne [System.Management.Automation.PSLanguageMode]::FullLanguage)
-{
+if ($ExecutionContext.SessionState.LanguageMode -ne [System.Management.Automation.PSLanguageMode]::FullLanguage) {
     $errMsg = "This script must run in FullLanguage mode, but is running in " + $ExecutionContext.SessionState.LanguageMode.ToString()
     Write-Error $errMsg
     return
@@ -130,14 +128,12 @@ if ($ExecutionContext.SessionState.LanguageMode -ne [System.Management.Automatio
 # --------------------------------------------------------------------------------
 # If WDAC or Both, make sure the OS is Windows 10 version 1903 (build 18362) or greater
 $OSBuild = [System.Environment]::OSVersion.Version.Build
-if ( ($AppLockerOrWDAC -eq "WDAC") -and ($OSBuild -lt 18362) )
-{
+if ( ($AppLockerOrWDAC -eq "WDAC") -and ($OSBuild -lt 18362) ) {
     $errMsg = ("AaronLocker supports WDAC on Windows 10 version 1903 (build 18362) and greater. Current build is " + $OSBuild + ".")
     Write-Error $errMsg
     return
 }
-elseif ( ($AppLockerOrWDAC -eq "Both") -and ($OSBuild -lt 18362) )
-{
+elseif ( ($AppLockerOrWDAC -eq "Both") -and ($OSBuild -lt 18362) ) {
     Write-Host ("AaronLocker supports WDAC on Windows 10 version 1903 (build 18362) and greater. Current build is " + $OSBuild + ". Processing AppLocker only.") -ForegroundColor Cyan
     $AppLockerOrWDAC = "AppLocker"
 }
@@ -151,23 +147,21 @@ $rootDir = [System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path)
 
 # Create subdirectories if they don't exist (some have to exist because files are expected to be there).
 if (!(Test-Path($customizationInputsDir))) { mkdir $customizationInputsDir | Out-Null }
-if (!(Test-Path($mergeRulesDynamicDir)))   { mkdir $mergeRulesDynamicDir | Out-Null }
-if (!(Test-Path($mergeRulesStaticDir)))    { mkdir $mergeRulesStaticDir | Out-Null }
-if (!(Test-Path($outputsDir)))             { mkdir $outputsDir | Out-Null }
-if (!(Test-Path($supportDir)))             { mkdir $supportDir | Out-Null }
-if (!(Test-Path($scanResultsDir)))         { mkdir $scanResultsDir | Out-Null }
+if (!(Test-Path($mergeRulesDynamicDir))) { mkdir $mergeRulesDynamicDir | Out-Null }
+if (!(Test-Path($mergeRulesStaticDir))) { mkdir $mergeRulesStaticDir | Out-Null }
+if (!(Test-Path($outputsDir))) { mkdir $outputsDir | Out-Null }
+if (!(Test-Path($supportDir))) { mkdir $supportDir | Out-Null }
+if (!(Test-Path($scanResultsDir))) { mkdir $scanResultsDir | Out-Null }
 
 # Look for results from previous scan for user-writable directories under the Windows and ProgramFiles directories.
 # If any of the files containing the filtered results are missing, force a rescan.
-if ( ! ( (Test-Path($windirTxt)) -and (Test-Path($PfTxt)) -and (Test-Path($Pf86Txt)) ) )
-{
+if ( ! ( (Test-Path($windirTxt)) -and (Test-Path($PfTxt)) -and (Test-Path($Pf86Txt)) ) ) {
     $Rescan = $true
 }
 
 # AppLocker policy creation uses Sysinternals AccessChk.exe which must be in the Path or in the script directory. If it isn't,
 # this script writes an error message and quits.
-if ($Rescan -and ($AppLockerOrWDAC -in("AppLocker","Both")))
-{
+if ($Rescan -and ($AppLockerOrWDAC -in ("AppLocker", "Both"))) {
     # If accesschk.exe is in the rootdir, temporarily add the rootdir to the path.
     # (Previous implementation invoked Get-Command to see whether accesschk.exe was in the path, and only if that failed looked for
     # accesschk.exe in the rootdir. However, there was no good way to keep Get-Command from displaying a "Suggestion" message in that
@@ -175,19 +169,17 @@ if ($Rescan -and ($AppLockerOrWDAC -in("AppLocker","Both")))
     # Variable for restoring original Path, if necessary.
     $origPath = ""
     # Check for accesschk.exe in the rootdir.
-    if (Test-Path -Path $rootDir\AccessChk.exe)
-    {
+    if (Test-Path -Path $rootDir\AccessChk.exe) {
         # Found it in this script's directory. Temporarily prepend it to the path.
         $origPath = $env:Path
         $env:Path = "$rootDir;" + $origPath
     }
     # Otherwise, if AccessChk.exe not available in the path, write an error message and quit.
-    elseif ($null -eq (Get-Command AccessChk.exe -ErrorAction SilentlyContinue))
-    {
+    elseif ($null -eq (Get-Command AccessChk.exe -ErrorAction SilentlyContinue)) {
         $errMsg = "Scanning for writable subdirectories requires that Sysinternals AccessChk.exe be in the Path or in the same directory with this script.`n" +
-            "AccessChk.exe was not found.`n" +
-            "(See .\Support\DownloadAccesschk.ps1 for help.)`n" +
-            "Exiting..."
+        "AccessChk.exe was not found.`n" +
+        "(See .\Support\DownloadAccesschk.ps1 for help.)`n" +
+        "Exiting..."
         Write-Error $errMsg
         return
     }
@@ -208,8 +200,7 @@ else {$ProcessWDACLikeAppLocker = $false}
 #>
 
 # If just processing WDAC and no custom admins are defined, 
-if (($Rescan) -and ($AppLockerOrWDAC -eq "WDAC") -and !($ProcessWDACLikeAppLocker))
-{
+if (($Rescan) -and ($AppLockerOrWDAC -eq "WDAC") -and !($ProcessWDACLikeAppLocker)) {
     Write-Host "Skipping scan for user-writable directories - not required for WDAC." -ForegroundColor Cyan
     $Rescan = $false
 }
@@ -218,8 +209,7 @@ if (($Rescan) -and ($AppLockerOrWDAC -eq "WDAC") -and !($ProcessWDACLikeAppLocke
 # Process common custom inputs once before calling AppLocker- and WDAC-specific scripts
 ####################################################################################################
 # Get Block List -- WDAC could potentially use recommended blocks policy instead? If so, move this back to AppLocker-specific script
-if ( $Rescan -or ( ($AppLockerOrWDAC -in "Both","AppLocker") -and !(Test-Path($ExeDenyListData) ) ) -or ( ($AppLockerOrWDAC -in "Both","WDAC") ) )
-{
+if ( $Rescan -or ( ($AppLockerOrWDAC -in "Both", "AppLocker") -and !(Test-Path($ExeDenyListData) ) ) -or ( ($AppLockerOrWDAC -in "Both", "WDAC") ) ) {
     Write-Host "Get EXE files to DenyList for later processing..." -ForegroundColor Cyan
     # Get the EXE files to DenyList from the script that produces that list.
     $exeFilesToDenyList = (& $ps1_GetExeFilesToDenyList)
@@ -230,13 +220,11 @@ Write-Host "Get authorized safe paths for later processing..." -ForegroundColor 
 $PathsToAllow = (& $ps1_GetSafePathsToAllow)
 
 # Run the script that gets "unsafe" user-writable paths for later processing. Should come in as a sequence of hashtables.
-if ( !(Test-Path($ps1_UnsafePathsToBuildRulesFor)) )
-{
+if ( !(Test-Path($ps1_UnsafePathsToBuildRulesFor)) ) {
     $errmsg = "Script file not found: $ps1_UnsafePathsToBuildRulesFor`nNo new rules generated for files in writable directories."
     Write-Warning $errmsg
 }
-else
-{
+else {
     Write-Host "Get 'unsafe' user-writable paths for later processing..." -ForegroundColor Cyan
     $UnsafePathsToBuildRulesFor = (& $ps1_UnsafePathsToBuildRulesFor)
 }
@@ -255,7 +243,7 @@ $hashRuleData = (& $ps1_HashRuleData)
 ####################################################################################################
 # Shared setup complete. Call AppLocker- and WDAC-specific scripts.
 ####################################################################################################
-if ($AppLockerOrWDAC -in "Both","AppLocker") {& $ps1_CreatePoliciesAppLocker}
-if ($AppLockerOrWDAC -in "Both","WDAC")      {& $ps1_CreatePoliciesWDAC}
+if ($AppLockerOrWDAC -in "Both", "AppLocker") { & $ps1_CreatePoliciesAppLocker }
+if ($AppLockerOrWDAC -in "Both", "WDAC") { & $ps1_CreatePoliciesWDAC }
 
 # --------------------------------------------------------------------------------
