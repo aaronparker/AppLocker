@@ -53,10 +53,11 @@ $dotnetProgramsToDenyList | ForEach-Object {
 # Note: also need Code Integrity rules to block other bypasses
 
 # --------------------------------------------------------------------------------
-# Files used by ransomware
+# Files used by ransomware / lolbins
 "$env:windir\System32\cipher.exe"
 "$env:windir\System32\certreq.exe"
 "$env:windir\System32\certutil.exe"
+"$env:windir\System32\Cmdl32.exe"
 
 # --------------------------------------------------------------------------------
 # Block common credential exposure risk (also need to disable GUI option via registry, and SecondaryLogon service)
