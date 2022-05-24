@@ -1,0 +1,22 @@
+<RuleCollection Type="Msi" EnforcementMode="Enabled">
+    <FilePathRule Id="c64e52fe-bd05-43ed-ae91-f3612182829e" Name="All Windows Installer files under %windir%\ccmcache" Description="Allows everyone to run installer files in the SCCM cache." UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%WINDIR%\ccmcache\*" />
+        </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="5b290184-345a-4453-b184-45305f6d9a54" Name="(Default Rule) All Windows Installer files in %systemdrive%\Windows\Installer" Description="Allows members of the Everyone group to run all Windows Installer files located in %systemdrive%\Windows\Installer." UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%WINDIR%\Installer\*" />
+        </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="64ad46ff-0d71-4fa0-a30b-3f3d30c5433d" Name="(Default Rule) All Windows Installer files" Description="Allows members of the local Administrators group to run all Windows Installer files." UserOrGroupSid="S-1-5-32-544" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="*.*" />
+        </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="f79995bc-1a01-4b99-a178-b0f0725397be" Name="Deny C:\Windows\Temp" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+        <Conditions>
+            <FilePathCondition Path="C:\Windows\Temp" />
+        </Conditions>
+    </FilePathRule>
+</RuleCollection>
