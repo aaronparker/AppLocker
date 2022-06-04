@@ -58,6 +58,7 @@ $dotnetProgramsToDenyList | ForEach-Object {
 "$env:windir\System32\certreq.exe"
 "$env:windir\System32\certutil.exe"
 "$env:windir\System32\Cmdl32.exe"
+"$env:windir\System32\msdt.exe"
 
 # --------------------------------------------------------------------------------
 # Block common credential exposure risk (also need to disable GUI option via registry, and SecondaryLogon service)
