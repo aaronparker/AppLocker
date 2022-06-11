@@ -149,8 +149,8 @@ $pubRuleInclProduct = $true
 $pubRuleInclBinname = $true
 $pubRuleInclMinver = $false
 switch ($PubRuleGranularity) {
-    "pubOnly" { 
-        $pubRuleInclProduct = $pubRuleInclBinname = $false 
+    "pubOnly" {
+        $pubRuleInclProduct = $pubRuleInclBinname = $false
     }
     "pubProduct" {
         $pubRuleInclBinname = $false
@@ -214,13 +214,13 @@ foreach ($fsp in $FileSystemPaths) {
                 if ($RecurseDirectories) {
                     $arrALFI.AddRange( @(Get-AppLockerFileInformation -FileType Exe, Dll, Script -Directory $fsp -Recurse) )
                     # Get all files with extensions that haven't been inspected. (Would have used -Exclude with gci but it doesn't interact well with -File - bug?)
-                    $filesNotInspected.AddRange( @(Get-ChildItem -Recurse -Path $fsp -Force -File | 
+                    $filesNotInspected.AddRange( @(Get-ChildItem -Recurse -Path $fsp -Force -File |
                             Where-Object { $_.Extension -notin $extsToIgnore } ))
                 }
                 else {
                     $arrALFI.AddRange( @(Get-AppLockerFileInformation -FileType Exe, Dll, Script -Directory $fsp) )
                     # Get all files with extensions that haven't been inspected. (Would have used -Exclude with gci but it doesn't interact well with -File - bug?)
-                    $filesNotInspected.AddRange( @( Get-ChildItem -Path $fsp -Force -File | 
+                    $filesNotInspected.AddRange( @( Get-ChildItem -Path $fsp -Force -File |
                             Where-Object { $_.Extension -notin $extsToIgnore } ))
                 }
                 # Look at all the files not yet inspected and capture information for those that are Win32 EXE/DLLs with non-standard extensions.
@@ -313,7 +313,7 @@ foreach ($alfi in $arrALFI) {
                 $pubInfo = $rule.PublisherConditions
                 # If checking versions, always allow newer
                 $pubInfo.BinaryVersionRange.HighSection = $null
-                
+
                 # Build key based on how granular these rules are going to be.
                 # Don't put version number into key; if version used, merge rules for same file
                 # Put rule type and publisher name into the key
@@ -330,9 +330,9 @@ foreach ($alfi in $arrALFI) {
 
                         # File-specific name/description including full path
                         $rule.Name = $RuleNamePrefix + $pubInfo.BinaryName
-                        $rule.Description = 
-                        "Product: " + $pubInfo.ProductName + "`r`n" + 
-                        "Publisher: " + $pubname + "`r`n" + 
+                        $rule.Description =
+                        "Product: " + $pubInfo.ProductName + "`r`n" +
+                        "Publisher: " + $pubname + "`r`n" +
                         "Original path: " + $alfi.Path.Path
 
                         if ($pubRuleInclMinver) {
@@ -353,8 +353,8 @@ foreach ($alfi in $arrALFI) {
                         # (Depending on definition, including all file system paths might hit character limit for Description, so limit it)
                         $rule.Name = $RuleNamePrefix + $pubInfo.ProductName
                         $rule.Description = StrLimit -proposed (
-                            "Product: " + $pubInfo.ProductName + "`r`n" + 
-                            "Publisher: " + $pubname + "`r`n" + 
+                            "Product: " + $pubInfo.ProductName + "`r`n" +
+                            "Publisher: " + $pubname + "`r`n" +
                             "File(s) found in: " + $FileSystemPaths) -limit ([Microsoft.Security.ApplicationId.PolicyManagement.PolicyModel.FileHashRule]::DescriptionMaxLength)
                     }
                 }
@@ -367,7 +367,7 @@ foreach ($alfi in $arrALFI) {
                     $rule.Name = $RuleNamePrefix + $pubInfo.PublisherName
                     # (Depending on definition, including all file system paths might hit character limit for Description, so limit it)
                     $rule.Description = StrLimit -proposed (
-                        "Publisher: " + $pubname + "`r`n" + 
+                        "Publisher: " + $pubname + "`r`n" +
                         "File(s) found in: " + $FileSystemPaths) -limit ([Microsoft.Security.ApplicationId.PolicyManagement.PolicyModel.FileHashRule]::DescriptionMaxLength)
                 }
 
@@ -392,7 +392,7 @@ foreach ($alfi in $arrALFI) {
                             else {
                                 #DBG $pubInfo.BinaryName + " KEEPING VERSION " + $verCurr.ToString() + " IN FAVOR OF " + $verPrev.ToString()
                             }
-                        } 
+                        }
                     }
                 }
             }

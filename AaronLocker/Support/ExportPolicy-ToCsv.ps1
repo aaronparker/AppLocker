@@ -37,7 +37,7 @@ Figure out how to tie Get-GPO in with this...
 
 param(
     # Optional: path to XML file containing AppLocker policy
-    [parameter(Mandatory=$false)]
+    [parameter(Mandatory = $false)]
     [String]
     $AppLockerPolicyFile,
 
@@ -46,7 +46,7 @@ param(
     $Local = $false,
 
     # Optional: specify character sequence to replace line breaks
-    [parameter(Mandatory=$false)]
+    [parameter(Mandatory = $false)]
     [String]
     $linebreakSeq = "^|^"
 )
@@ -54,18 +54,15 @@ param(
 
 $tab = "`t"
 
-if ($AppLockerPolicyFile.Length -gt 0)
-{
+if ($AppLockerPolicyFile.Length -gt 0) {
     # Get policy from a file
     $x = [xml](Get-Content $AppLockerPolicyFile)
 }
-elseif ($Local)
-{
+elseif ($Local) {
     # Inspect local policy
     $x = [xml](Get-AppLockerPolicy -Local -Xml)
 }
-else
-{
+else {
     # Inspect effecive policy
     $x = [xml](Get-AppLockerPolicy -Effective -Xml)
 }
@@ -86,8 +83,7 @@ $x.AppLockerPolicy.RuleCollection | ForEach-Object {
     $filetype = $_.Type
     $enforce = $_.EnforcementMode
 
-    if ($_.ChildNodes.Count -eq 0)
-    {
+    if ($_.ChildNodes.Count -eq 0) {
         $filetype + $tab +
         $enforce + $tab +
         "N/A" + $tab +
@@ -98,67 +94,53 @@ $x.AppLockerPolicy.RuleCollection | ForEach-Object {
         "N/A" + $tab +
         "N/A"
     }
-    else
-    {
+    else {
         $_.ChildNodes | ForEach-Object {
 
             $childNode = $_
-            switch ( $childNode.LocalName )
-            {
-        
-            "FilePublisherRule"
-            {
-                $ruletype = "Publisher"
-                $condition = $childNode.Conditions.FilePublisherCondition
-                $ruleInfo = 
+            switch ( $childNode.LocalName ) {
+                "FilePublisherRule" {
+                    $ruletype = "Publisher"
+                    $condition = $childNode.Conditions.FilePublisherCondition
+                    $ruleInfo = 
                     "Publisher: " + $condition.PublisherName + $linebreakSeq + 
                     "Product: " + $condition.ProductName + $linebreakSeq + 
                     "BinaryName: " + $condition.BinaryName + $linebreakSeq + 
                     "LowVersion: " + $condition.BinaryVersionRange.LowSection + $linebreakSeq +
                     "HighVersion: " + $condition.BinaryVersionRange.HighSection
-            }
-        
-            "FilePathRule" 
-            {
-                $ruletype = "Path"
-                $ruleInfo = $childNode.Conditions.FilePathCondition.Path
-            }
-        
-            "FileHashRule" 
-            {
-                $ruletype = "Hash"
-                $condition = $childNode.Conditions.FileHashCondition.FileHash
-                $ruleInfo = $condition.SourceFileName + "; length = " + $condition.SourceFileLength
-            }
-        
-            default { $ruletype = $_.LocalName; $condition = $ruleInfo = [string]::Empty; }
-        
+                }
+                "FilePathRule" {
+                    $ruletype = "Path"
+                    $ruleInfo = $childNode.Conditions.FilePathCondition.Path
+                }
+                "FileHashRule" {
+                    $ruletype = "Hash"
+                    $condition = $childNode.Conditions.FileHashCondition.FileHash
+                    $ruleInfo = $condition.SourceFileName + "; length = " + $condition.SourceFileLength
+                }
+                default { $ruletype = $_.LocalName; $condition = $ruleInfo = [string]::Empty; }
             }
 
             $exceptions = [string]::Empty
-            if ($null -ne $childNode.Exceptions)
-            {
+            if ($null -ne $childNode.Exceptions) {
                 # Output exceptions with a designated separator character sequence that can be replaced with line feeds in Excel
                 [System.Collections.ArrayList]$arrExceptions = @()
-                if ($null -ne $childNode.Exceptions.FilePathCondition)
-                {
+                if ($null -ne $childNode.Exceptions.FilePathCondition) {
                     $arrExceptions.Add( "[----- Path exceptions -----]" ) | Out-Null
                     $arrExceptions.AddRange( @($childNode.Exceptions.FilePathCondition.Path | Sort-Object) )
                 }
-                if ($null -ne $childNode.Exceptions.FilePublisherCondition)
-                {
+                if ($null -ne $childNode.Exceptions.FilePublisherCondition) {
                     $arrExceptions.Add( "[----- Publisher exceptions -----]" ) | Out-Null
-                    $arrExceptions.AddRange( @($childNode.Exceptions.FilePublisherCondition | 
-                        ForEach-Object {
-                            $s = $_.BinaryName + ": " + $_.PublisherName + "; " + $_.ProductName
-                            $bvrLow = $_.BinaryVersionRange.LowSection
-                            $bvrHigh = $_.BinaryVersionRange.HighSection
-                            if ($bvrLow -ne "*" -or $bvrHigh -ne "*") { $s += "; ver " + $bvrLow + " to " + $bvrHigh }
-                            $s
-                        } | Sort-Object) )
+                    $arrExceptions.AddRange( @($childNode.Exceptions.FilePublisherCondition |
+                            ForEach-Object {
+                                $s = $_.BinaryName + ": " + $_.PublisherName + "; " + $_.ProductName
+                                $bvrLow = $_.BinaryVersionRange.LowSection
+                                $bvrHigh = $_.BinaryVersionRange.HighSection
+                                if ($bvrLow -ne "*" -or $bvrHigh -ne "*") { $s += "; ver " + $bvrLow + " to " + $bvrHigh }
+                                $s
+                            } | Sort-Object) )
                 }
-                if ($null -ne $childNode.Exceptions.FileHashCondition)
-                {
+                if ($null -ne $childNode.Exceptions.FileHashCondition) {
                     $arrExceptions.Add( "[----- Hash exceptions -----]" ) | Out-Null
                     $arrExceptions.AddRange( @($childNode.Exceptions.FileHashCondition.FileHash | ForEach-Object { $_.SourceFileName + "; length = " + $_.SourceFileLength } | Sort-Object) )
                 }
@@ -172,12 +154,10 @@ $x.AppLockerPolicy.RuleCollection | ForEach-Object {
             $oSID = New-Object System.Security.Principal.SecurityIdentifier($_.UserOrGroupSid)
             $oUser = $null
             try { $oUser = $oSID.Translate([System.Security.Principal.NTAccount]) } catch {}
-            if ($null -ne $oUser)
-            {
+            if ($null -ne $oUser) {
                 $userOrGroup = $oUser.Value
             }
-            else
-            {
+            else {
                 $userOrGroup = $_.UserOrGroupSid
             }
             $action = $_.Action

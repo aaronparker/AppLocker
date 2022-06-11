@@ -52,6 +52,6 @@ $Files = @("addinprocess.exe",
 "wslhost.exe")
 
 $Executables = @()
-Get-ChildItem -Path "$Env:SystemRoot\Microsoft.NET" -Include $files -Recurse -ErrorAction "SilentlyContinue" | % { $Executables += $_ }
+Get-ChildItem -Path "$Env:SystemRoot\Microsoft.NET" -Include $files -Recurse -ErrorAction "SilentlyContinue" | ForEach-Object { $Executables += $_ }
 $Executables | Select-Object -ExpandProperty "FullName" | Select-Object -Unique | Sort-Object | Set-Clipboard
 ```

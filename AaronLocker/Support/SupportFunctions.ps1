@@ -29,7 +29,7 @@ Global variables defining known file extensions
 #pragma once :-)
 if (Test-Path("function:\SaveXmlDocAsUnicode")) {
     return
-} 
+}
 
 ####################################################################################################
 # Ensure the AppLocker assembly is loaded. (Scripts sometimes run into TypeNotFound errors if not.)
@@ -200,10 +200,10 @@ function AddWorksheetFromCsvFile([string]$filename, [string]$tabname, [string]$C
             $ix++
         }
     }
-        
+
     # Formatting: autosize row heights, then set maximum height (if CrLf replacement on)
     $dummy = $worksheet.Cells.EntireRow.AutoFit()
-    # If line breaks added, limit autofit row height to 
+    # If line breaks added, limit autofit row height to
     if ($CrLfEncoded.Length -gt 0) {
         $ix = 1
         while ( $worksheet.Cells($ix, 1).Text.Length -gt 0) {
@@ -285,11 +285,8 @@ function AddWorksheetFromCsvData([string[]]$csv, [string]$tabname, [string]$CrLf
         $OutputEncoding = [System.Text.ASCIIEncoding]::Unicode
 
         $tempfile = [System.IO.Path]::GetTempFileName()
-
         $csv | Out-File $tempfile -Encoding unicode
-
         AddWorksheetFromCsvFile -filename $tempfile -tabname $tabname -CrLfEncoded $CrLfEncoded -AddChart:$AddChart
-
         Remove-Item $tempfile
 
         $OutputEncoding = $OutputEncodingPrevious
@@ -351,7 +348,7 @@ function IsWin32Executable([string]$filename) {
 
     # Read the IMAGE_DOS_HEADER e_lfanew attribute to determine the offset into the file where the IMAGE_NT_HEADERS begin
     # This line of code adapted from Matt Graeber, http://www.exploit-monday.com/2013/03/ParsingBinaryFileFormatsWithPowerShell.html
-    $offsetImageNtHeaders = [Int32]('0x{0}' -f (( $bytesImageDosHeader[ ($offset_e_lfanew + 3) .. $offset_e_lfanew] | % { $_.ToString('X2') }) -join ''))
+    $offsetImageNtHeaders = [Int32]('0x{0}' -f (( $bytesImageDosHeader[ ($offset_e_lfanew + 3) .. $offset_e_lfanew] | ForEach-Object { $_.ToString('X2') }) -join ''))
 
     # Read up to where the NT headers are, and then the size of IMAGE_NT_HEADERS64 which should be more than we need
     $totalToRead = $offsetImageNtHeaders + $sizeofImageNtHeaders64
@@ -373,11 +370,11 @@ function IsWin32Executable([string]$filename) {
     # Get the offset of the "Characteristics" attribute in the file header
     $offsChar = $offsetImageNtHeaders + $offset_FileHeader + $offset_FileHeader_Characteristics
     # Read the two-byte Characteristics
-    $characteristics = [UInt16]('0x{0}' -f (( $bytesImageNtHeaders[($offsChar + 1)..$offsChar] | % { $_.ToString('X2') }) -join ''))
+    $characteristics = [UInt16]('0x{0}' -f (( $bytesImageNtHeaders[($offsChar + 1)..$offsChar] | ForEach-Object { $_.ToString('X2') }) -join ''))
 
     # Get the offset of the two-byte "Subsystem" attribute in the optional headers, and read that attribute
     $offsSubsystem = $offsetImageNtHeaders + $offset_OptionalHeader + $offset_OptionalHeader_Subsystem
-    $subsystem = [UInt16]('0x{0}' -f (( $bytesImageNtHeaders[($offsSubsystem + 1)..$offsSubsystem] | % { $_.ToString('X2') }) -join ''))
+    $subsystem = [UInt16]('0x{0}' -f (( $bytesImageNtHeaders[($offsSubsystem + 1)..$offsSubsystem] | ForEach-Object { $_.ToString('X2') }) -join ''))
 
     # Verify that Subsystem is IMAGE_SUBSYSTEM_WINDOWS_GUI or IMAGE_SUBSYSTEM_WINDOWS_CUI
     if ($subsystem -ne $IMAGE_SUBSYSTEM_WINDOWS_GUI -and $subsystem -ne $IMAGE_SUBSYSTEM_WINDOWS_CUI) {
@@ -450,11 +447,11 @@ function RenamePaths($paths, $forUsername) {
 # Global variables - known file extensions
 ####################################################################################################
 #
-# With the -Directory switch, the Get-AppLockerFileInformation cmdlet inspects files with the extensions shown below (GetAlfiDefaultExts). 
-# Create-Policies.ps1 (via BuildRulesForFilesInWritableDirectories.ps1) and Scan-Directories.ps1 inspect the content of other files to 
+# With the -Directory switch, the Get-AppLockerFileInformation cmdlet inspects files with the extensions shown below (GetAlfiDefaultExts).
+# Create-Policies.ps1 (via BuildRulesForFilesInWritableDirectories.ps1) and Scan-Directories.ps1 inspect the content of other files to
 # determine whether any of them are Portable Executable files with non-standard extensions. To save the cost of reading in lots of files that
 # are never PE files (never should be, anyway), those scripts consume this script's output and doesn't inspect files with these extensions.
-# 
+#
 # NOTE THAT IF YOU EDIT THE NeverExecutableExts ARRAY:
 # * Make sure the script returns one array of strings: comma after each one except the last.
 # * Each extension must begin with a ".".
@@ -462,18 +459,14 @@ function RenamePaths($paths, $forUsername) {
 # * Do NOT add any of the extensions that Get-AppLockerFileInformation searches.
 # * Order doesn't matter.
 # * Do not edit the GetAlfiDefaultExts array.
-# 
+#
 
 Set-Variable -Name GetAlfiDefaultExts -Option Constant -Value ".com", ".exe", ".dll", ".ocx", ".msi", ".msp", ".mst", ".bat", ".cmd", ".js", ".ps1", ".vbs", ".appx"
 Set-Variable -Name NeverExecutableExts -Option Constant -Value `
-    ".admx", ".adml", ".opax", ".opal", 
-".etl", ".evtx", ".msc", ".pdb",
-".chm", ".hlp",
+    ".admx", ".adml", ".opax", ".opal", ".etl", ".evtx", ".msc", ".pdb", ".chm", ".hlp",
 ".gif", ".jpg", ".jpeg", ".png", ".bmp", ".svg", ".ico", ".pfm", ".ttf", ".fon", ".otf", ".cur",
-".html", ".htm", ".hta", ".css", ".json",
-".txt", ".log", ".xml", ".xsl", ".ini", ".csv", ".reg", ".mof",
-".pdf", ".tif", ".tiff", ".xps", ".rtf",
-".lnk", ".url", ".inf",
+".html", ".htm", ".hta", ".css", ".json", ".txt", ".log", ".xml", ".xsl", ".ini", ".csv", ".reg", ".mof",
+".pdf", ".tif", ".tiff", ".xps", ".rtf", ".lnk", ".url", ".inf",
 ".odl", ".odlgz", ".odlsent", # OneDrive data files
 ".mui", # .mui is a DLL but it is always loaded as data-only, so no need for AppLocker rules
 ".doc", ".docx", ".docm", ".dot", ".dotx", ".dotm", # Microsoft Word

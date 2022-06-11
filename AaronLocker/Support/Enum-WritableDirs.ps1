@@ -5,8 +5,8 @@ Enumerates "user-writable" subdirectories.
 .DESCRIPTION
 Enumerates subdirectories that are writable by accounts other than a set of
 known admin or admin-equivalent entities (including members of the local
-Administrators group). The goal is to list user-writable directories in 
-which end user program execution should be disallowed via AppLocker. 
+Administrators group). The goal is to list user-writable directories in
+which end user program execution should be disallowed via AppLocker.
 You should run this script with administrative rights to avoid access-
 denied errors.
 
@@ -36,7 +36,7 @@ permissions
 
 .PARAMETER DontFilterNTService
 By default, this script ignores access granted to NT SERVICE\ accounts (SID
-beginning with S-1-5-80-). If this switch is set, this script does not 
+beginning with S-1-5-80-). If this switch is set, this script does not
 ignore that access, except for access granted to NT SERVICE\TrustedInstaller.
 
 .PARAMETER OutputXML
@@ -104,22 +104,22 @@ $x = [xml](.\Enum-WritableDirs.ps1 C:\Windows\System32 -ShowGrantees -OutputXML)
 $x.root.dir | Sort-Object name
 
 Output:
-name                                                                            Grantee                                                                       
-----                                                                            -------                                                                       
-C:\Windows\System32\Com\dmp                                                     BUILTIN\Users                                                                 
-C:\Windows\System32\FxsTmp                                                      BUILTIN\Users                                                                 
-C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys                            Everyone                                                                      
-C:\Windows\System32\spool\drivers\color                                         BUILTIN\Users                                                                 
-C:\Windows\System32\spool\PRINTERS                                              BUILTIN\Users                                                                 
-C:\Windows\System32\spool\SERVERS                                               BUILTIN\Users                                                                 
-C:\Windows\System32\Tasks                                                       NT AUTHORITY\Authenticated Users                                              
-C:\Windows\System32\Tasks\Microsoft IT Diagnostics Utility                      NT AUTHORITY\Authenticated Users                                              
-C:\Windows\System32\Tasks\Microsoft IT VPN                                      NT AUTHORITY\Authenticated Users                                              
-C:\Windows\System32\Tasks\Microsoft\Windows\PLA\System                          Everyone                                                                      
-C:\Windows\System32\Tasks\Microsoft\Windows\RemoteApp and Desktop Connection... NT AUTHORITY\Authenticated Users                                              
-C:\Windows\System32\Tasks\Microsoft\Windows\SyncCenter                          BUILTIN\Users                                                                 
-C:\Windows\System32\Tasks\Microsoft\Windows\WCM                                 BUILTIN\Users                                                                 
-C:\Windows\System32\Tasks\WPD                                                   {NT AUTHORITY\Authenticated Users, vm-t2408\admin}                   
+name                                                                            Grantee
+----                                                                            -------
+C:\Windows\System32\Com\dmp                                                     BUILTIN\Users
+C:\Windows\System32\FxsTmp                                                      BUILTIN\Users
+C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys                            Everyone
+C:\Windows\System32\spool\drivers\color                                         BUILTIN\Users
+C:\Windows\System32\spool\PRINTERS                                              BUILTIN\Users
+C:\Windows\System32\spool\SERVERS                                               BUILTIN\Users
+C:\Windows\System32\Tasks                                                       NT AUTHORITY\Authenticated Users
+C:\Windows\System32\Tasks\Microsoft IT Diagnostics Utility                      NT AUTHORITY\Authenticated Users
+C:\Windows\System32\Tasks\Microsoft IT VPN                                      NT AUTHORITY\Authenticated Users
+C:\Windows\System32\Tasks\Microsoft\Windows\PLA\System                          Everyone
+C:\Windows\System32\Tasks\Microsoft\Windows\RemoteApp and Desktop Connection... NT AUTHORITY\Authenticated Users
+C:\Windows\System32\Tasks\Microsoft\Windows\SyncCenter                          BUILTIN\Users
+C:\Windows\System32\Tasks\Microsoft\Windows\WCM                                 BUILTIN\Users
+C:\Windows\System32\Tasks\WPD                                                   {NT AUTHORITY\Authenticated Users, vm-t2408\admin}
 
 #>
 

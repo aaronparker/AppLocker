@@ -160,7 +160,7 @@ Set-StrictMode -Version Latest
 
 
 ### ======================================================================
-### The FindNonDefaultRootDirs is a standalone option that cannot be used with other switches. 
+### The FindNonDefaultRootDirs is a standalone option that cannot be used with other switches.
 ### It searches the SystemDrive root directory and enumerates non-default directory names.
 ### SearchNonDefaultRootDirs also uses that information.
 $nondefaultRootDirs = $null
@@ -183,7 +183,7 @@ if ($FindNonDefaultRootDirs -or $SearchNonDefaultRootDirs) {
 
     # Enumerate root-level directories whether hidden or not, but exclude junctions and symlinks.
     # Output the ones that don't exist in a default Windows installation.
-    $nondefaultRootDirs = (Get-ChildItem -Directory -Force ($env:SystemDrive + "\") | 
+    $nondefaultRootDirs = (Get-ChildItem -Directory -Force ($env:SystemDrive + "\") |
         Where-Object { !$_.Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint) -and !($_ -in $defaultRootDirs) })
 
     if ($FindNonDefaultRootDirs) {
@@ -286,16 +286,16 @@ if ($DirsToSearch) {
 # Output column headers
 if ($DirectoryNamesOnly) {
     $csv.Add(
-        "IsSafeDir" + "`t" + 
+        "IsSafeDir" + "`t" +
         "Parent directory") | Out-Null
 }
 else {
     $csv.Add(
-        "IsSafeDir" + "`t" + 
-        "File type" + "`t" + 
+        "IsSafeDir" + "`t" +
+        "File type" + "`t" +
         "File extension" + "`t" +
         "File name" + "`t" +
-        "File path" + "`t" + 
+        "File path" + "`t" +
         "Parent directory" + "`t" +
         "Publisher name" + "`t" +
         "Product name" + "`t" +
@@ -313,7 +313,7 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
     $doNoMore = $false
 
     # Don't waste cycles looking at file types that are not of interest. (A .txt should never be a PE...)
-    Get-ChildItem -File $directory -Force -ErrorAction SilentlyContinue -PipelineVariable file | 
+    Get-ChildItem -File $directory -Force -ErrorAction SilentlyContinue -PipelineVariable file |
     Where-Object { $file.Extension -notin $NeverExecutableExts } |
     foreach {
 
@@ -369,26 +369,26 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
                 }
 
                 if ($DirectoryNamesOnly) {
-                    $safetyOut + "`t" + 
+                    $safetyOut + "`t" +
                     $parentDir
 
                     # Found one file - don't need to continue inspection of files in this directory
                     $doNoMore = $true
                 }
                 else {
-                    $safetyOut + "`t" + 
-                    $filetype + "`t" + 
-                    $fileext + "`t" + 
-                    $filename + "`t" + 
-                    $fullname + "`t" + 
-                    $parentDir + "`t" + 
+                    $safetyOut + "`t" +
+                    $filetype + "`t" +
+                    $fileext + "`t" +
+                    $filename + "`t" +
+                    $fullname + "`t" +
+                    $parentDir + "`t" +
                     $pubName + "`t" +
                     $prodName + "`t" +
                     $binName + "`t" +
                     $binVer + "`t" +
                     $hash + "`t" +
-                    $file.CreationTime + "`t" + 
-                    $file.LastAccessTime + "`t" + 
+                    $file.CreationTime + "`t" +
+                    $file.LastAccessTime + "`t" +
                     $file.LastWriteTime + "`t" +
                     $file.Length
                 }
