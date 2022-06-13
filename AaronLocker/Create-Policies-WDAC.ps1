@@ -16,22 +16,22 @@ Create-Policies-WDAC.ps1 is called by Create-Policies.ps1 to generate comprehens
 # It may be counterintuitive, but the Deny base policy used is the Windows template for "Allow All" and the Allow base policy
 # used is the Windows template for "Deny All". This is by design for these scripts.
 ####################################################################################################
-$WDACBaseXMLFile = $env:windir+"\schemas\CodeIntegrity\ExamplePolicies\DefaultWindows_Audit.xml"
-$WDACDenyBaseXMLFile = $env:windir+"\schemas\CodeIntegrity\ExamplePolicies\AllowAll.xml"
-$WDACAllowBaseXMLFile = $env:windir+"\schemas\CodeIntegrity\ExamplePolicies\DenyAllAudit.xml"
+$WDACBaseXMLFile = $env:windir + "\schemas\CodeIntegrity\ExamplePolicies\DefaultWindows_Audit.xml"
+$WDACDenyBaseXMLFile = $env:windir + "\schemas\CodeIntegrity\ExamplePolicies\AllowAll.xml"
+$WDACAllowBaseXMLFile = $env:windir + "\schemas\CodeIntegrity\ExamplePolicies\DenyAllAudit.xml"
 
 $WDACAllowRulesXMLFile = ([System.IO.Path]::Combine($mergeRulesDynamicDir, $WDACrulesFileBase + "AllowRules.xml"))
 $WDACBlockPolicyXMLFile = [System.IO.Path]::Combine($mergeRulesDynamicDir, $WDACrulesFileBase + "DenyRules.xml")
 
 # Delete previous set of dynamically-generated rules first
-Remove-Item ([System.IO.Path]::Combine($mergeRulesDynamicDir, $WDACrulesFileBase+"*.xml"))
+Remove-Item ([System.IO.Path]::Combine($mergeRulesDynamicDir, $WDACrulesFileBase + "*.xml"))
 
 ####################################################################################################
 # Build WDAC Allow rules policy (Deny rules will be in separate policy created later in this script)
 ####################################################################################################
 [xml]$WDACAllowBaseXML = Get-Content -Path $WDACAllowBaseXMLFile
 $nsuri = "urn:schemas-microsoft-com:sipolicy"
-$nsBase = new-object Xml.XmlNamespaceManager $WDACAllowBaseXML.NameTable
+$nsBase = New-Object Xml.XmlNamespaceManager $WDACAllowBaseXML.NameTable
 $nsBase.AddNamespace("si", $nsuri)
 
 <#
@@ -39,7 +39,7 @@ $nsBase.AddNamespace("si", $nsuri)
 # TODO (one day When WDAC adds exception support, allow AppLocker-style rules)
 # Note that WDAC, by-default, enforces a run-time check that the current directory does not grant write permissions to non-standard admin users.
 # However, the runtime check by WDAC is not a security feature in Windows and won't prevent a malicious user from altering the ACLs to make a previously
-# user-writable path pass the admin-only check after the fact. 
+# user-writable path pass the admin-only check after the fact.
 ####################################################################################################
 # Process exceptions for user-writable paths when a custom admin exists
 
@@ -53,23 +53,20 @@ $nsBase.AddNamespace("si", $nsuri)
 # --------------------------------------------------------------------------------
 $WDACPathsToAllow = @($PathsToAllow)
 $WDACPathsToAllow += "%windir%\*"
-$WDACPathsToAllow += $env:ProgramFiles+"\*"
-if ($null -ne ${env:ProgramFiles(x86)}) {$WDACPathsToAllow += (${env:ProgramFiles(x86)}+"\*")}
+$WDACPathsToAllow += $env:ProgramFiles + "\*"
+if ($null -ne ${env:ProgramFiles(x86)}) { $WDACPathsToAllow += (${env:ProgramFiles(x86)} + "\*") }
 
-$WDACPathsToAllow | foreach {
+$WDACPathsToAllow | ForEach-Object {
     # If path is an existing directory and doesn't have trailing "\*" appended, fix it so that it does.
     # If path is a file, don't append \*. If the path ends with \*, no need for further validation.
     # If it doesn't end with \* but Get-Item can't identify it as a file or a directory, write a warning and accept it as is.
     $pathToAllow = $_
-    if (!$pathToAllow.EndsWith("\*"))
-    {
+    if (!$pathToAllow.EndsWith("\*")) {
         $pathItem = Get-Item $pathToAllow -Force -ErrorAction SilentlyContinue
-        if ($pathItem -eq $null)
-        {
+        if ($pathItem -eq $null) {
             Write-Warning "Cannot verify path $pathToAllow; adding to rule set as is."
         }
-        elseif ($pathItem -is [System.IO.DirectoryInfo])
-        {
+        elseif ($pathItem -is [System.IO.DirectoryInfo]) {
             Write-Warning "Appending `"\*`" to rule for $pathToAllow"
             $pathToAllow = [System.IO.Path]::Combine($pathToAllow, "*")
         }
@@ -84,47 +81,40 @@ Write-Verbose -Message "Creating rules for trusted publishers..."
 
 # Run the script that produces the signer information to process. Should come in as a sequence of hashtables.
 # Each hashtable must have a label, and either an exemplar or a publisher.
-$FileRulesNode = $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:FileRules",$nsBase)
-$SignersNode = $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:Signers",$nsBase)
+$FileRulesNode = $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:FileRules", $nsBase)
+$SignersNode = $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:Signers", $nsBase)
 $CustomRuleCount = 0
 $WDACsignersToBuildRulesFor = (& $ps1_TrustedSignersWDAC)
-$WDACsignersToBuildRulesFor | foreach {
+$WDACsignersToBuildRulesFor | ForEach-Object {
     $label = $_.label
-    if ($label -eq $null)
-    {
+    if ($label -eq $null) {
         # Each hashtable must have a label.
         Write-Warning -Message ("Invalid syntax in $ps1_TrustedSignersWDAC. No `"label`" specified.")
     }
-    else
-    {
+    else {
         $IssuerName = $IssuerTBSHash = $publisher = $product = $filename = $fileVersion = $exemplarFile = ""
         $level = $_.level
         # Exemplar is a file whose signature/signed attributes match what we want to trust. If the hashtable specifies "useProduct" = $true,
         # the WDAC rule allows anything signed by that publisher with the same ProductName.
-        if ($_.exemplar)
-        {
+        if ($_.exemplar) {
             # Get count of $WDACAllowRules before adding new exemplar rule(s)
             $CurRuleCount = $WDACAllowRules.Count
 
             # Generate new rules from exemplar
             $exemplarFile = $_.exemplar
-            if ((Test-Path($exemplarFile)))
-            {
-                if ($_.useProduct) 
-                {
+            if ((Test-Path($exemplarFile))) {
+                if ($_.useProduct) {
                     $SpecificFileNameLevel = "ProductName"
-                    if (($_.level -eq $null) -or ($_.level -notin "FilePublisher","FileName"))
-                    {
+                    if (($_.level -eq $null) -or ($_.level -notin "FilePublisher", "FileName")) {
                         Write-Warning -Message ("useProduct can only be used when level is 'FilePublisher' or 'FileName'. Setting level to 'FilePublisher'");
                         $level = "FilePublisher"
                     }
                 }
-                else 
-                {
+                else {
                     $SpecificFileNameLevel = "None"
                 }
 
-                if ($_.level -eq $null)            {
+                if ($_.level -eq $null) {
                     $level = "Publisher"
                 }
                 Write-Verbose -Message "Creating rules for $exemplarFile at Level $level and SpecificFileNameLevel $SpecificFileNameLevel..."
@@ -133,22 +123,19 @@ $WDACsignersToBuildRulesFor | foreach {
                 # Determine how many new allow rules were added. This will be used to set Name to match the label and/or add ProductName restriction.
                 $NumRulesAdded = ($WDACAllowRules.Count - $CurRuleCount)
 
-                # Set the name for each added rule to the $label specified 
-                $i=1
-                While ($i -le $NumRulesAdded)
-                {
-                    $curTypeId = $WDACAllowRules[-$i].TypeId 
-                    if ($curTypeId -ne "FileAttrib") {$WDACAllowRules[-$i].Id = $WDACAllowRules[-$i].Id+"_"+($label.ToUpper()  -replace ("\W","_"))}
+                # Set the name for each added rule to the $label specified
+                $i = 1
+                While ($i -le $NumRulesAdded) {
+                    $curTypeId = $WDACAllowRules[ - $i].TypeId
+                    if ($curTypeId -ne "FileAttrib") { $WDACAllowRules[ - $i].Id = $WDACAllowRules[ - $i].Id + "_" + ($label.ToUpper() -replace ("\W", "_")) }
                     $i++
                 }
             }
-            else
-            {
+            else {
                 Write-Warning -Message ("Exemplar file not found at $exemplarFile. Skipping...");
             }
         }
-        else
-        {
+        else {
             # Otherwise, the hashtable must specify the exact IssuerName and IssuerTBSHash to trust (and optionally PublisherName, ProductName, FileName, FileVersion).
             $IssuerName = $_.IssuerName
             $IssuerTBSHash = $_.IssuerTBSHash
@@ -156,76 +143,70 @@ $WDACsignersToBuildRulesFor | foreach {
             $product = $_.ProductName
             $filename = $_.FileName
             $fileVersion = $_.FileVersion
-            if (($null -ne $IssuerName) -and ($null -ne $IssuerTBSHash))
-            {
-                $CustomRuleCount = $CustomRuleCount+1
+            if (($null -ne $IssuerName) -and ($null -ne $IssuerTBSHash)) {
+                $CustomRuleCount = $CustomRuleCount + 1
                 $FileAttribId = $null
                 # --------------------------------------------------------------------------------
                 # Add a new FileAttrib if any of ProductName, FileName, or FileVersion is present
-                if (($null -ne $product) -or ($null -ne $filename) -or ($null -ne $fileVersion))
-                {
-                    $newFileAttrib = $WDACAllowBaseXML.CreateElement("FileAttrib",$nsuri)
-                    $FileAttribId = "ID_FILEATTRIB_F_"+$CustomRuleCount
-                    $newFileAttrib.SetAttribute("ID",$FileAttribId)
-                    $newFileAttrib.SetAttribute("FriendlyName",$label)
-                    if ($null -ne $product) {$newFileAttrib.SetAttribute("ProductName",$product)}
-                    if ($null -ne $filename) {$newFileAttrib.SetAttribute("FileName",$filename)}
-                    if ($null -ne $fileVersion) {$newFileAttrib.SetAttribute("MinimumFileVersion",$fileVersion)}
+                if (($null -ne $product) -or ($null -ne $filename) -or ($null -ne $fileVersion)) {
+                    $newFileAttrib = $WDACAllowBaseXML.CreateElement("FileAttrib", $nsuri)
+                    $FileAttribId = "ID_FILEATTRIB_F_" + $CustomRuleCount
+                    $newFileAttrib.SetAttribute("ID", $FileAttribId)
+                    $newFileAttrib.SetAttribute("FriendlyName", $label)
+                    if ($null -ne $product) { $newFileAttrib.SetAttribute("ProductName", $product) }
+                    if ($null -ne $filename) { $newFileAttrib.SetAttribute("FileName", $filename) }
+                    if ($null -ne $fileVersion) { $newFileAttrib.SetAttribute("MinimumFileVersion", $fileVersion) }
 
                     $FileRulesNode.AppendChild($newFileAttrib)
                 }
 
                 # --------------------------------------------------------------------------------
                 # Build out the XML for the new Signer rule starting with the PCA certificate info
-                $newSigner = $WDACAllowBaseXML.CreateElement("Signer",$nsuri)
-                $SignerId = "ID_SIGNER_S_"+$CustomRuleCount+"_"+($label.ToUpper() -replace ("\W","_"))
+                $newSigner = $WDACAllowBaseXML.CreateElement("Signer", $nsuri)
+                $SignerId = "ID_SIGNER_S_" + $CustomRuleCount + "_" + ($label.ToUpper() -replace ("\W", "_"))
 
-                $newSigner.SetAttribute("ID",$SignerId)
-                $newSigner.SetAttribute("Name",$IssuerName)
+                $newSigner.SetAttribute("ID", $SignerId)
+                $newSigner.SetAttribute("Name", $IssuerName)
 
-                $CertRootNode = $WDACAllowBaseXML.CreateElement("CertRoot",$nsuri) 
-                $CertRootNode.SetAttribute("Type","TBS")
-                $CertRootNode.SetAttribute("Value",$IssuerTBSHash)
+                $CertRootNode = $WDACAllowBaseXML.CreateElement("CertRoot", $nsuri)
+                $CertRootNode.SetAttribute("Type", "TBS")
+                $CertRootNode.SetAttribute("Value", $IssuerTBSHash)
 
                 $newSigner.AppendChild($CertRootNode)
 
                 # Add Publisher if present
-                if ($null -ne $publisher) 
-                {
-                    $PubNode = $WDACAllowBaseXML.CreateElement("CertPublisher",$nsuri)
-                    $PubNode.SetAttribute("Value",$publisher)
+                if ($null -ne $publisher) {
+                    $PubNode = $WDACAllowBaseXML.CreateElement("CertPublisher", $nsuri)
+                    $PubNode.SetAttribute("Value", $publisher)
                     $newSigner.AppendChild($PubNode)
                 }
 
                 # Add reference to FileAttrib rule if any of ProductName, FileName, or FileVersion is present
-                if ($null -ne $FileAttribId)
-                {
-                    $FileAttribRefNode = $WDACAllowBaseXML.CreateElement("FileAttribRef",$nsuri)
-                    $FileAttribRefNode.SetAttribute("RuleID",$FileAttribId)
+                if ($null -ne $FileAttribId) {
+                    $FileAttribRefNode = $WDACAllowBaseXML.CreateElement("FileAttribRef", $nsuri)
+                    $FileAttribRefNode.SetAttribute("RuleID", $FileAttribId)
                     $newSigner.AppendChild($FileAttribRefNode)
                 }
                 $SignersNode.AppendChild($newSigner)
 
                 # Add AllowedSigners node under signing scenario 12 (user mode) if it doesn't exist
-                if ($WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:AllowedSigners",$nsBase) -eq $null)
-                {
-                    $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners",$nsBase).AppendChild($WDACAllowBaseXML.CreateElement("AllowedSigners",$nsuri))
+                if ($WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:AllowedSigners", $nsBase) -eq $null) {
+                    $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners", $nsBase).AppendChild($WDACAllowBaseXML.CreateElement("AllowedSigners", $nsuri))
                 }
 
                 # Add signer rule to User mode rules
-                $UserModeSigners = $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:AllowedSigners",$nsBase)
-                $AllowedSignerRuleNode = $WDACAllowBaseXML.CreateElement("AllowedSigner",$nsuri)
-                $AllowedSignerRuleNode.SetAttribute("SignerId",$SignerId)
+                $UserModeSigners = $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:AllowedSigners", $nsBase)
+                $AllowedSignerRuleNode = $WDACAllowBaseXML.CreateElement("AllowedSigner", $nsuri)
+                $AllowedSignerRuleNode.SetAttribute("SignerId", $SignerId)
                 $UserModeSigners.AppendChild($AllowedSignerRuleNode)
 
                 # Add signer rule to CISigners rules
-                $CISigners = $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:CiSigners",$nsBase)
-                $CISignersRuleNode = $WDACAllowBaseXML.CreateElement("CiSigner",$nsuri)
-                $CISignersRuleNode.SetAttribute("SignerId",$SignerId)
+                $CISigners = $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:CiSigners", $nsBase)
+                $CISignersRuleNode = $WDACAllowBaseXML.CreateElement("CiSigner", $nsuri)
+                $CISignersRuleNode.SetAttribute("SignerId", $SignerId)
                 $CISigners.AppendChild($CISignersRuleNode)
             }
-            else
-            {
+            else {
                 # Object isn't a hashtable, or doesn't have either exemplar or PCACertificate information.
                 Write-Warning -Message ("Invalid syntax in $ps1_TrustedSignersWDAC")
             }
@@ -238,31 +219,30 @@ $WDACsignersToBuildRulesFor | foreach {
 # --------------------------------------------------------------------------------
 Write-Verbose -Message "Creating extra hash rules ..."
 
-$hashRuleData | foreach {
-    $CustomRuleCount = $CustomRuleCount+1
+$hashRuleData | ForEach-Object {
+    $CustomRuleCount = $CustomRuleCount + 1
 
     $HashRuleName = $_.RuleName
     $HashValue = $_.HashVal.Substring(2)
     $FileName = $_.FileName
-    $FileHashAllowId = "ID_ALLOW_A_"+$CustomRuleCount+($FileName  -replace ("\W","_"))
+    $FileHashAllowId = "ID_ALLOW_A_" + $CustomRuleCount + ($FileName -replace ("\W", "_"))
 
-    $newFileAllow = $WDACAllowBaseXML.CreateElement("Allow",$nsuri)
-    $newFileAllow.SetAttribute("ID",$FileHashAllowId)
-    $newFileAllow.SetAttribute("FriendlyName",$HashRuleName)
+    $newFileAllow = $WDACAllowBaseXML.CreateElement("Allow", $nsuri)
+    $newFileAllow.SetAttribute("ID", $FileHashAllowId)
+    $newFileAllow.SetAttribute("FriendlyName", $HashRuleName)
     $newFileAllow.SetAttribute("Hash", $HashValue)
 
     $FileRulesNode.AppendChild($newFileAllow)
 
     # Add FileRulesRef node under signing scenario 12 (user mode) if it doesn't exist
-    if ($WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:FileRulesRef",$nsBase) -eq $null)
-    {
-        $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners",$nsBase).AppendChild($WDACAllowBaseXML.CreateElement("FileRulesRef",$nsuri))
+    if ($WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:FileRulesRef", $nsBase) -eq $null) {
+        $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners", $nsBase).AppendChild($WDACAllowBaseXML.CreateElement("FileRulesRef", $nsuri))
     }
 
     # Add FileAllow rule to User mode rules
-    $UserModeFileRules = $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:FileRulesRef",$nsBase)
-    $AllowedFileRuleRefNode = $WDACAllowBaseXML.CreateElement("FileRuleRef",$nsuri)
-    $AllowedFileRuleRefNode.SetAttribute("RuleID",$FileHashAllowId)
+    $UserModeFileRules = $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:FileRulesRef", $nsBase)
+    $AllowedFileRuleRefNode = $WDACAllowBaseXML.CreateElement("FileRuleRef", $nsuri)
+    $AllowedFileRuleRefNode.SetAttribute("RuleID", $FileHashAllowId)
     $UserModeFileRules.AppendChild($AllowedFileRuleRefNode)
 }
 
@@ -277,45 +257,37 @@ $hashRuleData | foreach {
 # file already exists from the other dynamically-generated files above, or if multiple items have the same label.
 Write-Verbose -Message "Creating rules for files in 'unsafe' paths..."
 
-$UnsafePathsToBuildRulesFor | foreach {
+$UnsafePathsToBuildRulesFor | ForEach-Object {
     $label = $_.label
-    if ($ForUser)
-    {
+    if ($ForUser) {
         $paths = RenamePaths -paths $_.paths -forUsername $ForUser
     }
-    else
-    {
+    else {
         $paths = $_.paths
     }
-    switch ($_.pubruleGranularity)
-    {
-        "pubOnly" 
-        { 
+    switch ($_.pubruleGranularity) {
+        "pubOnly" {
             $level = "Publisher"
             $SpecificFileNameLevel = "None"
-            $Fallback = "FilePublisher","FileName","Hash"
+            $Fallback = "FilePublisher", "FileName", "Hash"
         }
-        "pubProduct"
-        {
+        "pubProduct" {
             $level = "FilePublisher"
             $SpecificFileNameLevel = "ProductName"
-            $Fallback = "FilePublisher","FileName","Hash"
+            $Fallback = "FilePublisher", "FileName", "Hash"
         }
-        "pubProductBinary"
-        {
+        "pubProductBinary" {
             $level = "FilePublisher"
             $SpecificFileNameLevel = "OriginalFileName"
-            $Fallback = "FileName","Hash"
+            $Fallback = "FileName", "Hash"
         }
-        "pubProdBinVer"
-        {
+        "pubProdBinVer" {
             $level = "FilePublisher"
             $SpecificFileNameLevel = "OriginalFileName"
-            $Fallback = "FileName","Hash"
+            $Fallback = "FileName", "Hash"
         }
         # This catch-all here in case the parameter ValidateSet attribute changes and this block doesn't...
-        default
-        {
+        default {
             Write-Error -Category InvalidArgument -Message "`nINVALID PubRuleGranularity: $PubRuleGranularity"
             return
         }
@@ -325,44 +297,36 @@ $UnsafePathsToBuildRulesFor | foreach {
     $CurRuleCount = $WDACAllowRules.Count
 
     # Generate new rules for each specified path
-    foreach ($CurPath in $paths)
-    {
+    foreach ($CurPath in $paths) {
         # E.g., in case of blank lines in input file
         $CurPath = $CurPath.Trim()
-        if ($CurPath.Length -gt 0)
-        {
-            if (Test-Path $CurPath)
-            {
+        if ($CurPath.Length -gt 0) {
+            if (Test-Path $CurPath) {
                 Write-Verbose -Message "Generating rules for specified path: $CurPath..."
                 # Determine whether directory or file and run new-cipolicyrule with the appropriate switches for path or single file
                 $PathInfo = Get-Item $CurPath -Force
-                if ($PathInfo -is [System.IO.DirectoryInfo])
-                {
+                if ($PathInfo -is [System.IO.DirectoryInfo]) {
                     $DriverFiles = Get-SystemDriver -ScanPath $CurPath -UserPEs
-                    if ($DriverFiles.Count -gt 0) 
-                    {
+                    if ($DriverFiles.Count -gt 0) {
                         $WDACAllowRules += & New-CIPolicyRule -DriverFiles $DriverFiles -Level $level -Fallback $Fallback -SpecificFileNameLevel $SpecificFileNameLevel
                     }
                 }
-                else 
-                {
+                else {
                     $WDACAllowRules += & New-CIPolicyRule -DriverFilePath $CurPath -Level $level -Fallback $Fallback -SpecificFileNameLevel $SpecificFileNameLevel
                 }
 
                 # Determine how many new allow rules were added. This will be used to set Name to match the label and/or add ProductName restriction.
                 $NumRulesAdded = ($WDACAllowRules.Count - $CurRuleCount)
 
-                # Set the name for each added rule to the $label specified 
-                $i=1
-                While ($i -le $NumRulesAdded)
-                {
-                    $curTypeId = $WDACAllowRules[-$i].TypeId 
-                    if ($curTypeId -ne "FileAttrib") {$WDACAllowRules[-$i].Id = $WDACAllowRules[-$i].Id+"_"+($label.ToUpper() -replace ("\W","_"))}
+                # Set the name for each added rule to the $label specified
+                $i = 1
+                While ($i -le $NumRulesAdded) {
+                    $curTypeId = $WDACAllowRules[ - $i].TypeId
+                    if ($curTypeId -ne "FileAttrib") { $WDACAllowRules[ - $i].Id = $WDACAllowRules[ - $i].Id + "_" + ($label.ToUpper() -replace ("\W", "_")) }
                     $i++
                 }
             }
-            else
-            {
+            else {
                 Write-Warning -Message ("Specified path not found: $CurPath. Skipping...");
             }
         }
@@ -378,14 +342,13 @@ Merge-CIPolicy -OutputFilePath $WDACAllowRulesXMLFile -PolicyPaths $WDACAllowRul
 ###################################################################################################
 # Create block policy from Exe files to DenyList if needed. Merge the deny rules with the allow all example policy.
 ####################################################################################################
-if ( $Rescan -or !(Test-Path($WDACBlockPolicyXMLFile) ) )
-{
+if ( $Rescan -or !(Test-Path($WDACBlockPolicyXMLFile) ) ) {
     Write-Verbose -Message "Processing EXE files to block..."
     # Create a hash collection for publisher information. Key on publisher name, product name, and binary name.
     # Add to collection if equivalent is not already in the collection.
     $WDACExeFilesToBlock = @()
     $WDACExeFilesToBlock += $exeFilesToDenyList
-	$WDACBlockRules = & New-CIPolicyRule  -DriverFilePath $WDACExeFilesToBlock -Level FilePublisher -Fallback FileName, Hash, FilePath -Deny
+    $WDACBlockRules = & New-CIPolicyRule  -DriverFilePath $WDACExeFilesToBlock -Level FilePublisher -Fallback FileName, Hash, FilePath -Deny
     New-CIPolicy -Rules $WDACBlockRules -FilePath $WDACBlockPolicyXMLFile -UserPEs -MultiplePolicyFormat
 }
 
@@ -394,18 +357,15 @@ if ( $Rescan -or !(Test-Path($WDACBlockPolicyXMLFile) ) )
 # Build final policies by merging dynamic and static (if any) custom rules into WDAC template policy files
 ####################################################################################################
 # Generate two versions of the Allow rules file and two versions of the Deny rules file: one with rules enforced, and one with auditing only for each.
-foreach ($CurPolicyType in "Allow","Deny")
-{
-    if ($CurPolicyType -eq "Allow")
-    {
+foreach ($CurPolicyType in "Allow", "Deny") {
+    if ($CurPolicyType -eq "Allow") {
         $CurBaseXMLFile = $WDACBaseXMLFile
         $CurAuditPolicyXMLFile = $WDACrulesFileAuditNew
         $CurEnforcedPolicyXMLFile = $WDACrulesFileEnforceNew
         $PreviousPolicyXMLFile = WDACRulesFileAuditLatest
         $Exclusion = "*Deny*"
     }
-    else
-    {
+    else {
         $CurBaseXMLFile = $WDACDenyBaseXMLFile
         $CurAuditPolicyXMLFile = $WDACDenyrulesFileAuditNew
         $CurEnforcedPolicyXMLFile = $WDACDenyrulesFileEnforceNew
@@ -414,27 +374,24 @@ foreach ($CurPolicyType in "Allow","Deny")
     }
 
     # Get the Policy ID and version from the previous WDAC policy (if it exists). Otherwise, set defaults.
-    if ($PreviousPolicyXMLFile -ne $null)
-    {
+    if ($PreviousPolicyXMLFile -ne $null) {
         [xml]$PreviousPolicyXML = Get-Content -Path $PreviousPolicyXMLFile
         $PreviousPolicyVersion = [version]$PreviousPolicyXML.SiPolicy.VersionEx
-        $PolicyVersion = [version]::New($PreviousPolicyVersion.Major,$PreviousPolicyVersion.Minor,$PreviousPolicyVersion.Build,$PreviousPolicyVersion.Revision+1)
+        $PolicyVersion = [version]::New($PreviousPolicyVersion.Major, $PreviousPolicyVersion.Minor, $PreviousPolicyVersion.Build, $PreviousPolicyVersion.Revision + 1)
         [string]$PolicyID = $PreviousPolicyXML.SiPolicy.PolicyID
     }
-    else
-    {
+    else {
         [version]$PolicyVersion = "1.0.0.0"
         $PolicyID = $null
     }
 
-    $PolicyName = "WDAC AaronLocker "+ $CurPolicyType +" list - Audit"
-    
+    $PolicyName = "WDAC AaronLocker " + $CurPolicyType + " list - Audit"
+
     # Copy Base policy template to Outputs folder and rename
     cp $CurBaseXMLFile $CurAuditPolicyXMLFile
 
     #Set new policy ID to previous policy ID (if exists) or generate new ID
-    if ($PolicyID -notin $null,"")
-    {
+    if ($PolicyID -notin $null, "") {
         [xml]$CurAuditPolicyXML = Get-Content -Path $CurAuditPolicyXMLFile
         $CurAuditPolicyXML.SiPolicy.BasePolicyID = $PolicyID
         $CurAuditPolicyXML.SiPolicy.PolicyID = $PolicyID
@@ -442,8 +399,7 @@ foreach ($CurPolicyType in "Allow","Deny")
         # Save XML as Unicode
         SaveXmlDocAsUnicode -xmlDoc $CurAuditPolicyXML -xmlFilename $CurAuditPolicyXMLFile
     }
-    else
-    {
+    else {
         Write-Verbose -Message "Resetting new PolicyID for $CurAuditPolicyXMLFile..."
         Set-CIPolicyIdInfo -FilePath $CurAuditPolicyXMLFile -ResetPolicyID
     }
@@ -451,22 +407,22 @@ foreach ($CurPolicyType in "Allow","Deny")
     # Set policy options for audit policy
     Set-RuleOption -FilePath $CurAuditPolicyXMLFile -Option 3 # Enabled:Audit Mode
     Set-RuleOption -FilePath $CurAuditPolicyXMLFile -Option 12 # Required:Enforce Store Applications
-    if ($WDACTrustManagedInstallers) {Set-RuleOption -FilePath $CurAuditPolicyXMLFile -Option 13} # Enabled:Managed Installer
-    if ($WDACTrustISG) {Set-RuleOption -FilePath $CurAuditPolicyXMLFile -Option 14} # Enabled:Intelligent Security Graph Authorization
-    if ($knownAdmins.Count -gt 0) {Set-RuleOption -FilePath $CurAuditPolicyXMLFile -Option 18} # Disabled:Runtime FilePath Rule Protection
+    if ($WDACTrustManagedInstallers) { Set-RuleOption -FilePath $CurAuditPolicyXMLFile -Option 13 } # Enabled:Managed Installer
+    if ($WDACTrustISG) { Set-RuleOption -FilePath $CurAuditPolicyXMLFile -Option 14 } # Enabled:Intelligent Security Graph Authorization
+    if ($knownAdmins.Count -gt 0) { Set-RuleOption -FilePath $CurAuditPolicyXMLFile -Option 18 } # Disabled:Runtime FilePath Rule Protection
 
     Write-Verbose -Message "Merging custom rule sets into new policy file..."
     # Merge any and all policy files found in the MergeRules directories, typically for authorized files in writable directories.
     # Some may have been created in the previous step; others might have been dropped in from other sources.
-    Get-ChildItem $mergeRulesDynamicDir\$WDACrulesFileBase*.xml, $mergeRulesStaticDir\$WDACrulesFileBase*.xml -Exclude $Exclusion | foreach {
+    Get-ChildItem $mergeRulesDynamicDir\$WDACrulesFileBase*.xml, $mergeRulesStaticDir\$WDACrulesFileBase*.xml -Exclude $Exclusion | ForEach-Object {
         $policyFileToMerge = $_
         Write-Host ("`tMerging " + $_.Directory.Name + "\" + $_.Name)
-        Merge-CIPolicy -OutputFilePath $CurAuditPolicyXMLFile -PolicyPaths $CurAuditPolicyXMLFile,$policyFileToMerge
+        Merge-CIPolicy -OutputFilePath $CurAuditPolicyXMLFile -PolicyPaths $CurAuditPolicyXMLFile, $policyFileToMerge
     }
 
     Write-Verbose -Message "Updating PolicyName, PolicyVersion, and TimeStamp..."
     # Set policy name, version, and timestamp for the new policy file
-    Set-CIPolicyIdInfo -FilePath $CurAuditPolicyXMLFile -PolicyName $PolicyName 
+    Set-CIPolicyIdInfo -FilePath $CurAuditPolicyXMLFile -PolicyName $PolicyName
     Set-CIPolicyVersion -FilePath $CurAuditPolicyXMLFile -Version $PolicyVersion
     Set-CIPolicySetting -FilePath $CurAuditPolicyXMLFile -Provider "PolicyInfo" -Key "Information" -ValueName "TimeStamp" -ValueType String -Value $strRuleDocTimestamp
 
@@ -475,11 +431,11 @@ foreach ($CurPolicyType in "Allow","Deny")
     cp $CurAuditPolicyXMLFile $CurEnforcedPolicyXMLFile
 
     # Update policy name for enforced policy
-    $PolicyName = "WDAC AaronLocker "+ $CurPolicyType +" list - Enforced"
+    $PolicyName = "WDAC AaronLocker " + $CurPolicyType + " list - Enforced"
     Write-Verbose -Message "Setting PolicyName for $CurEnforcedPolicyXMLFile to $PolicyName..."
     Set-CIPolicyIdInfo -FilePath $CurEnforcedPolicyXMLFile -PolicyName $PolicyName
 
-    # Remove audit mode option from enforced policy 
+    # Remove audit mode option from enforced policy
     Set-RuleOption -FilePath $CurEnforcedPolicyXMLFile -Option 3 -Delete # Turn off audit mode
 }
 

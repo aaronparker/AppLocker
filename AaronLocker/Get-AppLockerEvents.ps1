@@ -162,35 +162,35 @@ Output a list of each combination of users and machines reporting events, and a 
 
 #>
 
-[CmdletBinding(DefaultParameterSetName="DefaultAppLockerLogs")]
+[CmdletBinding(DefaultParameterSetName = "DefaultAppLockerLogs")]
 param(
     # Optional remote computer name with default AppLocker logs or other live logs
-    [parameter(ParameterSetName="DefaultAppLockerLogs", Mandatory=$false)]
-    [parameter(ParameterSetName="LiveWEFLogs", Mandatory=$false)]
+    [parameter(ParameterSetName = "DefaultAppLockerLogs", Mandatory = $false)]
+    [parameter(ParameterSetName = "LiveWEFLogs", Mandatory = $false)]
     [String]
     $ComputerName,
 
     # When using default AppLocker logs, can exclude one or two of them.
-    [parameter(ParameterSetName="DefaultAppLockerLogs")]
+    [parameter(ParameterSetName = "DefaultAppLockerLogs")]
     [switch]
     $NoExeAndDll = $false,
-    [parameter(ParameterSetName="DefaultAppLockerLogs")]
+    [parameter(ParameterSetName = "DefaultAppLockerLogs")]
     [switch]
     $NoMsiAndScript = $false,
-    [parameter(ParameterSetName="DefaultAppLockerLogs")]
+    [parameter(ParameterSetName = "DefaultAppLockerLogs")]
     [switch]
     $NoPackagedAppExec = $false,
 
     # Instead of default AppLocker logs, can use ForwardedEvents and/or any named logs
-    [parameter(ParameterSetName="LiveWEFLogs")]
+    [parameter(ParameterSetName = "LiveWEFLogs")]
     [switch]
     $ForwardedEvents = $false,
-    [parameter(ParameterSetName="LiveWEFLogs", Mandatory=$false)]
+    [parameter(ParameterSetName = "LiveWEFLogs", Mandatory = $false)]
     [String[]]
     $EventLogNames,
 
     # Can use saved event logs instead of live event logs
-    [parameter(ParameterSetName="SavedLogs", Mandatory=$false)]
+    [parameter(ParameterSetName = "SavedLogs", Mandatory = $false)]
     [String[]]
     $EvtxLogFilePaths,
 
@@ -199,16 +199,16 @@ param(
     $WarningOnly = $false,
     [switch]
     $ErrorOnly = $false,
-	[switch]
-	$AllowedOnly = $false,
+    [switch]
+    $AllowedOnly = $false,
     [switch]
     $AllEvents = $false,
 
     # Optional date range
-    [parameter(Mandatory=$false)]
+    [parameter(Mandatory = $false)]
     [datetime]
     $FromDateTime,
-    [parameter(Mandatory=$false)]
+    [parameter(Mandatory = $false)]
     [datetime]
     $ToDateTime,
 
@@ -242,16 +242,14 @@ param(
 # PS Core v6.x doesn't include AppLocker cmdlets; string .Split() has new overloads that need to be dealt with.
 # (At some point, may also need to check $PSVersionTable.PSEdition)
 $psv = $PSVersionTable.PSVersion
-if ($psv.Major -ne 5 -or $psv.Minor -ne 1)
-{
+if ($psv.Major -ne 5 -or $psv.Minor -ne 1) {
     $errMsg = "This script requires PowerShell v5.1.`nCurrent version = " + $PSVersionTable.PSVersion.ToString()
     Write-Error $errMsg
     return
 }
 
 # Make sure this script is running in FullLanguage mode
-if ($ExecutionContext.SessionState.LanguageMode -ne [System.Management.Automation.PSLanguageMode]::FullLanguage)
-{
+if ($ExecutionContext.SessionState.LanguageMode -ne [System.Management.Automation.PSLanguageMode]::FullLanguage) {
     $errMsg = "This script must run in FullLanguage mode, but is running in " + $ExecutionContext.SessionState.LanguageMode.ToString()
     Write-Error $errMsg
     return
@@ -266,22 +264,22 @@ $rootDir = [System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path)
 #
 # Strings/IDs
 #
-$ExeDllLogName    = 'Microsoft-Windows-AppLocker/EXE and DLL'
+$ExeDllLogName = 'Microsoft-Windows-AppLocker/EXE and DLL'
 $MsiScriptLogName = 'Microsoft-Windows-AppLocker/MSI and Script'
-$PkgdAppExecLogName='Microsoft-Windows-AppLocker/Packaged app-Execution'
+$PkgdAppExecLogName = 'Microsoft-Windows-AppLocker/Packaged app-Execution'
 $FwdEventsLogName = 'ForwardedEvents'
-$ExeDllAllowed    = 'EventID=8002'
-$ExeDllWarning    = 'EventID=8003'
-$ExeDllError      = 'EventID=8004'
+$ExeDllAllowed = 'EventID=8002'
+$ExeDllWarning = 'EventID=8003'
+$ExeDllError = 'EventID=8004'
 $MsiScriptAllowed = 'EventID=8005'
 $MsiScriptWarning = 'EventID=8006'
-$MsiScriptError   = 'EventID=8007'
-$PkgdAppAllowed   = 'EventID=8020'
-$PkgdAppWarning   = 'EventID=8021'
-$PkgdAppError     = 'EventID=8022'
-$SubscriptionBkmrk= 'EventID=111'
+$MsiScriptError = 'EventID=8007'
+$PkgdAppAllowed = 'EventID=8020'
+$PkgdAppWarning = 'EventID=8021'
+$PkgdAppError = 'EventID=8022'
+$SubscriptionBkmrk = 'EventID=111'
 $WecBkmarkEventID = 111
-$AppxEventIDs     = (8020, 8021, 8022)
+$AppxEventIDs = (8020, 8021, 8022)
 
 #
 # Event logs to query
@@ -292,35 +290,29 @@ $AppxEventIDs     = (8020, 8021, 8022)
 $eventProviderFilter = ""
 
 Write-Verbose ("ParameterSetName = " + $PSCmdlet.ParameterSetName)
-switch($PSCmdlet.ParameterSetName)
-{
-    "DefaultAppLockerLogs"
-    {
-        if (!$NoExeAndDll)       { $eventLogs.Add($ExeDllLogName) | Out-Null }
-        if (!$NoMsiAndScript)    { $eventLogs.Add($MsiScriptLogName) | Out-Null }
+switch ($PSCmdlet.ParameterSetName) {
+    "DefaultAppLockerLogs" {
+        if (!$NoExeAndDll) { $eventLogs.Add($ExeDllLogName) | Out-Null }
+        if (!$NoMsiAndScript) { $eventLogs.Add($MsiScriptLogName) | Out-Null }
         if (!$NoPackagedAppExec) { $eventLogs.Add($PkgdAppExecLogName) | Out-Null }
     }
-    
-    "LiveWEFLogs"
-    {
+
+    "LiveWEFLogs" {
         # Set XPath to filter on provider so we don't inadvertently get events from sources we don't know about.
         $eventProviderFilter = "Provider[@Name='Microsoft-Windows-AppLocker' or @Name='Microsoft-Windows-EventForwarder'] and"
 
-        if ($ForwardedEvents)
-        {
+        if ($ForwardedEvents) {
             $eventLogs.Add($FwdEventsLogName) | Out-Null
         }
 
-        if ($EventLogNames)
-        {
+        if ($EventLogNames) {
             # Named log(s) - to support case where Windows Event Collector collects events in one or more logs other than ForwardedEvents
             $eventLogs.AddRange($EventLogNames)
         }
     }
 }
 
-if ($eventLogs.Count -eq 0 -and $EvtxLogFilePaths.Length -eq 0)
-{
+if ($eventLogs.Count -eq 0 -and $EvtxLogFilePaths.Length -eq 0) {
     Write-Error "No logs to inspect."
     return
 }
@@ -329,18 +321,14 @@ if ($eventLogs.Count -eq 0 -and $EvtxLogFilePaths.Length -eq 0)
 # Eventlog XPath query: optional date/time filtering
 #
 $dateTimeFilter = ""
-if ($FromDateTime -or $ToDateTime)
-{
-    if ($FromDateTime)
-    {
+if ($FromDateTime -or $ToDateTime) {
+    if ($FromDateTime) {
         $dateTimeFilter = "TimeCreated[@SystemTime>='" + $FromDateTime.ToUniversalTime().ToString("s") + "']"
-        if ($ToDateTime)
-        {
+        if ($ToDateTime) {
             $dateTimeFilter += " and "
         }
     }
-    if ($ToDateTime)
-    {
+    if ($ToDateTime) {
         $dateTimeFilter += "TimeCreated[@SystemTime<='" + $ToDateTime.ToUniversalTime().ToString("s") + "']"
     }
 
@@ -351,24 +339,19 @@ if ($FromDateTime -or $ToDateTime)
 # Event log XPath query: event IDs
 #
 $eventIdFilter = "$ExeDllWarning or $MsiScriptWarning or $PkgdAppWarning or $ExeDllError or $MsiScriptError or $PkgdAppError"
-if ($WarningOnly)
-{
+if ($WarningOnly) {
     $eventIdFilter = "$ExeDllWarning or $MsiScriptWarning or $PkgdAppWarning"
 }
-if ($ErrorOnly)
-{
+if ($ErrorOnly) {
     $eventIdFilter = "$ExeDllError or $MsiScriptError or $PkgdAppError"
 }
-if ($AllowedOnly)
-{
+if ($AllowedOnly) {
     $eventIdFilter = "$ExeDllAllowed or $MsiScriptAllowed or $PkgdAppAllowed"
 }
-if ($AllEvents)
-{
+if ($AllEvents) {
     $eventIdFilter = "$ExeDllAllowed or $MsiScriptAllowed or $PkgdAppAllowed or $ExeDllWarning or $MsiScriptWarning or $PkgdAppWarning or $ExeDllError or $MsiScriptError or $PkgdAppError"
 }
-if (($ForwardedEvents -or $EventLogNames -or $EvtxLogFilePaths) -and !$NoFilteredMachines)
-{
+if (($ForwardedEvents -or $EventLogNames -or $EvtxLogFilePaths) -and !$NoFilteredMachines) {
     # If forwarded events, also pick up subscription bookmark events. (Assume that $EventLogNames implies event collector, and that $EvtxLogFilePaths might.)
     $eventIdFilter += " or $SubscriptionBkmrk"
 }
@@ -404,74 +387,68 @@ $PsPolicyTestFileHash2 = "0x96AD1146EB96877EAB5942AE0736B82D8B5E2039A80D3D693266
 #>
 
 # Filepath pattern that can be replaced by %PUBLIC%
-$PublicPattern       = "^(%OSDRIVE%|C:)\\Users\\Public\\"
+$PublicPattern = "^(%OSDRIVE%|C:)\\Users\\Public\\"
 # Filepath pattern that can be replaced by %LOCALAPPDATA%
 $LocalAppDataPattern = "^(%OSDRIVE%|C:)\\Users\\[^\\]*\\AppData\\Local\\"
 # Filepath pattern that can be replaced by %APPDATA%
 $RoamingAppDataPattern = "^(%OSDRIVE%|C:)\\Users\\[^\\]*\\AppData\\Roaming\\"
 # Filepath pattern that can be replaced by %USERPROFILE% (after the above already done)
-$UserProfilePattern  = "^(%OSDRIVE%|C:)\\Users\\[^\\]*\\"
+$UserProfilePattern = "^(%OSDRIVE%|C:)\\Users\\[^\\]*\\"
 # FIlepath pattern that can be replaced by %PROGRAMDATA%
-$ProgramDataPattern  = "^(%OSDRIVE%|C:)\\ProgramData\\"
+$ProgramDataPattern = "^(%OSDRIVE%|C:)\\ProgramData\\"
 
 # Tab-delimited CSV headers
 $headers =
-    "Location"      + "`t" +
-    "GenericPath"   + "`t" +
-    "GenericDir"    + "`t" +
-    "OriginalPath"  + "`t" +
-    "FileName"      + "`t" +
-    "FileExt"       + "`t" +
-    "FileType"      + "`t" +
-    "PublisherName" + "`t" +
-    "ProductName"   + "`t" +
-    "BinaryName"    + "`t" +
-    "FileVersion"   + "`t" +
-    "Hash"          + "`t" +
-    "UserSID"       + "`t" +
-    "UserName"      + "`t" +
-    "MachineName"   + "`t" +
-    "EventTime"     + "`t" +
-    "EventTimeXL"   + "`t" +
-    "PID"           + "`t" +
-    "EventType"
+"Location" + "`t" +
+"GenericPath" + "`t" +
+"GenericDir" + "`t" +
+"OriginalPath" + "`t" +
+"FileName" + "`t" +
+"FileExt" + "`t" +
+"FileType" + "`t" +
+"PublisherName" + "`t" +
+"ProductName" + "`t" +
+"BinaryName" + "`t" +
+"FileVersion" + "`t" +
+"Hash" + "`t" +
+"UserSID" + "`t" +
+"UserName" + "`t" +
+"MachineName" + "`t" +
+"EventTime" + "`t" +
+"EventTimeXL" + "`t" +
+"PID" + "`t" +
+"EventType"
 
 #
 # Retrieve events
 #
 # Could change these Get-WinEvent calls to pass the full $EvtxLogFilePaths or $eventLogs arrays in one go instead of in a loop. *Maybe* better perf at the expense of less progress feedback.
 [System.Collections.ArrayList]$ev = @()
-if ($EvtxLogFilePaths)
-{
-    $EvtxLogFilePaths | foreach {
+if ($EvtxLogFilePaths) {
+    $EvtxLogFilePaths | ForEach-Object {
         Write-Verbose -Message "Calling Get-WinEvent -Path $_ ..."
         # Always ensure that $oEvents is an array, whether it contains 0, 1, or more items
         $oEvents = @(Get-WinEvent -Path $_ -FilterXPath $filter -ErrorAction SilentlyContinue -ErrorVariable gweErr)
-        if ($gweErr.Count -gt 0)
-        {
-            $gweErr | foreach { Write-Host ("--> " + $_.ToString()) }
+        if ($gweErr.Count -gt 0) {
+            $gweErr | ForEach-Object { Write-Host ("--> " + $_.ToString()) }
         }
         $ev.AddRange($oEvents)
     }
 }
-else
-{
-    $eventLogs | foreach {
-        if ($ComputerName)
-        {
+else {
+    $eventLogs | ForEach-Object {
+        if ($ComputerName) {
             Write-Verbose -Message "Calling Get-WinEvent -LogName $_ -ComputerName $ComputerName ..."
             # Always ensure that $oEvents is an array, whether it contains 0, 1, or more items
             $oEvents = @(Get-WinEvent -LogName $_ -ComputerName $ComputerName -FilterXPath $filter -ErrorAction SilentlyContinue -ErrorVariable gweErr)
         }
-        else
-        {
+        else {
             Write-Verbose -Message "Calling Get-WinEvent -LogName $_ ..."
             # Always ensure that $oEvents is an array, whether it contains 0, 1, or more items
             $oEvents = @(Get-WinEvent -LogName $_ -FilterXPath $filter -ErrorAction SilentlyContinue -ErrorVariable gweErr)
         }
-        if ($gweErr.Count -gt 0)
-        {
-            $gweErr | foreach { Write-Host ("--> " + $_.ToString()) }
+        if ($gweErr.Count -gt 0) {
+            $gweErr | ForEach-Object { Write-Host ("--> " + $_.ToString()) }
         }
         $ev.AddRange($oEvents)
     }
@@ -494,27 +471,21 @@ $ReportedMachines = @{}
 #
 # Function performs SID-to-name lookups, stores results for later retrieval so the same SID isn't looked up more than once.
 #
-function SidToNameLookup([string]$sid)
-{
-    if ($SidToName.ContainsKey($sid))
-    {
+function SidToNameLookup([string]$sid) {
+    if ($SidToName.ContainsKey($sid)) {
         $SidToName[$sid]
     }
-    else
-    {
+    else {
         $oSID = New-Object System.Security.Principal.SecurityIdentifier($sid)
         $oUser = $null
         try { $oUser = $oSID.Translate([System.Security.Principal.NTAccount]) } catch {}
-        if ($null -ne $oUser)
-        {
+        if ($null -ne $oUser) {
             $name = $oUser.Value
         }
-        elseif ($sid.EndsWith("-500"))
-        {
+        elseif ($sid.EndsWith("-500")) {
             $name = "[[[built-in local admin]]]";
         }
-        else
-        {
+        else {
             $name = "[[[Not translated]]]"
         }
         $SidToName.Add($sid, $name)
@@ -528,7 +499,7 @@ function SidToNameLookup([string]$sid)
 $count = 0
 $filteredOut = 0
 $oLines = @(
-    $ev | foreach {
+    $ev | ForEach-Object {
 
         # Whether to filter out this particular event from the output
         $filterOut = $false
@@ -542,32 +513,28 @@ $oLines = @(
         $machineName = $_.MachineName
         $origPath = $null
 
-        if ($isWecBkmark)
-        {
+        if ($isWecBkmark) {
             # Bookmark event; filter out this event (but capture machine info)
             $filterOut = $true
         }
-        else
-        {
+        else {
             # Retrieve all properties at once; don't process them unless/until needed
-            if (!$isAppxEvent)
-            {
+            if (!$isAppxEvent) {
                 $SelectorStrings = [string[]]@(
-                    'Event/UserData/RuleAndFileData/PolicyName',      # 0
-                    'Event/UserData/RuleAndFileData/TargetUser',      # 1
+                    'Event/UserData/RuleAndFileData/PolicyName', # 0
+                    'Event/UserData/RuleAndFileData/TargetUser', # 1
                     'Event/UserData/RuleAndFileData/TargetProcessId', # 2
-                    'Event/UserData/RuleAndFileData/Fqbn',            # 3
-                    'Event/UserData/RuleAndFileData/FilePath',        # 4 <-- for not APPX
+                    'Event/UserData/RuleAndFileData/Fqbn', # 3
+                    'Event/UserData/RuleAndFileData/FilePath', # 4 <-- for not APPX
                     'Event/UserData/RuleAndFileData/FileHash'         # 5 <-- for not APPX
                 )
             }
-            else
-            {
+            else {
                 $SelectorStrings = [string[]]@(
-                    'Event/UserData/RuleAndFileData/PolicyName',      # 0
-                    'Event/UserData/RuleAndFileData/TargetUser',      # 1
+                    'Event/UserData/RuleAndFileData/PolicyName', # 0
+                    'Event/UserData/RuleAndFileData/TargetUser', # 1
                     'Event/UserData/RuleAndFileData/TargetProcessId', # 2
-                    'Event/UserData/RuleAndFileData/Fqbn',            # 3
+                    'Event/UserData/RuleAndFileData/Fqbn', # 3
                     'Event/UserData/RuleAndFileData/Package'          # 4 <-- for APPX
                 )
             }
@@ -579,44 +546,35 @@ $oLines = @(
             # PolicyName (EXE, DLL, MSI, SCRIPT, APPX)
             $filetype = $Properties[0]
 
-            if (!$isAppxEvent)
-            {
+            if (!$isAppxEvent) {
                 $origPath = $Properties[4]
                 $oHash = $Properties[5]
-                if ($oHash -is [System.String])
-                {
-                    if ($oHash.StartsWith("0x")) 
-                    { 
-                        $hash = $oHash 
+                if ($oHash -is [System.String]) {
+                    if ($oHash.StartsWith("0x")) {
+                        $hash = $oHash
                     }
-                    else 
-                    { 
-                        $hash = "0x" + $oHash 
+                    else {
+                        $hash = "0x" + $oHash
                     }
                 }
-                else
-                {
-                    if ($oHash.Length -gt 0)
-                    {
+                else {
+                    if ($oHash.Length -gt 0) {
                         $hash = "0x" + [System.BitConverter]::ToString( $oHash ).Replace('-', '')
                     }
-                    else
-                    {
+                    else {
                         $hash = "(not reported)"
                     }
                 }
 
                 # Filter out events that match patterns; do the match only if relevant for the file type
-                if ($filetype -eq "SCRIPT" -and !$NoPSFilter)
-                {
-                    # PowerShell policy-test file (filtered out by default); 
+                if ($filetype -eq "SCRIPT" -and !$NoPSFilter) {
+                    # PowerShell policy-test file (filtered out by default);
                     # assume that string match is faster than regular expression match so try those first
-                    if     ($hash -eq $PsPolicyTestFileHash1) { $filterOut = $true }
+                    if ($hash -eq $PsPolicyTestFileHash1) { $filterOut = $true }
                     elseif ($hash -eq $PsPolicyTestFileHash2) { $filterOut = $true }
                     elseif ($origPath -match $PsPolicyTestPattern) { $filterOut = $true }
                 }
-                elseif ($filetype -in ("EXE", "DLL") -and $NoAutoNGEN)
-                {
+                elseif ($filetype -in ("EXE", "DLL") -and $NoAutoNGEN) {
                     # AutoNGEN (not filtered out by default)
                     $filterOut = ($origPath -match $AutoNGENPattern)
                 }
@@ -626,38 +584,33 @@ $oLines = @(
         if ($filterOut) { $filteredOut++ }
 
         # Unless not reporting on machines with no events, capture machine name so we can report that it's receiving policy.
-        if (!$NoFilteredMachines)
-        {
+        if (!$NoFilteredMachines) {
             # Capture some information about observed machines, in case all events related to the computer are filtered.
-            if (!$AllMachineNames.ContainsKey($machineName))
-            {
+            if (!$AllMachineNames.ContainsKey($machineName)) {
                 # All observed machines
                 $AllMachineNames.Add($machineName, "")
             }
-            if (!$filterOut -and !$ReportedMachines.ContainsKey($machineName))
-            {
+            if (!$filterOut -and !$ReportedMachines.ContainsKey($machineName)) {
                 # Machines that have had data reported
                 $ReportedMachines.Add($machineName, "")
             }
         }
 
         # If not filtered out, build out the event data
-        if (!$filterOut)
-        {
+        if (!$filterOut) {
             # Computer name already in $machineName
             # high-granularity date/time where alpha sort = chronological sort; granularity = ten millionths of a second
-            $timeCreated = $_.TimeCreated.ToString("yyyy-MM-ddTHH:mm:ss.fffffff") 
+            $timeCreated = $_.TimeCreated.ToString("yyyy-MM-ddTHH:mm:ss.fffffff")
             # Date/time format that Excel recognizes as date/time
             #TODO: Verify that regional preferences don't interfere with making this useful...
             $timeCreatedXL = $timeCreated.Replace("T", " ").Substring(0, 19)
 
             # Manual text conversion in case LevelDisplayName is not populated
-            if(![string]::IsNullOrEmpty($_.LevelDisplayName)){
+            if (![string]::IsNullOrEmpty($_.LevelDisplayName)) {
                 $eventType = $_.LevelDisplayName  # Event type (Information, Warning, Error)
             }
-            else{
-                $eventType = switch($_.Level)
-                {
+            else {
+                $eventType = switch ($_.Level) {
                     1 { "Critical" }
                     2 { "Error" }
                     3 { "Warning" }
@@ -670,13 +623,11 @@ $oLines = @(
             $userSid = $Properties[1].ToString()
             $username = SidToNameLookup -sid $userSid
             $sPID = $Properties[2].ToString()
-            if ($Properties[3] -eq "-")
-            {
+            if ($Properties[3] -eq "-") {
                 $pubName = $sUnsigned
                 $prodName = $binaryName = $filever = [string]::Empty
             }
-            else
-            {
+            else {
                 # Break up Fqdn publisher info
                 $pubInfo = $Properties[3].Split("\") # Publisher info, separated with backslashes
                 $pubName = $pubInfo[0]               # Publisher name
@@ -685,92 +636,80 @@ $oLines = @(
                 $filever = $pubInfo[3]               # File version (syntax works even if array not this long)
             }
 
-            if ($isAppxEvent)
-            {
+            if ($isAppxEvent) {
                 $origPath = $Properties[4]
                 $filename = $genpath = $gendir = $origPath
                 $fileext = [string]::Empty
                 $hash = "N/A"
                 $location = "Packaged app"
             }
-            else
-            {
+            else {
                 # Already got $origPath earlier
                 $filename = [System.IO.Path]::GetFileName($origPath)
                 $fileext = [System.IO.Path]::GetExtension($origPath)
                 # Generic path replaces user-specific paths with more generic variable syntax.
                 # Userprofile has to be performed after more specific appdata replacements, and Public before then.
                 $genpath = ((((( $origPath                              `
-                    -replace $ProgramDataPattern,    "%PROGRAMDATA%\")  `
-                    -replace $PublicPattern,         "%PUBLIC%\")       `
-                    -replace $LocalAppDataPattern,   "%LOCALAPPDATA%\") `
-                    -replace $RoamingAppDataPattern, "%APPDATA%\")      `
-                    -replace $UserProfilePattern,    "%USERPROFILE%\")
+                                        -replace $ProgramDataPattern, "%PROGRAMDATA%\")  `
+                                    -replace $PublicPattern, "%PUBLIC%\")       `
+                                -replace $LocalAppDataPattern, "%LOCALAPPDATA%\") `
+                            -replace $RoamingAppDataPattern, "%APPDATA%\")      `
+                        -replace $UserProfilePattern, "%USERPROFILE%\")
                 $gendir = [System.IO.Path]::GetDirectoryName($genpath)
-                if ($gendir.Length -eq 0)
-                {
+                if ($gendir.Length -eq 0) {
                     $location = "";
                 }
-                elseif ($gendir.StartsWith("%PUBLIC%"))
-                {
+                elseif ($gendir.StartsWith("%PUBLIC%")) {
                     $location = "Public profile"
                 }
-                elseif ($gendir.StartsWith("%APPDATA%") -or $gendir.StartsWith("%LOCALAPPDATA%") -or $gendir.StartsWith("%USERPROFILE%"))
-                {
+                elseif ($gendir.StartsWith("%APPDATA%") -or $gendir.StartsWith("%LOCALAPPDATA%") -or $gendir.StartsWith("%USERPROFILE%")) {
                     $location = "User profile"
                 }
-                elseif ($gendir.StartsWith("%PROGRAMDATA%"))
-                {
+                elseif ($gendir.StartsWith("%PROGRAMDATA%")) {
                     $location = "ProgramData"
                 }
-                elseif ($gendir.StartsWith("%HOT%") -or $gendir.StartsWith("%REMOVABLE%"))
-                {
+                elseif ($gendir.StartsWith("%HOT%") -or $gendir.StartsWith("%REMOVABLE%")) {
                     $location = "Hot/Removable"
                 }
-                elseif ($gendir.StartsWith("\\") -or ($genPath.Length -ge 3 -and $genPath.Substring(1, 2) -eq ":\"))
-                {
+                elseif ($gendir.StartsWith("\\") -or ($genPath.Length -ge 3 -and $genPath.Substring(1, 2) -eq ":\")) {
                     $location = "Drive/UNC"
                 }
-                elseif ($gendir.StartsWith("%WINDIR%") -or $gendir.StartsWith("%SYSTEM32%") -or $gendir.StartsWith("%PROGRAMFILES%"))
-                {
+                elseif ($gendir.StartsWith("%WINDIR%") -or $gendir.StartsWith("%SYSTEM32%") -or $gendir.StartsWith("%PROGRAMFILES%")) {
                     $location = "Windir/ProgramFiles"
                 }
-                elseif ($gendir.StartsWith("%OSDRIVE%"))
-                {
+                elseif ($gendir.StartsWith("%OSDRIVE%")) {
                     $location = "Non-default root"
                 }
-                else
-                {
+                else {
                     $location = "Other"
                 }
             }
 
             # Output tab-delimited CSV (faster to do this and then convert to objects later than to create objects to begin with)
             # Also, this avoids having dquotes around everything.
-            $location      + "`t" +
-            $genpath       + "`t" +
-            $gendir        + "`t" +
-            $origPath      + "`t" +
-            $filename      + "`t" +
-            $fileext       + "`t" +
-            $filetype      + "`t" +
-            $pubName       + "`t" +
-            $prodName      + "`t" +
-            $binaryName    + "`t" +
-            $filever       + "`t" +
-            $hash          + "`t" +
-            $userSID       + "`t" +
-            $username      + "`t" +
-            $machineName   + "`t" +
-            $timeCreated   + "`t" +
+            $location + "`t" +
+            $genpath + "`t" +
+            $gendir + "`t" +
+            $origPath + "`t" +
+            $filename + "`t" +
+            $fileext + "`t" +
+            $filetype + "`t" +
+            $pubName + "`t" +
+            $prodName + "`t" +
+            $binaryName + "`t" +
+            $filever + "`t" +
+            $hash + "`t" +
+            $userSID + "`t" +
+            $username + "`t" +
+            $machineName + "`t" +
+            $timeCreated + "`t" +
             $timeCreatedXL + "`t" +
-            $sPID          + "`t" +
+            $sPID + "`t" +
             $eventType
         }
 
         $count++
-        if ($count -eq 100)
-        {
+        if ($count -eq 100) {
             Write-Verbose -Message "." -NoNewline
             $count = 0
         }
@@ -781,14 +720,12 @@ $csv.AddRange($oLines)
 #
 # Unless specified otherwise, also output "empty" events for machines for which all events were filtered out
 #
-if (!$NoFilteredMachines)
-{
+if (!$NoFilteredMachines) {
     $oLines = @(
-        $AllMachineNames.Keys | Sort-Object | foreach {
+        $AllMachineNames.Keys | Sort-Object | ForEach-Object {
             $machineName = $_
             # If machine observed but not reported, report it now
-            if (!$ReportedMachines.ContainsKey($machineName))
-            {
+            if (!$ReportedMachines.ContainsKey($machineName)) {
                 # Output the data as CSV
                 <# Location      #>  "" + "`t" +
                 <# GenericPath   #>  "" + "`t" +
@@ -818,25 +755,20 @@ if (!$NoFilteredMachines)
 Write-Verbose -Message "" # New line after the dots
 Write-Verbose -Message "$filteredOut events filtered out."
 
-if ($Excel)
-{
-    if (CreateExcelApplication)
-    {
+if ($Excel) {
+    if (CreateExcelApplication) {
         AddWorksheetFromCsvData -csv $csv -tabname "AppLocker events"
         ReleaseExcelApplication
     }
 }
-elseif ($GridView)
-{
+elseif ($GridView) {
     $csv | ConvertFrom-Csv -Delimiter "`t" | Out-GridView -Title $MyInvocation.MyCommand.Name
 }
-elseif ($Objects)
-{
+elseif ($Objects) {
     # Output PSCustomObjects to pipeline
     $csv | ConvertFrom-Csv -Delimiter "`t"
 }
-else
-{
+else {
     # Output tab-delimited CSV text to pipeline
     $csv
 }

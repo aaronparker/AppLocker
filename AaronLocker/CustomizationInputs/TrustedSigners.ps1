@@ -37,7 +37,7 @@ Examples showing possible combinations:
     PublisherName = "O=CONTOSO, L=SEATTLE, S=WASHINGTON, C=US";
     ProductName = "CUSTOMAPP";
     }
-    
+
     # Trust any version of a specific signed file by a specific publisher/product
     # RuleCollection must be one of Exe, Dll, Script, or Msi, and is CASE-SENSITIVE
     @{
@@ -46,7 +46,7 @@ Examples showing possible combinations:
     ProductName = "CUSTOMAPP";
     BinaryName = "SAMPLE.DLL";
     FileVersion = "10.0.15063.0";
-    RuleCollection = "Dll"; 
+    RuleCollection = "Dll";
     }
 
     # Trust everything signed by the same publisher as the exemplar file (Autoruns.exe)
@@ -153,14 +153,14 @@ Examples showing possible combinations:
   ProductName    = "CHROME CLEANUP";
   RuleCollection = "Dll";
 }
-  
+
 @{
   label          = "Google Chrome, Identified in: '%LOCALAPPDATA%\GOOGLE\CHROME\USER DATA\SWREPORTER\81.235.200\SOFTWARE_REPORTER_TOOL.EXE'";
   PublisherName  = "O=GOOGLE LLC, L=MOUNTAIN VIEW, S=CA, C=US";
   ProductName    = "SOFTWARE REPORTER TOOL";
   RuleCollection = "Exe";
 }
-  
+
 @{
   label          = "Google Chrome, Identified in: '%LOCALAPPDATA%\GOOGLE\UPDATE\1.3.35.452\GOOPDATE.DLL'";
   PublisherName  = "O=GOOGLE LLC, L=MOUNTAIN VIEW, S=CALIFORNIA, C=US";
@@ -173,7 +173,7 @@ Examples showing possible combinations:
   PublisherName = "O=GOOGLE LLC, L=MOUNTAIN VIEW, S=CA, C=US";
   ProductName   = "GOOGLE CHROME";
 }
-  
+
 @{
   label         = "Google Chrome, Identified in: '%LOCALAPPDATA%\GOOGLE\UPDATE\1.3.35.452\GOOPDATE.DLL'";
   PublisherName = "O=GOOGLE LLC, L=MOUNTAIN VIEW, S=CALIFORNIA, C=US";
@@ -192,7 +192,7 @@ Examples showing possible combinations:
   ProductName    = "GOOGLE TALK PLUGIN";
   RuleCollection = "Dll";
 }
-  
+
 @{
   label         = "Google Chrome, Identified in: '%LOCALAPPDATA%\GOOGLE\UPDATE\1.3.35.452\GOOGLECRASHHANDLER.EXE'";
   PublisherName = "O=GOOGLE LLC, L=MOUNTAIN VIEW, S=CALIFORNIA, C=US";

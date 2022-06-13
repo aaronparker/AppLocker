@@ -21,47 +21,41 @@ If no parameters are specified or this switch is set to -Local:$false, the scrip
 If this parameter is specified, AppLocker policy is read from the specified exported XML policy file.
 
 .EXAMPLE
-.\Support\Get-AaronLockerTimestamp.ps1 
+.\Support\Get-AaronLockerTimestamp.ps1
 
 Gets the custom timestamp field from the computer's effective AppLocker policy.
 
 #>
 
-[CmdletBinding(DefaultParameterSetName="LocalPolicy")]
+[CmdletBinding(DefaultParameterSetName = "LocalPolicy")]
 param(
     # If specified, inspects local AppLocker policy rather than effective policy or an XML file
-    [parameter(ParameterSetName="LocalPolicy")]
+    [parameter(ParameterSetName = "LocalPolicy")]
     [switch]
     $Local = $false,
 
     # Optional: path to XML file containing AppLocker policy
-    [parameter(ParameterSetName="SavedXML")]
+    [parameter(ParameterSetName = "SavedXML")]
     [String]
     $AppLockerXML
 )
 
-if ($AppLockerXML.Length -gt 0)
-{
+if ($AppLockerXML.Length -gt 0) {
     $xmlPolicy = [xml](Get-Content -Path $AppLockerXML)
 }
-elseif ($Local)
-{
+elseif ($Local) {
     $xmlPolicy = [xml](Get-AppLockerPolicy -Local -Xml)
 }
-else
-{
+else {
     $xmlPolicy = [xml](Get-AppLockerPolicy -Effective -Xml)
 }
 
-if ($null -ne $xmlPolicy)
-{
+if ($null -ne $xmlPolicy) {
     $node = $xmlPolicy.SelectNodes("AppLockerPolicy/RuleCollection[@Type='Exe']/FileHashRule[@UserOrGroupSid='S-1-3-0']")
-    if ($null -eq $node -or 0 -eq $node.Count)
-    {
+    if ($null -eq $node -or 0 -eq $node.Count) {
         Write-Warning "Policy does not include timestamp"
     }
-    else
-    {
+    else {
         $node.Name
     }
 }

@@ -19,7 +19,7 @@
   * "exemplar" is the path to a signed file; all information to construct the rule is extracted from that file's signature and signed attributes.
       When using exemplar, you can also add optional properties:
     * "level" is the WDAC rule level used with New-CIPolicyRule and defaults to Publisher
-    * "useProduct" boolean value indicating whether to restrict publisher trust only to that file's product name. 
+    * "useProduct" boolean value indicating whether to restrict publisher trust only to that file's product name.
 
   Examples showing possible combinations:
 
@@ -31,7 +31,7 @@
       PublisherName = "Contoso Software";
       }
 
-      # Trust any version of a specific signed file by a specific publisher 
+      # Trust any version of a specific signed file by a specific publisher
       @{
       label = "Trust Contoso's SAMPLE.DLL";
       IssuerName = "Symantec Class 3 SHA256 Code Signing CA - G2";
@@ -48,7 +48,7 @@
       PublisherName = "Contoso Software";
       ProductName = "CUSTOMAPP";
       }
-      
+
       # Trust only files with version greater or equal to 10.0.0.0 published by a specific publisher
       @{
       label = "Trust all files with version 10.0.0.0 or greater published by Contoso";
@@ -57,8 +57,8 @@
       PublisherName = "Contoso Software";
       FileVersion = "10.0.0.0";
       }
-      
-      # Trust only versions of a specific signed file greater or equal to 10.0.0.0 by a specific publisher 
+
+      # Trust only versions of a specific signed file greater or equal to 10.0.0.0 by a specific publisher
       @{
       label = "Trust Contoso's SAMPLE.DLL version 10.0.0.0 or greater";
       IssuerName = "Symantec Class 3 SHA256 Code Signing CA - G2";
@@ -68,7 +68,7 @@
       FileVersion = "10.0.0.0";
       }
 
-      # Trust everything signed by the same publisher as the exemplar file (Autoruns.exe) 
+      # Trust everything signed by the same publisher as the exemplar file (Autoruns.exe)
       @{
       label = "Trust the publisher of Autoruns.exe";
       exemplar = "C:\Program Files\Sysinternals\Autoruns.exe";
@@ -119,4 +119,3 @@
 
 # Allow MSVC/MFC redistributable DLLs. Dot-source the MSVC/MFC DLL include file in this directory
 . ([System.IO.Path]::Combine( [System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path), "WDACTrustedSigners-MsvcMfc.ps1"))
-

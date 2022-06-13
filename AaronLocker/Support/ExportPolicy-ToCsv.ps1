@@ -26,8 +26,8 @@ Renders effective AppLocker policy to tab-delimited CSV and writes that output t
 Paste the output directly into an Excel spreadsheet, replace "^|^" with Ctrl+Shift+J, add filtering, freeze the top row, and autosize.
 
 #TODO: Add option to get AppLocker policy from AD GPO
-E.g., 
-Get-AppLockerPolicy -Domain -LDAP "LDAP://DC13.Contoso.com/CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=Contoso,DC=com" 
+E.g.,
+Get-AppLockerPolicy -Domain -LDAP "LDAP://DC13.Contoso.com/CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=Contoso,DC=com"
 Figure out how to tie Get-GPO in with this...
 #>
 
@@ -93,10 +93,10 @@ $x.AppLockerPolicy.RuleCollection | ForEach-Object {
                 "FilePublisherRule" {
                     $RuleType = "Publisher"
                     $condition = $childNode.Conditions.FilePublisherCondition
-                    $ruleInfo = 
-                    "Publisher: " + $condition.PublisherName + $LineBreakSeq + 
-                    "Product: " + $condition.ProductName + $LineBreakSeq + 
-                    "BinaryName: " + $condition.BinaryName + $LineBreakSeq + 
+                    $ruleInfo =
+                    "Publisher: " + $condition.PublisherName + $LineBreakSeq +
+                    "Product: " + $condition.ProductName + $LineBreakSeq +
+                    "BinaryName: " + $condition.BinaryName + $LineBreakSeq +
                     "LowVersion: " + $condition.BinaryVersionRange.LowSection + $LineBreakSeq +
                     "HighVersion: " + $condition.BinaryVersionRange.HighSection
                 }

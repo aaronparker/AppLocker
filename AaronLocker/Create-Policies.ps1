@@ -30,7 +30,7 @@ Exceptions for "dangerous" programs (e.g., mshta.exe, cipher.exe) are generally 
 Rules allowing execution of EXE, DLL, and script files from user-writable directories are implemented with publisher/signature rules when possible, and hash rules otherwise, with options for the granularity of Publisher/signature rules.
 Publisher/signature rules can also be created allowing execution of anything signed by a particular publisher, or a specific product by a particular publisher.
 
-Scanning for user-writable subdirectories of the Windows and ProgramFiles directories can be time-consuming and is only required for AppLocker or when custom admins are defined. 
+Scanning for user-writable subdirectories of the Windows and ProgramFiles directories can be time-consuming and is only required for AppLocker or when custom admins are defined.
 The script writes results to text files in an intermediate subdirectory. The script runs the scan if those files are not found OR if the -Rescan switch is specified.
 It is STRONGLY recommended that the scanning be performed with administrative rights.
 Once scans have been performed, scanned output can be copied to another machine and rules can be maintained without needing to rescan.
@@ -88,7 +88,7 @@ param(
     # If specified, also creates Excel spreadsheets representing the generated rules.
     [switch]
     $Excel,
-    
+
     # Specifies whether to create policies for WDAC only, AppLocker only, or Both (default)
     [ValidateSet("Both", "AppLocker", "WDAC")]
     [String]
@@ -189,17 +189,17 @@ if ($Rescan -and ($AppLockerOrWDAC -in ("AppLocker", "Both"))) {
 [System.Collections.ArrayList]$knownAdmins = @()
 $knownAdmins.AddRange( @(& $ps1_KnownAdmins) )
 
-<# 
+<#
 # TODO (one day When WDAC adds exception support, we can allow AppLocker-style rules including exceptions)
-# Note that WDAC, by-default, enforces a run-time check that the current directory does not grant write permissions to non-standard admin users. 
+# Note that WDAC, by-default, enforces a run-time check that the current directory does not grant write permissions to non-standard admin users.
 # However, the runtime check by WDAC is not a security feature in Windows and won't prevent a malicious user from altering the ACLs to make a previously
-# user-writable path pass the admin-only check after the fact. 
+# user-writable path pass the admin-only check after the fact.
 If one or more custom admins was found, override WDAC's runtime admin-writable-only check and instead revert to AppLocker parity
 if ($knownAdmins.Count -gt 0) {$ProcessWDACLikeAppLocker = $true}
 else {$ProcessWDACLikeAppLocker = $false}
 #>
 
-# If just processing WDAC and no custom admins are defined, 
+# If just processing WDAC and no custom admins are defined,
 if (($Rescan) -and ($AppLockerOrWDAC -eq "WDAC") -and !($ProcessWDACLikeAppLocker)) {
     Write-Verbose -Message "Skipping scan for user-writable directories - not required for WDAC."
     $Rescan = $false
@@ -215,7 +215,7 @@ if ( $Rescan -or ( ($AppLockerOrWDAC -in "Both", "AppLocker") -and !(Test-Path($
     $exeFilesToDenyList = (& $ps1_GetExeFilesToDenyList)
 }
 
-# Get additional authorized safe paths from the script that produces that list 
+# Get additional authorized safe paths from the script that produces that list
 Write-Verbose -Message "Get authorized safe paths for later processing..."
 $PathsToAllow = (& $ps1_GetSafePathsToAllow)
 
@@ -230,11 +230,11 @@ else {
 }
 
 # Run the script that produces the hash information to build additional allow rules. Should come in as a sequence of hashtables.
-# Each hashtable must have the following properties: 
+# Each hashtable must have the following properties:
 # * RuleName
 # * HashVal (must be SHA256 with "0x" and 64 hex digits)
 # * FileName
-# The following AppLocker-specific hashtable properties are ignored for WDAC rules 
+# The following AppLocker-specific hashtable properties are ignored for WDAC rules
 # * RuleCollection (case-sensitive)
 # * RuleDesc
 $hashRuleData = (& $ps1_HashRuleData)

@@ -29,8 +29,7 @@ $log.MaximumSizeInBytes = (1024 * 1024 * 1024)
 $log.SaveChanges()
 
 #These event logs don't exist on Windows 7: ignore any errors.
-try
-{
+try {
     $logName = 'Microsoft-Windows-AppLocker/Packaged app-Deployment'
     $log = New-Object System.Diagnostics.Eventing.Reader.EventLogConfiguration $logName
     $log.MaximumSizeInBytes = (1024 * 1024 * 1024)

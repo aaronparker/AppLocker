@@ -15,9 +15,8 @@ If this switch is $false, this script applies the "Enforce" rules to local Group
 #>
 
 param(
-	# If set, applies auditing rules. Otherwise, applies enforcing rules.
-	[switch]
-	$AuditOnly = $false
+    # If set, applies auditing rules. Otherwise, applies enforcing rules.
+    [switch] $AuditOnly = $false
 )
 
 $rootDir = [System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path) + "\.."
@@ -25,21 +24,17 @@ $rootDir = [System.IO.Path]::GetDirectoryName($MyInvocation.MyCommand.Path) + "\
 # Dot-source the config file.
 . $rootDir\Support\Config.ps1
 
-if ($AuditOnly)
-{
+if ($AuditOnly) {
     $policyFile = RulesFileAuditLatest
 }
-else
-{
+else {
     $policyFile = RulesFileEnforceLatest
 }
 
-if ($null -eq $policyFile)
-{
+if ($null -eq $policyFile) {
     Write-Error "No policy file found"
 }
-else
-{
+else {
     Write-Verbose -Message "Applying $policyFile"
     Set-AppLockerPolicy -XmlPolicy $policyFile
 }

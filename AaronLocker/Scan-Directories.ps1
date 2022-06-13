@@ -187,7 +187,7 @@ if ($FindNonDefaultRootDirs -or $SearchNonDefaultRootDirs) {
         Where-Object { !$_.Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint) -and !($_ -in $defaultRootDirs) })
 
     if ($FindNonDefaultRootDirs) {
-        $nondefaultRootDirs | foreach { $_.FullName }
+        $nondefaultRootDirs | ForEach-Object { $_.FullName }
         return
     }
 }
@@ -230,7 +230,7 @@ if ($WritableWindir) {
         Write-Warning "$windirTxt does not exist yet. Run Create-Policies.ps1."
     }
     else {
-        Get-Content $windirTxt | foreach {
+        Get-Content $windirTxt | ForEach-Object {
             $dirsToInspect.Add($_, $UnsafeDir)
         }
     }
@@ -245,7 +245,7 @@ if ($WritablePF) {
         Write-Warning "$Pf86Txt does not exist yet. Run Create-Policies.ps1."
     }
     else {
-        Get-Content $PfTxt, $Pf86Txt | foreach {
+        Get-Content $PfTxt, $Pf86Txt | ForEach-Object {
             $dirsToInspect.Add($_, $UnsafeDir)
         }
     }
@@ -268,17 +268,17 @@ if ($SearchAllUserProfiles) {
     # Skip app-compat juntions  (most disallow FILE_LIST_DIRECTORY)
     # Skip symlinks -- "All Users" is a symlinkd for \ProgramData but unlike most app-compat junctions it can be listed/traversed.
     # This code prevents that.
-    Get-ChildItem -Force -Directory $UsersRoot | Where-Object { !$_.Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint) } | foreach {
+    Get-ChildItem -Force -Directory $UsersRoot | Where-Object { !$_.Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint) } | ForEach-Object {
         $dirsToInspect.Add($_.FullName, $UnsafeDir)
     }
 }
 
 if ($SearchNonDefaultRootDirs) {
-    $nondefaultRootDirs | foreach { $dirsToInspect.Add($_.FullName, $UnknownDir) }
+    $nondefaultRootDirs | ForEach-Object { $dirsToInspect.Add($_.FullName, $UnknownDir) }
 }
 
 if ($DirsToSearch) {
-    $DirsToSearch | foreach { $dirsToInspect.Add($_, $UnknownDir) }
+    $DirsToSearch | ForEach-Object { $dirsToInspect.Add($_, $UnknownDir) }
 }
 
 [System.Collections.ArrayList]$csv = @()
@@ -315,7 +315,7 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
     # Don't waste cycles looking at file types that are not of interest. (A .txt should never be a PE...)
     Get-ChildItem -File $directory -Force -ErrorAction SilentlyContinue -PipelineVariable file |
     Where-Object { $file.Extension -notin $NeverExecutableExts } |
-    foreach {
+    ForEach-Object {
 
         # Work around Get-AppLockerFileInformation bug that vomits on zero-length input files
         if ($_.Length -gt 0 -and !$doNoMore) {
@@ -342,7 +342,7 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
                 # Diagnostics. Seeing sharing violations on some operations
                 if ($alfiErr.Count -gt 0) {
                     Write-Host ($file.FullName + "`tLength = " + $file.Length.ToString()) -ForegroundColor Yellow -BackgroundColor Black
-                    $alfiErr | foreach { Write-Error -Message $_.Exception.Message }
+                    $alfiErr | ForEach-Object { Write-Error -Message $_.Exception.Message }
                 }
                 if ($null -ne $alfi) {
                     $pub = $alfi.Publisher
@@ -400,7 +400,7 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
 function InspectDirectories([string]$directory, [string]$safety, [ref][string[]]$writableDirs) {
     InspectFiles $directory $safety $writableDirs
 
-    Get-ChildItem -Directory $directory -Force -ErrorAction SilentlyContinue | foreach {
+    Get-ChildItem -Directory $directory -Force -ErrorAction SilentlyContinue | ForEach-Object {
         $subdir = $_
         # Decide here whether to recurse into the subdirectory:
         # * Skip junctions and symlinks (typically app-compat junctions).
@@ -435,7 +435,7 @@ if (Test-Path -Path $rootDir\AccessChk.exe) {
 $knownAdmins.AddRange( @(& $ps1_KnownAdmins) )
 
 # Capture into hash tables, separate file name, type, and parent path
-$dirsToInspect.Keys | foreach {
+$dirsToInspect.Keys | ForEach-Object {
 
     $dirToInspect = $_
     $safety = $dirsToInspect[$dirToInspect]

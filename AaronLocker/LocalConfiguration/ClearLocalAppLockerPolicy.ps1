@@ -9,5 +9,4 @@ Requires administrative rights.
 ####################################################################################################
 [void][System.Reflection.Assembly]::LoadWithPartialName("Microsoft.Security.ApplicationId.PolicyManagement.PolicyModel")
 
-
 Set-AppLockerPolicy -PolicyObject ([Microsoft.Security.ApplicationId.PolicyManagement.PolicyModel.AppLockerPolicy]::new())

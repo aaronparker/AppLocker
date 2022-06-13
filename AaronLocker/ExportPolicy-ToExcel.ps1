@@ -30,7 +30,7 @@ If this parameter is specified, AppLocker policy is read from the specified CSV 
 If set, saves workbook to same directory as input file with same file name and default Excel file extension.
 
 .EXAMPLE
-.\ExportPolicy-ToExcel.ps1 
+.\ExportPolicy-ToExcel.ps1
 
 Generates an Excel worksheet representing the computer's effective AppLocker policy.
 
@@ -48,25 +48,25 @@ Generates an Excel worksheet representing AppLocker policy exported from a syste
 
 #TODO: Add option to get AppLocker policy from AD GPO, if/when ExportPolicy-ToCsv.ps1 adds it.
 
-[CmdletBinding(DefaultParameterSetName="LocalPolicy")]
+[CmdletBinding(DefaultParameterSetName = "LocalPolicy")]
 param(
     # If specified, inspects local AppLocker policy rather than effective policy or an XML file
-    [parameter(ParameterSetName="LocalPolicy")]
+    [parameter(ParameterSetName = "LocalPolicy")]
     [switch]
     $Local = $false,
 
     # Optional: path to XML file containing AppLocker policy
-    [parameter(ParameterSetName="SavedXML")]
+    [parameter(ParameterSetName = "SavedXML")]
     [String]
     $AppLockerXML,
 
     # If specified, uses CSV previously collected instead of running ExportPolicy-ToCsv.ps1
-    [parameter(ParameterSetName="SavedCSV")]
+    [parameter(ParameterSetName = "SavedCSV")]
     [String]
     $AppLockerCSV,
 
-    [parameter(ParameterSetName="SavedXML")]
-    [parameter(ParameterSetName="SavedCSV")]
+    [parameter(ParameterSetName = "SavedXML")]
+    [parameter(ParameterSetName = "SavedCSV")]
     [switch]
     $SaveWorkbook
 )
@@ -85,47 +85,37 @@ $filename = $tempfile = $xlFname = [String]::Empty
 
 $linebreakSeq = "^|^"
 
-if ($AppLockerCSV.Length -gt 0)
-{
+if ($AppLockerCSV.Length -gt 0) {
     $filename = $AppLockerCSV
     $tabname = [System.IO.Path]::GetFileName($AppLockerCSV)
-    if ($SaveWorkbook)
-    {
+    if ($SaveWorkbook) {
         $xlFname = [System.IO.Path]::ChangeExtension($AppLockerCSV, ".xlsx")
     }
 }
-else
-{
+else {
     $filename = $tempfile = [System.IO.Path]::GetTempFileName()
 
-    if ($AppLockerXML.Length -gt 0)
-    {
+    if ($AppLockerXML.Length -gt 0) {
         & $ps1_ExportPolicyToCSV -AppLockerPolicyFile $AppLockerXML -linebreakSeq $linebreakSeq | Out-File $tempfile -Encoding unicode
         $tabname = [System.IO.Path]::GetFileNameWithoutExtension($AppLockerXML)
-        if ($SaveWorkbook)
-        {
+        if ($SaveWorkbook) {
             $xlFname = [System.IO.Path]::ChangeExtension($AppLockerXML, ".xlsx")
         }
     }
-    else
-    {
+    else {
         & $ps1_ExportPolicyToCSV -Local:$Local -linebreakSeq $linebreakSeq | Out-File $tempfile -Encoding unicode
-        if ($Local)
-        {
+        if ($Local) {
             $tabname = "AppLocker policy - Local"
         }
-        else
-        {
+        else {
             $tabname = "AppLocker policy - Effective"
         }
     }
 }
 
-if ($xlFname.Length -gt 0)
-{
+if ($xlFname.Length -gt 0) {
     # Ensure absolute path
-    if (!([System.IO.Path]::IsPathRooted($xlFname)))
-    {
+    if (!([System.IO.Path]::IsPathRooted($xlFname))) {
         $xlFname = [System.IO.Path]::Combine((Get-Location).Path, $xlFname)
     }
 }

@@ -6,7 +6,7 @@
     This script outputs zero or more hashtables containing information to define hash rules.
     It supports creating hash rules based on AppLocker event data rather than on direct access to the files.
 
-    Each hashtable must have each of the following properties: 
+    Each hashtable must have each of the following properties:
     * RuleCollection
     * RuleName
     * RuleDesc

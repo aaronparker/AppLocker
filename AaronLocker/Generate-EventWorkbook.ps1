@@ -29,14 +29,14 @@ as the input file and with the same file name but with the default Excel file ex
 If the -RawEventCounts switch is specified, workbook includes additional worksheets focused on raw event counts per machine, per user, and per publisher.
 #>
 
-[CmdletBinding(DefaultParameterSetName="GenerateTempCsv")]
+[CmdletBinding(DefaultParameterSetName = "GenerateTempCsv")]
 param(
     # Path to CSV file produced by Get-AppLockerEvents.ps1
-    [parameter(ParameterSetName="NamedCsvFile", Mandatory=$true)]
+    [parameter(ParameterSetName = "NamedCsvFile", Mandatory = $true)]
     [String]
-    $AppLockerEventsCsvFile, 
+    $AppLockerEventsCsvFile,
 
-    [parameter(ParameterSetName="NamedCsvFile")]
+    [parameter(ParameterSetName = "NamedCsvFile")]
     [switch]
     $SaveWorkbook,
 
@@ -54,24 +54,20 @@ $OutputEncoding = [System.Text.ASCIIEncoding]::Unicode
 
 $tempfile = [string]::Empty
 
-if ($AppLockerEventsCsvFile)
-{
-    if (!(Test-Path($AppLockerEventsCsvFile)))
-    {
+if ($AppLockerEventsCsvFile) {
+    if (!(Test-Path($AppLockerEventsCsvFile))) {
         Write-Warning "File not found: $AppLockerEventsCsvFile"
         return
     }
 
     # Get absolute path to input file. (Note that [System.IO.Path]::GetFullName doesn't do this...)
     $AppLockerEventsCsvFileFullPath = $AppLockerEventsCsvFile
-    if (!([System.IO.Path]::IsPathRooted($AppLockerEventsCsvFile)))
-    {
+    if (!([System.IO.Path]::IsPathRooted($AppLockerEventsCsvFile))) {
         $AppLockerEventsCsvFileFullPath = [System.IO.Path]::Combine((Get-Location).Path, $AppLockerEventsCsvFile)
     }
     $dataSourceName = [System.IO.Path]::GetFileName($AppLockerEventsCsvFile)
 }
-else
-{
+else {
     $tempfile = [System.IO.Path]::GetTempFileName()
     $AppLockerEventsCsvFileFullPath = $AppLockerEventsCsvFile = $tempfile
     $dataSourceName = "(Get-AppLockerEvents.ps1 output)"
@@ -82,12 +78,11 @@ else
 Write-Verbose -Message "Reading data from $AppLockerEventsCsvFile"
 $csvFull = @(Get-Content $AppLockerEventsCsvFile)
 $dataUnfiltered = @($csvFull | ConvertFrom-Csv -Delimiter "`t")
-$dataFiltered   = @($dataUnfiltered | Where-Object { $_.EventType -ne $sFiltered })
-$eventsSigned   = @($dataFiltered | Where-Object { $_.PublisherName -ne $sUnsigned -and $_.PublisherName -ne $sNoPublisher })
-$eventsUnsigned = @($dataFiltered | Where-Object { $_.PublisherName -eq $sUnsigned -or  $_.PublisherName -eq $sNoPublisher })
+$dataFiltered = @($dataUnfiltered | Where-Object { $_.EventType -ne $sFiltered })
+$eventsSigned = @($dataFiltered | Where-Object { $_.PublisherName -ne $sUnsigned -and $_.PublisherName -ne $sNoPublisher })
+$eventsUnsigned = @($dataFiltered | Where-Object { $_.PublisherName -eq $sUnsigned -or $_.PublisherName -eq $sNoPublisher })
 
-if ($dataUnfiltered.Length -eq 0)
-{
+if ($dataUnfiltered.Length -eq 0) {
     Write-Warning "No data. Exiting."
     return
 }
@@ -96,10 +91,9 @@ $nEvents = $dataFiltered.Length
 $nSignedEvents = $eventsSigned.Length
 $nUnsignedEvents = $eventsUnsigned.Length
 
-if (CreateExcelApplication)
-{
+if (CreateExcelApplication) {
     # Array to set sort order descending on Count and then ascending on Name
-    $CountDescNameAsc = @( @{ Expression = "Count"; Descending = $true }, @{ Expression = "Name"; Descending = $false} )
+    $CountDescNameAsc = @( @{ Expression = "Count"; Descending = $true }, @{ Expression = "Name"; Descending = $false } )
 
     # Lines of text for the summary page
     $tabname = "Summary"
@@ -108,14 +102,12 @@ if (CreateExcelApplication)
     $text.Add( "Summary information" ) | Out-Null
     $text.Add( "" ) | Out-Null
     $text.Add( "Data source:`t" + $dataSourceName ) | Out-Null
-    if ($nEvents -gt 0)
-    {
-        $dtsort = ($dataFiltered.EventTime | Sort-Object); 
+    if ($nEvents -gt 0) {
+        $dtsort = ($dataFiltered.EventTime | Sort-Object);
         $dtFirst = ([datetime]($dtsort[0])).ToString()
-        $dtLast =  ([datetime]($dtsort[$dtsort.Length - 1])).ToString()
+        $dtLast = ([datetime]($dtsort[$dtsort.Length - 1])).ToString()
     }
-    else
-    {
+    else {
         $dtFirst = $dtLast = "N/A"
     }
     $text.Add( "First event:`t" + $dtFirst ) | Out-Null
@@ -129,8 +121,7 @@ if (CreateExcelApplication)
     $text.Add( "Number of users reporting events:`t" + ( @($dataFiltered.UserName | Group-Object)).Count.ToString() ) | Out-Null
     AddWorksheetFromText -text $text -tabname $tabname
 
-    if ($nEvents -gt 0)
-    {
+    if ($nEvents -gt 0) {
         # Users per location:
         $tabname = "# Users per Location"
         Write-Verbose -Message "Gathering data for `"$tabname`"..."
@@ -140,8 +131,7 @@ if (CreateExcelApplication)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname -CrLfEncoded "" -AddChart
     }
 
-    if ($nEvents -gt 0)
-    {
+    if ($nEvents -gt 0) {
         # Users per publisher:
         $tabname = "# Users per Publisher"
         Write-Verbose -Message "Gathering data for `"$tabname`"..."
@@ -151,8 +141,7 @@ if (CreateExcelApplication)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname -CrLfEncoded "" -AddChart
     }
 
-    if ($nSignedEvents -gt 0)
-    {
+    if ($nSignedEvents -gt 0) {
         # Publisher/product combinations:
         $tabname = "Publisher-product combinations"
         Write-Verbose -Message "Gathering data for `"$tabname`"..."
@@ -160,8 +149,7 @@ if (CreateExcelApplication)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname
     }
 
-    if ($nEvents -gt 0)
-    {
+    if ($nEvents -gt 0) {
         # Users per file:
         $tabname = "# Users per File"
         Write-Verbose -Message "Gathering data for `"$tabname`"..."
@@ -171,8 +159,7 @@ if (CreateExcelApplication)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname -CrLfEncoded "" -AddChart
     }
 
-    if ($nSignedEvents -gt 0)
-    {
+    if ($nSignedEvents -gt 0) {
         # Publisher/product/file combinations:
         $tabname = "Signed file info"
         Write-Verbose -Message "Gathering data for `"$tabname`"..."
@@ -180,8 +167,7 @@ if (CreateExcelApplication)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname
     }
 
-    if ($nUnsignedEvents -gt 0)
-    {
+    if ($nUnsignedEvents -gt 0) {
         # Analysis of unsigned files:
         $tabname = "Unsigned file info"
         Write-Verbose -Message "Gathering data for `"$tabname`"..."
@@ -189,8 +175,7 @@ if (CreateExcelApplication)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname
     }
 
-    if ($nEvents -gt 0)
-    {
+    if ($nEvents -gt 0) {
         # Files by user
         $tabname = "Files by User"
         Write-Verbose -Message "Gathering data for `"$tabname`"..."
@@ -198,8 +183,7 @@ if (CreateExcelApplication)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname
     }
 
-    if ($nEvents -gt 0)
-    {
+    if ($nEvents -gt 0) {
         # Files by user (details)
         $tabname = "Files by User (details)"
         Write-Verbose -Message "Gathering data for `"$tabname`"..."
@@ -210,8 +194,7 @@ if (CreateExcelApplication)
     # All event data
     AddWorksheetFromCsvFile -filename $AppLockerEventsCsvFileFullPath -tabname "Full details"
 
-    if ($RawEventCounts)
-    {
+    if ($RawEventCounts) {
         # Events per machine:
         $tabname = "# Events per Machine"
         Write-Verbose -Message "Gathering data for `"$tabname`"..."
@@ -222,8 +205,7 @@ if (CreateExcelApplication)
         if ($csv.Length -gt 0 ) { $csv[0] = "MachineName" + "`t" + "Event count" }
         AddWorksheetFromCsvData -csv $csv -tabname $tabname -CrLfEncoded "" -AddChart
 
-        if ($nEvents -gt 0)
-        {
+        if ($nEvents -gt 0) {
             # Counts of each publisher:
             $tabname = "# Events per Publisher"
             Write-Verbose -Message "Gathering data for `"$tabname`"..."
@@ -233,8 +215,7 @@ if (CreateExcelApplication)
             AddWorksheetFromCsvData -csv $csv -tabname $tabname -AddChart
         }
 
-        if ($nEvents -gt 0)
-        {
+        if ($nEvents -gt 0) {
             # Events per user:
             $tabname = "# Events per User"
             Write-Verbose -Message "Gathering data for `"$tabname`"..."
@@ -247,8 +228,7 @@ if (CreateExcelApplication)
 
     SelectFirstWorksheet
 
-    if ($SaveWorkbook)
-    {
+    if ($SaveWorkbook) {
         $xlFname = [System.IO.Path]::ChangeExtension($AppLockerEventsCsvFileFullPath, ".xlsx")
         SaveWorkbook -filename $xlFname
     }
@@ -256,8 +236,7 @@ if (CreateExcelApplication)
     ReleaseExcelApplication
 }
 
-if ($tempfile.Length -gt 0)
-{
+if ($tempfile.Length -gt 0) {
     Remove-Item $tempfile
 }
 

@@ -19,7 +19,7 @@
                           pubProdBinVer - highest granularity: Publisher rules specify publisher, product, binary name, and minimum version.
                         Microsoft-signed Windows and Visual Studio files are always handled at a minimum granularity of "pubProductBinary";
                         other Microsoft-signed files are handled at a minimum granularity of "pubProduct".
-                        ****NOTE**** 
+                        ****NOTE****
                               pubruleGranularity is handled very differently for WDAC policies. WDAC rules use the pubruleGranularity to determine the default -Level but then falls
                               back to successively more restrictive options.The Granularity mappings are as follows:
                               pubOnly --> -Level Publisher -Fallback FilePublisher,FileName,Hash
@@ -27,7 +27,7 @@
                               pubProductBinary --> NOT supported for WDAC rules. Reverts to pubProdBinVer.
                               pubProdBinVer --> -Level FilePublisher -Fallback FileName,Hash (ProductName *not* included in generated rule)
   * JSHashRules        - OPTIONAL; if specified and set to $true, generates hash rules for unsigned .js files; otherwise, doesn't generate them.
-                        NOTE: JSHashRules is *ignored* for WDAC policy generation. Hash rules are always created for .js files discovered. 
+                        NOTE: JSHashRules is *ignored* for WDAC policy generation. Hash rules are always created for .js files discovered.
   * noRecurse          - OPTIONAL; if specified and set to $true, rules are generated only for the files in the specified directory or directories.
                         Otherwise, rules are also generated for files in subdirectories of the specified directory or directories.
                         NOTE: noRecurse is *ignored* for WDAC policy generation. Subdirectories are always scanned.
@@ -35,17 +35,17 @@
                           Otherwise, setting to $false equivalent to pubruleGranularity = pubProductBinary;
                           setting to $true equivalent to pubruleGranularity = pubProdBinVer.
                         NOTE: enforceMinversion is always *ignored* for WDAC policy generation. MinVersion is always included in rules.
-                        
+
   Examples of valid hash tables:
 
-      # Search one directory and its subdirectories for files to generate rules for. 
+      # Search one directory and its subdirectories for files to generate rules for.
       # Default granularity for publisher rules: create a separate rule for each file but allow any file version.
       @{
       label = "OneDrive";
       paths = "$env:LOCALAPPDATA\Microsoft\OneDrive";
       }
 
-      # Search one directory and its subdirectories for files to generate rules for. 
+      # Search one directory and its subdirectories for files to generate rules for.
       # Generated publisher rules contain only publisher and product names.
       # (Note that some Microsoft-signed files will also include binary name.)
       @{
@@ -81,8 +81,8 @@
 @{
   label              = "Microsoft Teams";
   paths              = "$env:LOCALAPPDATA\Microsoft\Teams\current",
-                        "$env:LOCALAPPDATA\Microsoft\TeamsMeetingAddin",
-                        "$env:LOCALAPPDATA\Microsoft\TeamsPresenceAddin";
+  "$env:LOCALAPPDATA\Microsoft\TeamsMeetingAddin",
+  "$env:LOCALAPPDATA\Microsoft\TeamsPresenceAddin";
   pubruleGranularity = "pubProduct";
 }
 
@@ -95,7 +95,7 @@
 @{
   label              = "Zoom";
   paths              = "$env:LOCALAPPDATA\Zoom",
-                        "$env:AppData\Zoom\bin";
+  "$env:AppData\Zoom\bin";
   pubruleGranularity = "pubProduct";
 }
 

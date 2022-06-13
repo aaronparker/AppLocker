@@ -18,19 +18,19 @@ WEC log name to use instead of ForwardedEvents.
 #>
 
 param(
-    [parameter(Mandatory=$false)]
+    [parameter(Mandatory = $false)]
     [string]
     $rootdir,
 
-    [parameter(Mandatory=$false)]
+    [parameter(Mandatory = $false)]
     [int]
     $daysBack = 0,
 
-    [parameter(Mandatory=$false)]
+    [parameter(Mandatory = $false)]
     [string]
     $label = "",
 
-    [parameter(Mandatory=$false)]
+    [parameter(Mandatory = $false)]
     [string]
     $EventLogName = "ForwardedEvents"
 
@@ -39,23 +39,19 @@ param(
 if (!$rootdir) { $rootdir = "." }
 
 $strTimestamp = [datetime]::Now.ToString("yyyyMMdd-HHmm")
-if ($label.Length -eq 0)
-{
+if ($label.Length -eq 0) {
     $filenameFull = [System.IO.Path]::Combine($rootdir, "ForwardedEvents-" + $strTimestamp + ".csv")
 }
-else
-{
+else {
     $filenameFull = [System.IO.Path]::Combine($rootdir, "ForwardedEvents-" + $label + "-" + $strTimestamp + ".csv")
 }
 
 $OutputEncoding = [System.Text.ASCIIEncoding]::Unicode
 
-if ($daysBack -gt 0)
-{
+if ($daysBack -gt 0) {
     $csvFull = .\Get-AppLockerEvents.ps1 -EventLogNames @($EventLogName) -NoAutoNGEN -FromDateTime ([datetime]::Now.AddDays(-$daysBack))
 }
-else
-{
+else {
     $csvFull = .\Get-AppLockerEvents.ps1 -EventLogNames @($EventLogName) -NoAutoNGEN
 }
 

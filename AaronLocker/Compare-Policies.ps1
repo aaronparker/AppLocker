@@ -60,12 +60,12 @@ Compare local policy against effective policy and report only the differences.
 
 param(
     # path to XML file containing AppLocker policy
-    [parameter(Mandatory=$true)]
+    [parameter(Mandatory = $true)]
     [String]
     $ReferencePolicyXML,
 
     # path to XML file containing AppLocker policy
-    [parameter(Mandatory=$true)]
+    [parameter(Mandatory = $true)]
     [String]
     $ComparisonPolicyXML,
 
@@ -97,35 +97,29 @@ $tab = "`t"
 $refname = $compname = [string]::Empty
 
 # Get reference policy from local policy, effective policy, or a named file
-if ($ReferencePolicyXML.ToLower() -eq "local")
-{
+if ($ReferencePolicyXML.ToLower() -eq "local") {
     $ReferencePolicy = [xml](Get-AppLockerPolicy -Local -Xml)
     $refname = "Local Policy"
 }
-elseif ($ReferencePolicyXML.ToLower() -eq "effective")
-{
+elseif ($ReferencePolicyXML.ToLower() -eq "effective") {
     $ReferencePolicy = [xml](Get-AppLockerPolicy -Effective -Xml)
     $refname = "Effective Policy"
 }
-else
-{
+else {
     $ReferencePolicy = [xml](Get-Content $ReferencePolicyXML)
     $refname = [System.IO.Path]::GetFileNameWithoutExtension($ReferencePolicyXML)
 }
 
 # Get comparison policy from local policy, effective policy, or a named file
-if ($ComparisonPolicyXML.ToLower() -eq "local")
-{
+if ($ComparisonPolicyXML.ToLower() -eq "local") {
     $ComparisonPolicy = [xml](Get-AppLockerPolicy -Local -Xml)
     $compname = "Local Policy"
 }
-elseif ($ComparisonPolicyXML.ToLower() -eq "effective")
-{
+elseif ($ComparisonPolicyXML.ToLower() -eq "effective") {
     $ComparisonPolicy = [xml](Get-AppLockerPolicy -Effective -Xml)
     $compname = "Effective Policy"
 }
-else
-{
+else {
     $ComparisonPolicy = [xml](Get-Content $ComparisonPolicyXML)
     $compname = [System.IO.Path]::GetFileNameWithoutExtension($ComparisonPolicyXML)
 }
@@ -136,57 +130,50 @@ else
 $csv.Add( "Compare" + $tab + "Rule" + $tab + "Reference ($refname)" + $tab + "Comparison ($compname)" + $tab + "Reference info" + $tab + "Comparison info" ) | Out-Null
 
 
-function GetNodeKeyAndValue( $fType, $oNode, [ref] $oKey, [ref] $oValue )
-{
+function GetNodeKeyAndValue( $fType, $oNode, [ref] $oKey, [ref] $oValue ) {
     $userOrGroup = $oNode.UserOrGroupSid
     $action = $oNode.Action
     $nameAndDescr = ($oNode.Name + $linebreakSeq + $oNode.Description).Replace("`r`n", $linebreakSeq).Replace("`n", $linebreakSeq)
     $oValue.Value = @{ ruleDetail = ""; ruleDoco = $nameAndDescr; }
-    switch ( $oNode.LocalName )
-    {
-        
-    "FilePublisherRule"
-    {
-        $ruletype = "Publisher"
-        $condition = $oNode.Conditions.FilePublisherCondition
-        $ruleInfo = $condition.PublisherName + $keySep + $condition.ProductName + $keySep + $condition.BinaryName
-        $oKey.Value = $fType + $keySep + $ruletype + $keySep + $action + $keySep + $userOrGroup + $keySep + $ruleInfo
-        $oValue.Value.ruleDetail = "Ver " + $condition.BinaryVersionRange.LowSection + " to " + $condition.BinaryVersionRange.HighSection
-        if ($oNode.Exceptions.InnerXml.Length -gt 0 )
-        {
-            $oValue.Value.ruleDetail += ("; Exceptions: " + $oNode.Exceptions.InnerXml)
+    switch ( $oNode.LocalName ) {
+
+        "FilePublisherRule" {
+            $ruletype = "Publisher"
+            $condition = $oNode.Conditions.FilePublisherCondition
+            $ruleInfo = $condition.PublisherName + $keySep + $condition.ProductName + $keySep + $condition.BinaryName
+            $oKey.Value = $fType + $keySep + $ruletype + $keySep + $action + $keySep + $userOrGroup + $keySep + $ruleInfo
+            $oValue.Value.ruleDetail = "Ver " + $condition.BinaryVersionRange.LowSection + " to " + $condition.BinaryVersionRange.HighSection
+            if ($oNode.Exceptions.InnerXml.Length -gt 0 ) {
+                $oValue.Value.ruleDetail += ("; Exceptions: " + $oNode.Exceptions.InnerXml)
+            }
         }
-    }
-        
-    "FilePathRule" 
-    {
-        $ruletype = "Path"
-        $ruleInfo = $oNode.Conditions.FilePathCondition.Path
-        # Exceptions in canonical order.
-        $exceptions = 
+
+        "FilePathRule" {
+            $ruletype = "Path"
+            $ruleInfo = $oNode.Conditions.FilePathCondition.Path
+            # Exceptions in canonical order.
+            $exceptions =
             (
                 (
-                @($oNode.Exceptions.FilePathCondition.Path) + 
-                @($oNode.Exceptions.FilePublisherCondition.BinaryName) +
-                @($oNode.Exceptions.FileHashCondition.FileHash.SourceFileName)
+                    @($oNode.Exceptions.FilePathCondition.Path) +
+                    @($oNode.Exceptions.FilePublisherCondition.BinaryName) +
+                    @($oNode.Exceptions.FileHashCondition.FileHash.SourceFileName)
                 ) | Sort-Object
             ) -join $linebreakSeq
-        $oKey.Value = $fType + $keySep + $ruletype + $keySep + $action + $keySep + $userOrGroup + $keySep + $ruleInfo
-        $oValue.Value.ruleDetail = $exceptions
-    }
-        
-    "FileHashRule" 
-    {
-        $ruletype = "Hash"
-        $condition = $oNode.Conditions.FileHashCondition.FileHash
-        $ruleInfo = $condition.SourceFileName # + "; length = " + $condition.SourceFileLength
-        # $exceptions = "" # hash rules don't have exceptions
-        $oKey.Value = $fType + $keySep + $ruletype + $keySep + $action + $keySep + $userOrGroup + $keySep + $ruleInfo
-        $oValue.Value.ruleDetail = $condition.Type + " " + $condition.Data
-    }
-        
-    default { Write-Warning ("Unexpected/invalid rule type: " + $_.LocalName) }
-        
+            $oKey.Value = $fType + $keySep + $ruletype + $keySep + $action + $keySep + $userOrGroup + $keySep + $ruleInfo
+            $oValue.Value.ruleDetail = $exceptions
+        }
+
+        "FileHashRule" {
+            $ruletype = "Hash"
+            $condition = $oNode.Conditions.FileHashCondition.FileHash
+            $ruleInfo = $condition.SourceFileName # + "; length = " + $condition.SourceFileLength
+            # $exceptions = "" # hash rules don't have exceptions
+            $oKey.Value = $fType + $keySep + $ruletype + $keySep + $action + $keySep + $userOrGroup + $keySep + $ruleInfo
+            $oValue.Value.ruleDetail = $condition.Type + " " + $condition.Data
+        }
+
+        default { Write-Warning ("Unexpected/invalid rule type: " + $_.LocalName) }
     }
 }
 
@@ -209,7 +196,7 @@ When adding a new item, create a new two-element array to set as the value, with
 #>
 
 
-$ReferencePolicy.AppLockerPolicy.RuleCollection | foreach {
+$ReferencePolicy.AppLockerPolicy.RuleCollection | ForEach-Object {
     $filetype = $_.Type
     $enforce = $_.EnforcementMode
 
@@ -220,12 +207,10 @@ $ReferencePolicy.AppLockerPolicy.RuleCollection | foreach {
     $collVal = @{ ruleDetail = $enforce; }, $null
     $collections.Add($filetype, $collVal)
 
-    if ($_.ChildNodes.Count -eq 0)
-    {
+    if ($_.ChildNodes.Count -eq 0) {
     }
-    else
-    {
-        $_.ChildNodes | foreach {
+    else {
+        $_.ChildNodes | ForEach-Object {
 
             $childNode = $_
             $oKey = [ref]""
@@ -234,20 +219,16 @@ $ReferencePolicy.AppLockerPolicy.RuleCollection | foreach {
 
             # If the reference set already contains this key, see whether the value is a duplicate or a differing value
             # If duplicate, ignore it. If it's different, append it to the existing value
-            if ($rules.ContainsKey($oKey.Value))
-            {
+            if ($rules.ContainsKey($oKey.Value)) {
                 $existingVal = $rules[$oKey.Value][0]
-                if ($existingVal.ruleDetail -ne $oValue.Value.ruleDetail)
-                {
+                if ($existingVal.ruleDetail -ne $oValue.Value.ruleDetail) {
                     $rules[$oKey.Value][0].ruleDetail += ($linebreakSeq + $oValue.Value.ruleDetail)
                 }
-                if ($existingVal.ruleDoco -ne $oValue.Value.ruleDoco)
-                {
+                if ($existingVal.ruleDoco -ne $oValue.Value.ruleDoco) {
                     $rules[$oKey.Value][0].ruleDoco += ($linebreakSeq + $oValue.Value.ruleDoco)
                 }
             }
-            else
-            {
+            else {
                 $ruleVal = $oValue.Value, $null
                 $rules.Add($oKey.Value, $ruleVal)
             }
@@ -255,56 +236,46 @@ $ReferencePolicy.AppLockerPolicy.RuleCollection | foreach {
     }
 }
 
-$ComparisonPolicy.AppLockerPolicy.RuleCollection | foreach {
+$ComparisonPolicy.AppLockerPolicy.RuleCollection | ForEach-Object {
     $filetype = $_.Type
     $enforce = $_.EnforcementMode
 
     # If $collections already has this file type, add to the existing value array; otherwise create a new entry with a new two-element array, populating the second element of that array
-    if ($collections.ContainsKey($filetype))
-    {
+    if ($collections.ContainsKey($filetype)) {
         $collections[$filetype][1] = @{ ruleDetail = $enforce; }
     }
-    else
-    {
+    else {
         $collVal = $null, @{ ruleDetail = $enforce }
         $collections.Add($filetype, $collVal)
     }
 
     # Then do child nodes...
-    if ($_.ChildNodes.Count -eq 0)
-    {
+    if ($_.ChildNodes.Count -eq 0) {
     }
-    else
-    {
-        $_.ChildNodes | foreach {
+    else {
+        $_.ChildNodes | ForEach-Object {
 
             $childNode = $_
             $oKey = [ref]""
             $oValue = [ref]""
             GetNodeKeyAndValue $filetype $childNode $oKey $oValue
 
-            if ($rules.ContainsKey($oKey.Value))
-            {
+            if ($rules.ContainsKey($oKey.Value)) {
                 # If there's already data in the second element, see whether it's a duplicate. If it's a duplicate, ignore; if it's a differing value, append it to the existing value
                 $existingVal = $rules[$oKey.Value][1]
-                if ($existingVal -eq $null)
-                {
+                if ($existingVal -eq $null) {
                     $rules[$oKey.Value][1] = $oValue.Value
                 }
-                else
-                {
-                    if ($existingVal.ruleDetail -ne $oValue.Value.ruleDetail)
-                    {
+                else {
+                    if ($existingVal.ruleDetail -ne $oValue.Value.ruleDetail) {
                         $rules[$oKey.Value][1].ruleDetail += ($linebreakSeq + $oValue.Value.ruleDetail)
                     }
-                    if ($existingVal.ruleDoco -ne $oValue.Value.ruleDoco)
-                    {
-                        $rules[$oKey.Value][1].ruleDoco   += ($linebreakSeq + $oValue.Value.ruleDoco)
+                    if ($existingVal.ruleDoco -ne $oValue.Value.ruleDoco) {
+                        $rules[$oKey.Value][1].ruleDoco += ($linebreakSeq + $oValue.Value.ruleDoco)
                     }
                 }
             }
-            else
-            {
+            else {
                 $ruleVal = $null, $oValue.Value
                 $rules.Add($oKey.Value, $ruleVal)
             }
@@ -314,32 +285,26 @@ $ComparisonPolicy.AppLockerPolicy.RuleCollection | foreach {
 }
 
 
-function ShowKeyValCompare($key, $val)
-{
+function ShowKeyValCompare($key, $val) {
     # Assume that if the key is present, then one or both of val0 and val1 is present
-    if ($null -eq $val[0])
-    {
-        "-->" + $tab + $key + $tab + ""                 + $tab + $val[1].ruleDetail + $tab + ""               + $tab + $val[1].ruleDoco
+    if ($null -eq $val[0]) {
+        "-->" + $tab + $key + $tab + "" + $tab + $val[1].ruleDetail + $tab + "" + $tab + $val[1].ruleDoco
     }
-    elseif ($null -eq $val[1])
-    {
-        "<--" + $tab + $key + $tab + $val[0].ruleDetail + $tab + ""                 + $tab + $val[0].ruleDoco + $tab
+    elseif ($null -eq $val[1]) {
+        "<--" + $tab + $key + $tab + $val[0].ruleDetail + $tab + "" + $tab + $val[0].ruleDoco + $tab
     }
-    else
-    {   # Canonicalize/sort before performing comparison so that the same items in a different order doesn't report as a difference
+    else {
+        # Canonicalize/sort before performing comparison so that the same items in a different order doesn't report as a difference
         # TODO: re-sort ruleDoco so that its items still correspond to the sorted ruleDetail - not just a simple alpha sort though.
         $val0RuleDetail = ($val[0].ruleDetail.Replace($linebreakSeq, "`n").Split("`n") | Sort-Object) -join $linebreakSeq
         $val1RuleDetail = ($val[1].ruleDetail.Replace($linebreakSeq, "`n").Split("`n") | Sort-Object) -join $linebreakSeq
-        if ($val0RuleDetail -eq $val1RuleDetail)
-        {
-            if (!$DifferencesOnly)
-            {
-                "=="  + $tab + $key + $tab + $val0RuleDetail + $tab + $val1RuleDetail + $tab + $val[0].ruleDoco + $tab + $val[1].ruleDoco
+        if ($val0RuleDetail -eq $val1RuleDetail) {
+            if (!$DifferencesOnly) {
+                "==" + $tab + $key + $tab + $val0RuleDetail + $tab + $val1RuleDetail + $tab + $val[0].ruleDoco + $tab + $val[1].ruleDoco
             }
         }
-        else
-        {
-            "<->"  + $tab + $key + $tab + $val0RuleDetail + $tab + $val1RuleDetail + $tab + $val[0].ruleDoco + $tab + $val[1].ruleDoco
+        else {
+            "<->" + $tab + $key + $tab + $val0RuleDetail + $tab + $val1RuleDetail + $tab + $val[0].ruleDoco + $tab + $val[1].ruleDoco
         }
     }
 }
@@ -348,32 +313,28 @@ function ShowKeyValCompare($key, $val)
 # Output everything in order
 
 $csv.AddRange( @(
-    $collections.Keys | Sort-Object | foreach {
-        ShowKeyValCompare $_ $collections[$_]
-    }
+        $collections.Keys | Sort-Object | ForEach-Object {
+            ShowKeyValCompare $_ $collections[$_]
+        }
     )
 )
 $csv.AddRange( @(
-    $rules.Keys | Sort-Object | foreach {
-        ShowKeyValCompare $_ $rules[$_]
-    }
+        $rules.Keys | Sort-Object | ForEach-Object {
+            ShowKeyValCompare $_ $rules[$_]
+        }
     )
 )
 
-if ($Excel)
-{
-    if (CreateExcelApplication)
-    {
+if ($Excel) {
+    if (CreateExcelApplication) {
         AddWorksheetFromCsvData -csv $csv -tabname "$refname vs $compname" -CrLfEncoded $linebreakSeq
         ReleaseExcelApplication
     }
 }
-elseif ($GridView)
-{
+elseif ($GridView) {
     $csv | ConvertFrom-Csv -Delimiter "`t" | Out-GridView -Title $MyInvocation.MyCommand.Name
 }
-else
-{
+else {
     # Just output the CSV raw
     $csv
 }
