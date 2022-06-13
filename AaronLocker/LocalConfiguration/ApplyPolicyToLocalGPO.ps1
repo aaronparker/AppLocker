@@ -40,7 +40,7 @@ if ($null -eq $policyFile)
 }
 else
 {
-    Write-Host "Applying $policyFile" -ForegroundColor Cyan
+    Write-Verbose -Message "Applying $policyFile"
     Set-AppLockerPolicy -XmlPolicy $policyFile
 }
 

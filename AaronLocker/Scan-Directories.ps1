@@ -342,7 +342,7 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
                 # Diagnostics. Seeing sharing violations on some operations
                 if ($alfiErr.Count -gt 0) {
                     Write-Host ($file.FullName + "`tLength = " + $file.Length.ToString()) -ForegroundColor Yellow -BackgroundColor Black
-                    $alfiErr | foreach { Write-Host $_.Exception -ForegroundColor Red -BackgroundColor Black }
+                    $alfiErr | foreach { Write-Error -Message $_.Exception.Message }
                 }
                 if ($null -ne $alfi) {
                     $pub = $alfi.Publisher
@@ -440,7 +440,7 @@ $dirsToInspect.Keys | foreach {
     $dirToInspect = $_
     $safety = $dirsToInspect[$dirToInspect]
     if ($safety -eq $UnknownDir) {
-        Write-Host "about to inspect $dirToInspect for writable directories..." -ForegroundColor Cyan
+        Write-Verbose -Message "about to inspect $dirToInspect for writable directories..."
         if ((Get-Command AccessChk.exe -ErrorAction SilentlyContinue) -eq $null) {
             $errMsg = "Scanning for writable subdirectories requires that Sysinternals AccessChk.exe be in the Path or in the same directory with this script.`n" +
             "AccessChk.exe was not found.`n" +
@@ -458,7 +458,7 @@ $dirsToInspect.Keys | foreach {
         $writableDirs = [ref]@()
     }
 
-    Write-Host "About to inspect $dirToInspect..." -ForegroundColor Cyan
+    Write-Verbose -Message "About to inspect $dirToInspect..."
     $csv.AddRange( @(InspectDirectories $dirToInspect $safety $writableDirs) )
 }
 

@@ -7,7 +7,7 @@ Script reads AppLocker policy from local policy, effective policy, or an XML fil
 
 If neither -AppLockerPolicyFile <path> or -Local is specified, the script processes the current computer's effective policy.
 
-If -linebreakSeq is not specified, CRLF and LF sequences in attribute values are replaced with "^|^". The linebreak sequence can be replaced after importing results into Excel (in the Find/Replace dialog, replace the sequence with Ctrl+Shift+J).
+If -LineBreakSeq is not specified, CRLF and LF sequences in attribute values are replaced with "^|^". The linebreak sequence can be replaced after importing results into Excel (in the Find/Replace dialog, replace the sequence with Ctrl+Shift+J).
 
 .PARAMETER AppLockerPolicyFile
 If this optional string parameter is specified, AppLocker policy is read from the specified XML file.
@@ -15,7 +15,7 @@ If this optional string parameter is specified, AppLocker policy is read from th
 .PARAMETER Local
 If this switch is specified, the script processes the current computer's local policy.
 
-.PARAMETER linebreakSeq
+.PARAMETER LineBreakSeq
 If this optional string parameter is specified, CRLF and LF sequences in attribute values are replaced with the specified sequence. "^|^" is the default.
 
 .EXAMPLE
@@ -25,32 +25,24 @@ ExportPolicy-ToCsv.ps1 | clip.exe
 Renders effective AppLocker policy to tab-delimited CSV and writes that output to the clipboard using the built-in Windows clip.exe utility.
 Paste the output directly into an Excel spreadsheet, replace "^|^" with Ctrl+Shift+J, add filtering, freeze the top row, and autosize.
 
-#>
-
-<#
 #TODO: Add option to get AppLocker policy from AD GPO
 E.g., 
 Get-AppLockerPolicy -Domain -LDAP "LDAP://DC13.Contoso.com/CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=Contoso,DC=com" 
 Figure out how to tie Get-GPO in with this...
-
 #>
 
 param(
     # Optional: path to XML file containing AppLocker policy
     [parameter(Mandatory = $false)]
-    [String]
-    $AppLockerPolicyFile,
+    [String] $AppLockerPolicyFile,
 
     # If specified, inspects local AppLocker policy rather than effective policy or an XML file
-    [switch]
-    $Local = $false,
+    [switch] $Local = $false,
 
     # Optional: specify character sequence to replace line breaks
     [parameter(Mandatory = $false)]
-    [String]
-    $linebreakSeq = "^|^"
+    [String] $LineBreakSeq = "^|^"
 )
-
 
 $tab = "`t"
 
@@ -63,7 +55,7 @@ elseif ($Local) {
     $x = [xml](Get-AppLockerPolicy -Local -Xml)
 }
 else {
-    # Inspect effecive policy
+    # Inspect effective policy
     $x = [xml](Get-AppLockerPolicy -Effective -Xml)
 }
 
@@ -77,7 +69,6 @@ else {
 "Exceptions" + $tab +
 "Name" + $tab +
 "Description"
-
 
 $x.AppLockerPolicy.RuleCollection | ForEach-Object {
     $filetype = $_.Type
@@ -100,29 +91,30 @@ $x.AppLockerPolicy.RuleCollection | ForEach-Object {
             $childNode = $_
             switch ( $childNode.LocalName ) {
                 "FilePublisherRule" {
-                    $ruletype = "Publisher"
+                    $RuleType = "Publisher"
                     $condition = $childNode.Conditions.FilePublisherCondition
                     $ruleInfo = 
-                    "Publisher: " + $condition.PublisherName + $linebreakSeq + 
-                    "Product: " + $condition.ProductName + $linebreakSeq + 
-                    "BinaryName: " + $condition.BinaryName + $linebreakSeq + 
-                    "LowVersion: " + $condition.BinaryVersionRange.LowSection + $linebreakSeq +
+                    "Publisher: " + $condition.PublisherName + $LineBreakSeq + 
+                    "Product: " + $condition.ProductName + $LineBreakSeq + 
+                    "BinaryName: " + $condition.BinaryName + $LineBreakSeq + 
+                    "LowVersion: " + $condition.BinaryVersionRange.LowSection + $LineBreakSeq +
                     "HighVersion: " + $condition.BinaryVersionRange.HighSection
                 }
                 "FilePathRule" {
-                    $ruletype = "Path"
+                    $RuleType = "Path"
                     $ruleInfo = $childNode.Conditions.FilePathCondition.Path
                 }
                 "FileHashRule" {
-                    $ruletype = "Hash"
+                    $RuleType = "Hash"
                     $condition = $childNode.Conditions.FileHashCondition.FileHash
                     $ruleInfo = $condition.SourceFileName + "; length = " + $condition.SourceFileLength
                 }
-                default { $ruletype = $_.LocalName; $condition = $ruleInfo = [string]::Empty; }
+                default { $RuleType = $_.LocalName; $condition = $ruleInfo = [string]::Empty; }
             }
 
             $exceptions = [string]::Empty
             if ($null -ne $childNode.Exceptions) {
+
                 # Output exceptions with a designated separator character sequence that can be replaced with line feeds in Excel
                 [System.Collections.ArrayList]$arrExceptions = @()
                 if ($null -ne $childNode.Exceptions.FilePathCondition) {
@@ -144,16 +136,17 @@ $x.AppLockerPolicy.RuleCollection | ForEach-Object {
                     $arrExceptions.Add( "[----- Hash exceptions -----]" ) | Out-Null
                     $arrExceptions.AddRange( @($childNode.Exceptions.FileHashCondition.FileHash | ForEach-Object { $_.SourceFileName + "; length = " + $_.SourceFileLength } | Sort-Object) )
                 }
-                $exceptions = $arrExceptions -join $linebreakSeq
+                $exceptions = $arrExceptions -join $LineBreakSeq
             }
 
             # Replace CRLF with line-break replacement string; then replace any left-over LF characters with it.
-            $name = $_.Name.Replace("`r`n", $linebreakSeq).Replace("`n", $linebreakSeq)
-            $description = $_.Description.Replace("`r`n", $linebreakSeq).Replace("`n", $linebreakSeq)
+            $name = $_.Name.Replace("`r`n", $LineBreakSeq).Replace("`n", $LineBreakSeq)
+            $description = $_.Description.Replace("`r`n", $LineBreakSeq).Replace("`n", $LineBreakSeq)
+
             # Get user/group name if possible; otherwise show SID. #was: $userOrGroup = $_.UserOrGroupSid
-            $oSID = New-Object System.Security.Principal.SecurityIdentifier($_.UserOrGroupSid)
+            $oSID = New-Object -TypeName System.Security.Principal.SecurityIdentifier($_.UserOrGroupSid)
             $oUser = $null
-            try { $oUser = $oSID.Translate([System.Security.Principal.NTAccount]) } catch {}
+            try { $oUser = $oSID.Translate([System.Security.Principal.NTAccount]) } catch { $oUser = $Null }
             if ($null -ne $oUser) {
                 $userOrGroup = $oUser.Value
             }
@@ -164,7 +157,7 @@ $x.AppLockerPolicy.RuleCollection | ForEach-Object {
 
             $filetype + $tab +
             $enforce + $tab +
-            $ruletype + $tab +
+            $RuleType + $tab +
             $userOrGroup + $tab +
             $action + $tab +
             $ruleInfo + $tab +

@@ -80,7 +80,7 @@ $WDACPathsToAllow | foreach {
 # --------------------------------------------------------------------------------
 # Create rules for trusted publishers
 # --------------------------------------------------------------------------------
-Write-Host "Creating rules for trusted publishers..." -ForegroundColor Cyan
+Write-Verbose -Message "Creating rules for trusted publishers..."
 
 # Run the script that produces the signer information to process. Should come in as a sequence of hashtables.
 # Each hashtable must have a label, and either an exemplar or a publisher.
@@ -127,7 +127,7 @@ $WDACsignersToBuildRulesFor | foreach {
                 if ($_.level -eq $null)            {
                     $level = "Publisher"
                 }
-                Write-Host "Creating rules for $exemplarFile at Level $level and SpecificFileNameLevel $SpecificFileNameLevel..." -ForegroundColor Cyan
+                Write-Verbose -Message "Creating rules for $exemplarFile at Level $level and SpecificFileNameLevel $SpecificFileNameLevel..."
 
                 $WDACAllowRules += & New-CIPolicyRule -DriverFilePath $exemplarFile -Level $level -SpecificFileNameLevel $SpecificFileNameLevel
                 # Determine how many new allow rules were added. This will be used to set Name to match the label and/or add ProductName restriction.
@@ -236,7 +236,7 @@ $WDACsignersToBuildRulesFor | foreach {
 # --------------------------------------------------------------------------------
 # Create custom hash rules
 # --------------------------------------------------------------------------------
-Write-Host "Creating extra hash rules ..." -ForegroundColor Cyan
+Write-Verbose -Message "Creating extra hash rules ..."
 
 $hashRuleData | foreach {
     $CustomRuleCount = $CustomRuleCount+1
@@ -275,7 +275,7 @@ $hashRuleData | foreach {
 # The files in the merge-rules directories will be merged into the main document later.
 # (Doing this after the other files are created in the MergeRulesDynamicDir - file naming logic handles cases where
 # file already exists from the other dynamically-generated files above, or if multiple items have the same label.
-Write-Host "Creating rules for files in 'unsafe' paths..." -ForegroundColor Cyan
+Write-Verbose -Message "Creating rules for files in 'unsafe' paths..."
 
 $UnsafePathsToBuildRulesFor | foreach {
     $label = $_.label
@@ -333,7 +333,7 @@ $UnsafePathsToBuildRulesFor | foreach {
         {
             if (Test-Path $CurPath)
             {
-                Write-Host "Generating rules for specified path: $CurPath..." -ForegroundColor Cyan
+                Write-Verbose -Message "Generating rules for specified path: $CurPath..."
                 # Determine whether directory or file and run new-cipolicyrule with the appropriate switches for path or single file
                 $PathInfo = Get-Item $CurPath -Force
                 if ($PathInfo -is [System.IO.DirectoryInfo])
@@ -369,7 +369,7 @@ $UnsafePathsToBuildRulesFor | foreach {
     }
 }
 
-Write-Host "Saving policy XML for custom publisher and hash rules..." -ForegroundColor Cyan
+Write-Verbose -Message "Saving policy XML for custom publisher and hash rules..."
 # Save XML as Unicode
 SaveXmlDocAsUnicode -xmlDoc $WDACAllowBaseXML -xmlFilename $WDACAllowRulesXMLFile
 Merge-CIPolicy -OutputFilePath $WDACAllowRulesXMLFile -PolicyPaths $WDACAllowRulesXMLFile -Rules $WDACAllowRules
@@ -380,7 +380,7 @@ Merge-CIPolicy -OutputFilePath $WDACAllowRulesXMLFile -PolicyPaths $WDACAllowRul
 ####################################################################################################
 if ( $Rescan -or !(Test-Path($WDACBlockPolicyXMLFile) ) )
 {
-    Write-Host "Processing EXE files to block..." -ForegroundColor Cyan
+    Write-Verbose -Message "Processing EXE files to block..."
     # Create a hash collection for publisher information. Key on publisher name, product name, and binary name.
     # Add to collection if equivalent is not already in the collection.
     $WDACExeFilesToBlock = @()
@@ -438,13 +438,13 @@ foreach ($CurPolicyType in "Allow","Deny")
         [xml]$CurAuditPolicyXML = Get-Content -Path $CurAuditPolicyXMLFile
         $CurAuditPolicyXML.SiPolicy.BasePolicyID = $PolicyID
         $CurAuditPolicyXML.SiPolicy.PolicyID = $PolicyID
-        Write-Host "Saving $CurAuditPolicyXMLFile after setting PolicyID info from previous run..." -ForegroundColor Cyan
+        Write-Verbose -Message "Saving $CurAuditPolicyXMLFile after setting PolicyID info from previous run..."
         # Save XML as Unicode
         SaveXmlDocAsUnicode -xmlDoc $CurAuditPolicyXML -xmlFilename $CurAuditPolicyXMLFile
     }
     else
     {
-        Write-Host "Resetting new PolicyID for $CurAuditPolicyXMLFile..." -ForegroundColor Cyan
+        Write-Verbose -Message "Resetting new PolicyID for $CurAuditPolicyXMLFile..."
         Set-CIPolicyIdInfo -FilePath $CurAuditPolicyXMLFile -ResetPolicyID
     }
 
@@ -455,28 +455,28 @@ foreach ($CurPolicyType in "Allow","Deny")
     if ($WDACTrustISG) {Set-RuleOption -FilePath $CurAuditPolicyXMLFile -Option 14} # Enabled:Intelligent Security Graph Authorization
     if ($knownAdmins.Count -gt 0) {Set-RuleOption -FilePath $CurAuditPolicyXMLFile -Option 18} # Disabled:Runtime FilePath Rule Protection
 
-    Write-Host "Merging custom rule sets into new policy file..." -ForegroundColor Cyan
+    Write-Verbose -Message "Merging custom rule sets into new policy file..."
     # Merge any and all policy files found in the MergeRules directories, typically for authorized files in writable directories.
     # Some may have been created in the previous step; others might have been dropped in from other sources.
     Get-ChildItem $mergeRulesDynamicDir\$WDACrulesFileBase*.xml, $mergeRulesStaticDir\$WDACrulesFileBase*.xml -Exclude $Exclusion | foreach {
         $policyFileToMerge = $_
-        Write-Host ("`tMerging " + $_.Directory.Name + "\" + $_.Name) -ForegroundColor Cyan
+        Write-Host ("`tMerging " + $_.Directory.Name + "\" + $_.Name)
         Merge-CIPolicy -OutputFilePath $CurAuditPolicyXMLFile -PolicyPaths $CurAuditPolicyXMLFile,$policyFileToMerge
     }
 
-    Write-Host "Updating PolicyName, PolicyVersion, and TimeStamp..." -ForegroundColor Cyan
+    Write-Verbose -Message "Updating PolicyName, PolicyVersion, and TimeStamp..."
     # Set policy name, version, and timestamp for the new policy file
     Set-CIPolicyIdInfo -FilePath $CurAuditPolicyXMLFile -PolicyName $PolicyName 
     Set-CIPolicyVersion -FilePath $CurAuditPolicyXMLFile -Version $PolicyVersion
     Set-CIPolicySetting -FilePath $CurAuditPolicyXMLFile -Provider "PolicyInfo" -Key "Information" -ValueName "TimeStamp" -ValueType String -Value $strRuleDocTimestamp
 
     # Copy Audit policy to enforced
-    Write-Host "Copying $CurAuditPolicyXMLFile to $CurEnforcedPolicyXMLFile..." -ForegroundColor Cyan
+    Write-Verbose -Message "Copying $CurAuditPolicyXMLFile to $CurEnforcedPolicyXMLFile..."
     cp $CurAuditPolicyXMLFile $CurEnforcedPolicyXMLFile
 
     # Update policy name for enforced policy
     $PolicyName = "WDAC AaronLocker "+ $CurPolicyType +" list - Enforced"
-    Write-Host "Setting PolicyName for $CurEnforcedPolicyXMLFile to $PolicyName..." -ForegroundColor Cyan
+    Write-Verbose -Message "Setting PolicyName for $CurEnforcedPolicyXMLFile to $PolicyName..."
     Set-CIPolicyIdInfo -FilePath $CurEnforcedPolicyXMLFile -PolicyName $PolicyName
 
     # Remove audit mode option from enforced policy 

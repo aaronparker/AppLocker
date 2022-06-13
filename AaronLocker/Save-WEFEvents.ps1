@@ -60,5 +60,5 @@ else
 }
 
 $csvFull | Out-File -Encoding unicode $filenameFull
-Write-Host "Events written to $filenameFull" -ForegroundColor Cyan
+Write-Verbose -Message "Events written to $filenameFull"
 

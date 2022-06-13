@@ -42,7 +42,7 @@ if ($null -ne $cs) {
         }
     }
     else {
-        Write-Host "Computer is not domain-joined; not adding path for DC shares." -ForegroundColor Cyan
+        Write-Verbose -Message "Computer is not domain-joined; not adding path for DC shares."
     }
 }
 

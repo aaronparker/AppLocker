@@ -444,12 +444,12 @@ $headers =
 if ($EvtxLogFilePaths)
 {
     $EvtxLogFilePaths | foreach {
-        Write-Host "Calling Get-WinEvent -Path $_ ..." -ForegroundColor Cyan
+        Write-Verbose -Message "Calling Get-WinEvent -Path $_ ..."
         # Always ensure that $oEvents is an array, whether it contains 0, 1, or more items
         $oEvents = @(Get-WinEvent -Path $_ -FilterXPath $filter -ErrorAction SilentlyContinue -ErrorVariable gweErr)
         if ($gweErr.Count -gt 0)
         {
-            $gweErr | foreach { Write-Host ("--> " + $_.ToString()) -ForegroundColor Cyan }
+            $gweErr | foreach { Write-Host ("--> " + $_.ToString()) }
         }
         $ev.AddRange($oEvents)
     }
@@ -459,24 +459,24 @@ else
     $eventLogs | foreach {
         if ($ComputerName)
         {
-            Write-Host "Calling Get-WinEvent -LogName $_ -ComputerName $ComputerName ..." -ForegroundColor Cyan
+            Write-Verbose -Message "Calling Get-WinEvent -LogName $_ -ComputerName $ComputerName ..."
             # Always ensure that $oEvents is an array, whether it contains 0, 1, or more items
             $oEvents = @(Get-WinEvent -LogName $_ -ComputerName $ComputerName -FilterXPath $filter -ErrorAction SilentlyContinue -ErrorVariable gweErr)
         }
         else
         {
-            Write-Host "Calling Get-WinEvent -LogName $_ ..." -ForegroundColor Cyan
+            Write-Verbose -Message "Calling Get-WinEvent -LogName $_ ..."
             # Always ensure that $oEvents is an array, whether it contains 0, 1, or more items
             $oEvents = @(Get-WinEvent -LogName $_ -FilterXPath $filter -ErrorAction SilentlyContinue -ErrorVariable gweErr)
         }
         if ($gweErr.Count -gt 0)
         {
-            $gweErr | foreach { Write-Host ("--> " + $_.ToString()) -ForegroundColor Cyan }
+            $gweErr | foreach { Write-Host ("--> " + $_.ToString()) }
         }
         $ev.AddRange($oEvents)
     }
 }
-Write-Host ($ev.Count.ToString() + " events retrieved.") -ForegroundColor Cyan
+Write-Host ($ev.Count.ToString() + " events retrieved.")
 
 #
 # Create output array; add CSV headers
@@ -771,7 +771,7 @@ $oLines = @(
         $count++
         if ($count -eq 100)
         {
-            Write-Host "." -NoNewline -ForegroundColor Cyan
+            Write-Verbose -Message "." -NoNewline
             $count = 0
         }
     } | Sort-Object
@@ -815,8 +815,8 @@ if (!$NoFilteredMachines)
     $csv.AddRange($oLines)
 }
 
-Write-Host "" # New line after the dots
-Write-Host "$filteredOut events filtered out." -ForegroundColor Cyan
+Write-Verbose -Message "" # New line after the dots
+Write-Verbose -Message "$filteredOut events filtered out."
 
 if ($Excel)
 {

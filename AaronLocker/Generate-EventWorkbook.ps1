@@ -79,7 +79,7 @@ else
 }
 
 
-Write-Host "Reading data from $AppLockerEventsCsvFile" -ForegroundColor Cyan
+Write-Verbose -Message "Reading data from $AppLockerEventsCsvFile"
 $csvFull = @(Get-Content $AppLockerEventsCsvFile)
 $dataUnfiltered = @($csvFull | ConvertFrom-Csv -Delimiter "`t")
 $dataFiltered   = @($dataUnfiltered | Where-Object { $_.EventType -ne $sFiltered })
@@ -103,7 +103,7 @@ if (CreateExcelApplication)
 
     # Lines of text for the summary page
     $tabname = "Summary"
-    Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+    Write-Verbose -Message "Gathering data for `"$tabname`"..."
     [System.Collections.ArrayList]$text = @()
     $text.Add( "Summary information" ) | Out-Null
     $text.Add( "" ) | Out-Null
@@ -133,7 +133,7 @@ if (CreateExcelApplication)
     {
         # Users per location:
         $tabname = "# Users per Location"
-        Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+        Write-Verbose -Message "Gathering data for `"$tabname`"..."
         $csv = @($dataFiltered | Select-Object Location, UserName -Unique | Group-Object Location | Select-Object Name, Count | Sort-Object -Property $CountDescNameAsc | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation)
         # Change the headers
         $csv[0] = "Location" + "`t" + "# of distinct users"
@@ -144,7 +144,7 @@ if (CreateExcelApplication)
     {
         # Users per publisher:
         $tabname = "# Users per Publisher"
-        Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+        Write-Verbose -Message "Gathering data for `"$tabname`"..."
         $csv = @($dataFiltered | Select-Object PublisherName, UserName -Unique | Group-Object PublisherName | Select-Object Name, Count | Sort-Object -Property $CountDescNameAsc | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation)
         # Change the headers
         $csv[0] = "PublisherName" + "`t" + "# of distinct users"
@@ -155,7 +155,7 @@ if (CreateExcelApplication)
     {
         # Publisher/product combinations:
         $tabname = "Publisher-product combinations"
-        Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+        Write-Verbose -Message "Gathering data for `"$tabname`"..."
         $csv = @($eventsSigned | Select-Object PublisherName, ProductName | Sort-Object PublisherName, ProductName -Unique | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname
     }
@@ -164,7 +164,7 @@ if (CreateExcelApplication)
     {
         # Users per file:
         $tabname = "# Users per File"
-        Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+        Write-Verbose -Message "Gathering data for `"$tabname`"..."
         $csv = @($dataFiltered | Select-Object Location, GenericPath, UserName -Unique | Group-Object Location, GenericPath | Select-Object Name, Count | Sort-Object -Property $CountDescNameAsc | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation)
         # Change the headers
         $csv[0] = "Location, GenericPath" + "`t" + "# of distinct users"
@@ -175,7 +175,7 @@ if (CreateExcelApplication)
     {
         # Publisher/product/file combinations:
         $tabname = "Signed file info"
-        Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+        Write-Verbose -Message "Gathering data for `"$tabname`"..."
         $csv = @($eventsSigned | Select-Object PublisherName, ProductName, Location, GenericPath, FileName, FileType | Sort-Object PublisherName, ProductName, Location, GenericPath -Unique | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname
     }
@@ -184,7 +184,7 @@ if (CreateExcelApplication)
     {
         # Analysis of unsigned files:
         $tabname = "Unsigned file info"
-        Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+        Write-Verbose -Message "Gathering data for `"$tabname`"..."
         $csv = @($eventsUnsigned | Select-Object Location, GenericPath, FileName, FileType, Hash | Sort-Object Location, GenericPath -Unique | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname
     }
@@ -193,7 +193,7 @@ if (CreateExcelApplication)
     {
         # Files by user
         $tabname = "Files by User"
-        Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+        Write-Verbose -Message "Gathering data for `"$tabname`"..."
         $csv = @($dataFiltered | Select-Object UserName, Location, GenericPath, FileType, PublisherName, ProductName | Sort-Object UserName, Location, GenericPath -Unique | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname
     }
@@ -202,7 +202,7 @@ if (CreateExcelApplication)
     {
         # Files by user (details)
         $tabname = "Files by User (details)"
-        Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+        Write-Verbose -Message "Gathering data for `"$tabname`"..."
         $csv = @($dataFiltered | Select-Object UserName, MachineName, EventTimeXL, FileType, GenericPath, PublisherName, ProductName | Sort-Object UserName, MachineName, EventTimeXL, FileType, GenericPath -Unique | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation)
         AddWorksheetFromCsvData -csv $csv -tabname $tabname
     }
@@ -214,7 +214,7 @@ if (CreateExcelApplication)
     {
         # Events per machine:
         $tabname = "# Events per Machine"
-        Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+        Write-Verbose -Message "Gathering data for `"$tabname`"..."
         $csv = @($dataFiltered.MachineName | Group-Object | Select-Object Name, Count | Sort-Object -Property $CountDescNameAsc | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation)
         if ($csv.Length -eq 0) { $csv = @("header") } # No events - insert dummy header row, replaced in a moment
         $csv += @($dataUnfiltered | Where-Object { $_.EventType -eq $sFiltered } | ForEach-Object { $_.MachineName + "`t0" })
@@ -226,7 +226,7 @@ if (CreateExcelApplication)
         {
             # Counts of each publisher:
             $tabname = "# Events per Publisher"
-            Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+            Write-Verbose -Message "Gathering data for `"$tabname`"..."
             $csv = @($dataFiltered.PublisherName | Group-Object | Select-Object Name, Count | Sort-Object -Property $CountDescNameAsc | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation)
             # Change the headers
             if ($csv.Length -gt 0 ) { $csv[0] = "PublisherName" + "`t" + "Events" }
@@ -237,7 +237,7 @@ if (CreateExcelApplication)
         {
             # Events per user:
             $tabname = "# Events per User"
-            Write-Host "Gathering data for `"$tabname`"..." -ForegroundColor Cyan
+            Write-Verbose -Message "Gathering data for `"$tabname`"..."
             $csv = @($dataFiltered.UserName | Group-Object | Select-Object Name, Count | Sort-Object -Property $CountDescNameAsc | ConvertTo-Csv -Delimiter "`t" -NoTypeInformation)
             # Change the headers
             $csv[0] = "UserName" + "`t" + "Events"

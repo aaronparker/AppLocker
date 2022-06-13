@@ -24,14 +24,14 @@ Create-Policies-AppLocker.ps1 is called by Create-Policies.ps1 to generate compr
 if ($Rescan)
 {
     # Enumerate user-writable subdirectories in protected directories. Capture grantees so they can be inspected afterwards.
-	Write-Host "Enumerating writable directories in $env:windir" -ForegroundColor Cyan
+	Write-Verbose -Message "Enumerating writable directories in $env:windir"
 	& $ps1_EnumWritableDirs -RootDirectory $env:windir -ShowGrantees -OutputXML -KnownAdmins $knownAdmins | Out-File -Encoding ASCII $windirFullXml
-	Write-Host "Enumerating writable directories in $env:ProgramFiles" -ForegroundColor Cyan
+	Write-Verbose -Message "Enumerating writable directories in $env:ProgramFiles"
 	& $ps1_EnumWritableDirs -RootDirectory $env:ProgramFiles -ShowGrantees -OutputXML -KnownAdmins $knownAdmins | Out-File -Encoding ASCII $PfFullXml
     # The following applies only to 64-bit Windows; skip it on 32-bit and create an empty file
     if ($null -ne ${env:ProgramFiles(x86)})
     {
-	    Write-Host "Enumerating writable directories in ${env:ProgramFiles(x86)}" -ForegroundColor Cyan
+	    Write-Verbose -Message "Enumerating writable directories in ${env:ProgramFiles(x86)}"
 	    & $ps1_EnumWritableDirs -RootDirectory ${env:ProgramFiles(x86)} -ShowGrantees -OutputXML -KnownAdmins $knownAdmins | Out-File -Encoding ASCII $Pf86FullXml
     }
     else
@@ -119,7 +119,7 @@ if ($Rescan)
         }
     }
 
-    Write-Host "Removing redundancies in scan results" -ForegroundColor Cyan
+    Write-Verbose -Message "Removing redundancies in scan results"
     RemoveRedundantLinesAndIdentifyWritableADS $windirFullXml | Out-File -Encoding ASCII $windirTxt
     RemoveRedundantLinesAndIdentifyWritableADS $PfFullXml     | Out-File -Encoding ASCII $PfTxt
     RemoveRedundantLinesAndIdentifyWritableADS $Pf86FullXml   | Out-File -Encoding ASCII $Pf86Txt
@@ -270,7 +270,7 @@ $csvExeDenyListData | foreach {
 # Remove the placeholder element
 $xExcepts.RemoveChild($xPlaceholder) | Out-Null
 
-Write-Host "Processing additional safe paths to AllowList..." -ForegroundColor Cyan
+Write-Verbose -Message "Processing additional safe paths to AllowList..."
 # Incorporate authorized safe paths into the document
 # Add "allow" for Everyone for Exe, Dll, and Script rules
 $xRuleCollections = $xDocument.SelectNodes("//RuleCollection[@Type='Exe' or @Type='Script' or @Type='Dll']")
@@ -353,7 +353,7 @@ Remove-Item ([System.IO.Path]::Combine($mergeRulesDynamicDir, "*.xml")) -Exclude
 ####################################################################################################
 # Create rules for trusted publishers
 ####################################################################################################
-Write-Host "Creating rules for trusted publishers..." -ForegroundColor Cyan
+Write-Verbose -Message "Creating rules for trusted publishers..."
 
 # Define an empty AppLocker policy to fill, with a blank publisher rule to use as a template.
 $signerPolXml = [xml]@"
@@ -471,7 +471,7 @@ $signersToBuildRulesFor | foreach {
             {
                 $fpr.Description = "Information acquired from $fname_TrustedSigners"
             }
-            Write-Host ("`t" + $fpr.Name) -ForegroundColor Cyan
+            Write-Host ("`t" + $fpr.Name)
 
             if ($publisher.ToLower().Contains("microsoft") -and $product.Length -eq 0 -and ($ruleCollection.Length -eq 0 -or $ruleCollection -eq "Exe"))
             {
@@ -520,7 +520,7 @@ if ($fprRulesNotEmpty)
 ####################################################################################################
 # Create custom hash rules
 ####################################################################################################
-Write-Host "Creating extra hash rules ..." -ForegroundColor Cyan
+Write-Verbose -Message "Creating extra hash rules ..."
 
 # Define an empty AppLocker policy to fill, with a blank hash rule to use as a template.
 $hashRuleXml = [xml]@"
@@ -622,7 +622,7 @@ $UnsafePathsToBuildRulesFor | foreach {
         $outfileHash = [System.IO.Path]::Combine($mergeRulesDynamicDir, $rulesFileBase + $label + " (" + $ixOutfile.ToString() + ") Hash Rules.xml")
         $ixOutfile++
     }
-    Write-Host ("Scanning $label`:", $paths) -Separator "`n`t" -ForegroundColor Cyan
+    Write-Host ("Scanning $label`:", $paths) -Separator "`n`t"
     & $ps1_BuildRulesForFilesInWritableDirectories -FileSystemPaths $paths -RecurseDirectories: $recurse -PubRuleGranularity $pubruleGranularity -RuleNamePrefix $label -OutputPubFileName $outfilePub -OutputHashFileName $outfileHash
 }
 
@@ -661,13 +661,13 @@ SaveXmlDocAsUnicode -xmlDoc $timestampXml -xmlFilename $timestampFile
 # Load the XML document with modifications into an AppLockerPolicy object
 $masterPolicy = [Microsoft.Security.ApplicationId.PolicyManagement.PolicyModel.AppLockerPolicy]::FromXml($xDocument.OuterXml)
 
-Write-Host "Loading custom rule sets..." -ForegroundColor Cyan
+Write-Verbose -Message "Loading custom rule sets..."
 # Merge any and all policy files found in the MergeRules directories, typically for authorized files in writable directories.
 # Some may have been created in the previous step; others might have been dropped in from other sources.
 # Excludes WDAC-specific files.
 Get-ChildItem $mergeRulesDynamicDir\*.xml, $mergeRulesStaticDir\*.xml -Exclude $WDACrulesFileBase*.* | foreach {
     $policyFileToMerge = $_
-    Write-Host ("`tMerging " + $_.Directory.Name + "\" + $_.Name) -ForegroundColor Cyan
+    Write-Host ("`tMerging " + $_.Directory.Name + "\" + $_.Name)
     $policyToMerge = [Microsoft.Security.ApplicationId.PolicyManagement.PolicyModel.AppLockerPolicy]::Load($policyFileToMerge)
     $masterPolicy.Merge($policyToMerge)
 }
@@ -683,7 +683,7 @@ Remove-Item $timestampFile -Exclude $WDACrulesFileBase*.*
 
 # Generate two versions of the rules file: one with rules enforced, and one with auditing only.
 
-Write-Host "Creating final rule outputs..." -ForegroundColor Cyan
+Write-Verbose -Message "Creating final rule outputs..."
 
 # Generate the Enforced version
 foreach( $ruleCollection in $masterPolicy.RuleCollections)

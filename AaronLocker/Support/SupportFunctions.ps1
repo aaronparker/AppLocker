@@ -65,7 +65,7 @@ $ExcelAppInstance = $null
 
 # Create global instance of Excel application. Call ReleaseExcelApplication when done using it.
 function CreateExcelApplication() {
-    Write-Host "Starting Excel..." -ForegroundColor Cyan
+    Write-Verbose -Message "Starting Excel..."
     $global:ExcelAppInstance = New-Object -ComObject excel.application
     if ($null -ne $global:ExcelAppInstance) {
         $global:ExcelAppInstance.Visible = $true
@@ -79,8 +79,8 @@ function CreateExcelApplication() {
 
 # Release global instance of Excel application. Make sure to call after CreateExcelApplication.
 function ReleaseExcelApplication() {
-    Write-Host "Releasing Excel..." -ForegroundColor Cyan
-    $dummy = [System.Runtime.Interopservices.Marshal]::ReleaseComObject($global:ExcelAppInstance)
+    Write-Verbose -Message "Releasing Excel..."
+    $dummy = [System.Runtime.InteropServices.Marshal]::ReleaseComObject($global:ExcelAppInstance)
     $global:ExcelAppInstance = $null
 }
 
@@ -91,7 +91,7 @@ function SelectFirstWorksheet() {
 }
 
 function SaveWorkbook([string]$filename) {
-    Write-Host "Saving workbook as `"$filename`"..." -ForegroundColor Cyan
+    Write-Verbose -Message "Saving workbook as `"$filename`"..."
     if ($null -eq $global:ExcelAppInstance) { return }
     if ($global:ExcelAppInstance.Workbooks.Count -eq 0) { return }
     $global:ExcelAppInstance.Workbooks[1].SaveAs($filename)
@@ -124,7 +124,7 @@ function AddNewWorksheet([string]$tabname) {
 # Supports multi-column text; if text has tab characters, splits across cells in the row
 # TODO: Add support for more than 26 columns (e.g., AA1, AB1, AA2, ...)
 function AddWorksheetFromText([string[]]$text, [string]$tabname) {
-    Write-Host "Populating tab `"$tabname`"..." -ForegroundColor Cyan
+    Write-Verbose -Message "Populating tab `"$tabname`"..."
 
     if ($null -eq $global:ExcelAppInstance) { return $null }
 
@@ -151,7 +151,7 @@ function AddWorksheetFromText([string[]]$text, [string]$tabname) {
 
 # Add a new named worksheet from CSV data in the specified file, optionally replacing encoded CrLf with CrLf.
 function AddWorksheetFromCsvFile([string]$filename, [string]$tabname, [string]$CrLfEncoded, [switch]$AddChart) {
-    Write-Host "Populating tab `"$tabname`"..." -ForegroundColor Cyan
+    Write-Verbose -Message "Populating tab `"$tabname`"..."
 
     if ($null -eq $global:ExcelAppInstance) { return $null }
 
@@ -195,7 +195,6 @@ function AddWorksheetFromCsvFile([string]$filename, [string]$tabname, [string]$C
         # Do this until the next to last column; don't set max width on the last column
         while ( $worksheet.Cells(1, $ix + 1).Text.Length -gt 0) {
             $cells = $worksheet.Cells(1, $ix)
-            #Write-Host ($cells.Text + "; " + $cells.ColumnWidth)
             if ($cells.ColumnWidth -gt $maxWidth) { $cells.ColumnWidth = $maxWidth }
             $ix++
         }
@@ -208,7 +207,6 @@ function AddWorksheetFromCsvFile([string]$filename, [string]$tabname, [string]$C
         $ix = 1
         while ( $worksheet.Cells($ix, 1).Text.Length -gt 0) {
             $cells = $worksheet.Cells($ix, 1)
-            #Write-Host ($ix.ToString() + "; " + $cells.RowHeight)
             if ($cells.RowHeight -gt $maxHeight) { $cells.RowHeight = $maxHeight }
             $ix++
         }
@@ -249,7 +247,7 @@ function AddWorksheetFromCsvFile([string]$filename, [string]$tabname, [string]$C
             $sSeries =
             "=SERIES(`"" + $worksheet.Range('$B1').Text + "`"," +
             "{" + $sSeries1.ToString() + "},{" + $sSeries2.ToString() + "},1)"
-            #Write-Host $sSeries -ForegroundColor Green
+
             $oChart.SeriesCollection(1).Formula = $sSeries
             #$oChart.SetSourceData($worksheet.Range('$A$1:$B$' + ($chartLimit + 1).ToString()), 2) # 2 = xlColumns
             # $oChart.ChartTitle.Text = "Top " + $chartLimit.ToString() + " " + $tabname
@@ -276,7 +274,7 @@ function AddWorksheetFromCsvFile([string]$filename, [string]$tabname, [string]$C
 
 # Add a new named worksheet from in-memory CSV data (string array), optionally replacing encoded CrLf with CrLf.
 function AddWorksheetFromCsvData([string[]]$csv, [string]$tabname, [string]$CrLfEncoded, [switch]$AddChart) {
-    Write-Host "Preparing data for tab `"$tabname`"..." -ForegroundColor Cyan
+    Write-Verbose -Message "Preparing data for tab `"$tabname`"..."
 
     if ($null -eq $global:ExcelAppInstance) { return $null }
 

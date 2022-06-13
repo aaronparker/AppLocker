@@ -134,7 +134,7 @@ if ( ($AppLockerOrWDAC -eq "WDAC") -and ($OSBuild -lt 18362) ) {
     return
 }
 elseif ( ($AppLockerOrWDAC -eq "Both") -and ($OSBuild -lt 18362) ) {
-    Write-Host ("AaronLocker supports WDAC on Windows 10 version 1903 (build 18362) and greater. Current build is " + $OSBuild + ". Processing AppLocker only.") -ForegroundColor Cyan
+    Write-Host ("AaronLocker supports WDAC on Windows 10 version 1903 (build 18362) and greater. Current build is " + $OSBuild + ". Processing AppLocker only.")
     $AppLockerOrWDAC = "AppLocker"
 }
 # --------------------------------------------------------------------------------
@@ -201,7 +201,7 @@ else {$ProcessWDACLikeAppLocker = $false}
 
 # If just processing WDAC and no custom admins are defined, 
 if (($Rescan) -and ($AppLockerOrWDAC -eq "WDAC") -and !($ProcessWDACLikeAppLocker)) {
-    Write-Host "Skipping scan for user-writable directories - not required for WDAC." -ForegroundColor Cyan
+    Write-Verbose -Message "Skipping scan for user-writable directories - not required for WDAC."
     $Rescan = $false
 }
 
@@ -210,13 +210,13 @@ if (($Rescan) -and ($AppLockerOrWDAC -eq "WDAC") -and !($ProcessWDACLikeAppLocke
 ####################################################################################################
 # Get Block List -- WDAC could potentially use recommended blocks policy instead? If so, move this back to AppLocker-specific script
 if ( $Rescan -or ( ($AppLockerOrWDAC -in "Both", "AppLocker") -and !(Test-Path($ExeDenyListData) ) ) -or ( ($AppLockerOrWDAC -in "Both", "WDAC") ) ) {
-    Write-Host "Get EXE files to DenyList for later processing..." -ForegroundColor Cyan
+    Write-Verbose -Message "Get EXE files to DenyList for later processing..."
     # Get the EXE files to DenyList from the script that produces that list.
     $exeFilesToDenyList = (& $ps1_GetExeFilesToDenyList)
 }
 
 # Get additional authorized safe paths from the script that produces that list 
-Write-Host "Get authorized safe paths for later processing..." -ForegroundColor Cyan
+Write-Verbose -Message "Get authorized safe paths for later processing..."
 $PathsToAllow = (& $ps1_GetSafePathsToAllow)
 
 # Run the script that gets "unsafe" user-writable paths for later processing. Should come in as a sequence of hashtables.
@@ -225,7 +225,7 @@ if ( !(Test-Path($ps1_UnsafePathsToBuildRulesFor)) ) {
     Write-Warning $errmsg
 }
 else {
-    Write-Host "Get 'unsafe' user-writable paths for later processing..." -ForegroundColor Cyan
+    Write-Verbose -Message "Get 'unsafe' user-writable paths for later processing..."
     $UnsafePathsToBuildRulesFor = (& $ps1_UnsafePathsToBuildRulesFor)
 }
 
