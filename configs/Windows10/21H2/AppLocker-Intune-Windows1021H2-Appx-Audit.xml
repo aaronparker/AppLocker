@@ -1,0 +1,177 @@
+<RuleCollection Type="Appx" EnforcementMode="AuditOnly">
+  <FilePublisherRule Id="a9e18c21-ff8f-43cf-b9fc-db40eed693ba" Name="(Default Rule) All signed packaged apps" Description="Allows members of the Everyone group to run packaged apps that are signed." UserOrGroupSid="S-1-1-0" Action="Allow">
+    <Conditions>
+      <FilePublisherCondition PublisherName="*" ProductName="*" BinaryName="*">
+        <BinaryVersionRange LowSection="0.0.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="95073692-2aa1-4e56-9329-364223cbf395" Name="AppX: Microsoft.MicrosoftEdge.Stable signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Allow">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.MicrosoftEdge.Stable" BinaryName="*">
+        <BinaryVersionRange LowSection="92.0.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="b1c7af8b-cdee-4313-9e73-ca87aa595330" Name="AppX: Microsoft.MicrosoftEdgeDevToolsClient signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Allow">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.MicrosoftEdgeDevToolsClient" BinaryName="*">
+        <BinaryVersionRange LowSection="1000.19041.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="ad791485-a9f6-4902-8e0a-f384840145e5" Name="AppX: Microsoft.MicrosoftEdge signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Allow">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.MicrosoftEdge" BinaryName="*">
+        <BinaryVersionRange LowSection="44.19041.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="1888345f-6822-407c-8ea8-1b695c97bfe9" Name="AppX: Microsoft.XboxGameCallableUI signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.XboxGameCallableUI" BinaryName="*">
+        <BinaryVersionRange LowSection="1000.19041.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="1d6d4ce4-9f40-444d-8796-126f8f3eb19a" Name="AppX: Microsoft.Getstarted signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.Getstarted" BinaryName="*">
+        <BinaryVersionRange LowSection="8.2.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="bd46508e-7a10-4956-933f-c78e5ba08883" Name="AppX: Microsoft.Xbox.TCUI signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.Xbox.TCUI" BinaryName="*">
+        <BinaryVersionRange LowSection="1.23.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="fcac1423-c187-44ad-9735-a9f709d93ae9" Name="AppX: RealtekSemiconductorCorp.RealtekAudioControl signed by Realtek Semiconductor Corp" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=83564403-0B26-46B8-9D84-040F43691D31" ProductName="RealtekSemiconductorCorp.RealtekAudioControl" BinaryName="*">
+        <BinaryVersionRange LowSection="1.1.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="142dcc02-a06c-4b79-af8c-181959c40654" Name="AppX: DolbyLaboratories.DolbyAudioPremium signed by Dolby Laboratories" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=58D26209-1D57-482C-B403-B655571B5C7B" ProductName="DolbyLaboratories.DolbyAudioPremium" BinaryName="*">
+        <BinaryVersionRange LowSection="3.20402.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="097c996b-72b3-4de0-afda-5c0818d0bd49" Name="AppX: Microsoft.XboxSpeechToTextOverlay signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.XboxSpeechToTextOverlay" BinaryName="*">
+        <BinaryVersionRange LowSection="1.21.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="07b01b4b-d29b-4760-8d07-809a82d69b17" Name="AppX: Microsoft.MSPaint signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.MSPaint" BinaryName="*">
+        <BinaryVersionRange LowSection="6.2203.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="355217ac-a92b-46da-b8ee-d34d8fdc8a07" Name="AppX: Microsoft.XboxIdentityProvider signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.XboxIdentityProvider" BinaryName="*">
+        <BinaryVersionRange LowSection="12.85.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="fa579dfd-4d32-412c-ac38-c4f484c41cfe" Name="AppX: Microsoft.DesktopAppInstaller signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Allow">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.DesktopAppInstaller" BinaryName="*">
+        <BinaryVersionRange LowSection="1.17.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="bfacceba-6a10-4b20-9134-99c0591bacf7" Name="AppX: Microsoft.Office.OneNote signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.Office.OneNote" BinaryName="*">
+        <BinaryVersionRange LowSection="16001.14326.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="8696ce16-ec51-4a48-8a3b-5eef8d4d7ff8" Name="AppX: Microsoft.MicrosoftOfficeHub signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.MicrosoftOfficeHub" BinaryName="*">
+        <BinaryVersionRange LowSection="18.2110.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="103c4bde-ef15-41a3-afc3-5a1cac76f066" Name="AppX: Microsoft.Windows.Photos signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.Windows.Photos" BinaryName="*">
+        <BinaryVersionRange LowSection="2021.21090.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="5e910103-98ad-413e-9f4b-7f51cc91c02f" Name="AppX: Microsoft.WindowsMaps signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.WindowsMaps" BinaryName="*">
+        <BinaryVersionRange LowSection="10.2104.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="aa1cf9ee-4683-4580-8104-e90c27232213" Name="AppX: Microsoft.WindowsSoundRecorder signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.WindowsSoundRecorder" BinaryName="*">
+        <BinaryVersionRange LowSection="10.2103.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="84eb9b58-b9f1-473b-be92-d373c8a4a3a5" Name="AppX: Microsoft.MicrosoftStickyNotes signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.MicrosoftStickyNotes" BinaryName="*">
+        <BinaryVersionRange LowSection="4.5.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="42789061-bf8d-4c2b-a0c1-9d45991e9585" Name="AppX: Microsoft.ScreenSketch signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.ScreenSketch" BinaryName="*">
+        <BinaryVersionRange LowSection="10.2008.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="7f38017a-1e68-4b75-97a7-677e35b2d110" Name="AppX: Microsoft.WindowsAlarms signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.WindowsAlarms" BinaryName="*">
+        <BinaryVersionRange LowSection="10.2101.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="5e7a2b35-42df-4b41-8b02-add5ebb421de" Name="AppX: Microsoft.WindowsCamera signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.WindowsCamera" BinaryName="*">
+        <BinaryVersionRange LowSection="2021.105.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="950f2c05-2f6c-414e-b46d-162adf1ae45f" Name="AppX: Microsoft.WindowsCalculator signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.WindowsCalculator" BinaryName="*">
+        <BinaryVersionRange LowSection="10.2103.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="466de2b8-4123-4871-a28f-9c695fb51600" Name="AppX: Microsoft.WindowsStore signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.WindowsStore" BinaryName="*">
+        <BinaryVersionRange LowSection="22204.1401.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+  <FilePublisherRule Id="5af8ab6d-1190-492a-a9db-a69273e4da7c" Name="AppX: Microsoft.CompanyPortal signed by Microsoft Corporation" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+    <Conditions>
+      <FilePublisherCondition PublisherName="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" ProductName="Microsoft.CompanyPortal" BinaryName="*">
+        <BinaryVersionRange LowSection="11.1.0.0" HighSection="*" />
+      </FilePublisherCondition>
+    </Conditions>
+  </FilePublisherRule>
+</RuleCollection>

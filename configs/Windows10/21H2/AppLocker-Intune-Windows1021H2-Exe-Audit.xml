@@ -1,0 +1,169 @@
+<RuleCollection Type="Exe" EnforcementMode="AuditOnly">
+    <FilePathRule Id="fd686d83-a829-4351-8ff4-27c7de5755d2" Name="(Default Rule) All files" Description="Allows members of the local Administrators group to run all applications." UserOrGroupSid="S-1-5-32-544" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="*" />
+        </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="cdfd5d1c-828f-4bd6-9542-1395c6088f82" Name="All files located in the Program Files folder" Description="Allows members of the Everyone group to run applications that are located in the Program Files folder." UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%PROGRAMFILES%\*" />
+        </Conditions>
+        <Exceptions>
+            <FilePathCondition Path="%PROGRAMFILES%\microsoft\edge\application\setupmetrics\*" />
+        </Exceptions>
+    </FilePathRule>
+    <FilePathRule Id="38080c1b-54bc-4f7e-804d-fafb70bf781b" Name="All files located in the Windows folder" Description="Allows members of the Everyone group to run applications that are located in the Windows folder." UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%WINDIR%\*" />
+        </Conditions>
+        <Exceptions>
+            <FilePathCondition Path="%WINDIR%\debug\wia\*" />
+            <FilePathCondition Path="%WINDIR%\debug\wia:*" />
+            <FilePathCondition Path="%WINDIR%\registration\crmlog\*" />
+            <FilePathCondition Path="%SYSTEM32%\microsoft\crypto\rsa\machinekeys\*" />
+            <FilePathCondition Path="%SYSTEM32%\microsoft\crypto\rsa\machinekeys:*" />
+            <FilePathCondition Path="%SYSTEM32%\spool\drivers\color\*" />
+            <FilePathCondition Path="%SYSTEM32%\tasks\*" />
+            <FilePathCondition Path="%SYSTEM32%\tasks_migrated\*" />
+            <FilePathCondition Path="%WINDIR%\tasks\*" />
+            <FilePathCondition Path="%WINDIR%\tracing\*" />
+            <FilePathCondition Path="%WINDIR%\tracing:*" />
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT® .NET FRAMEWORK" BinaryName="MSBUILD.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT® WINDOWS® OPERATING SYSTEM" BinaryName="RUNAS.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT® .NET FRAMEWORK" BinaryName="REGSVCS.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT® WINDOWS® OPERATING SYSTEM" BinaryName="WMIC.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT® WINDOWS® OPERATING SYSTEM" BinaryName="PRESENTATIONHOST.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="INTERNET EXPLORER" BinaryName="MSHTA.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT® WINDOWS® OPERATING SYSTEM" BinaryName="CIPHER.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT® .NET FRAMEWORK" BinaryName="INSTALLUTIL.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT® .NET FRAMEWORK" BinaryName="MICROSOFT.WORKFLOW.COMPILER.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT® .NET FRAMEWORK" BinaryName="REGASM.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Exceptions>
+    </FilePathRule>
+    <FilePathRule Id="a5916394-73b8-4546-8fac-ec662ec6b05f" Name="Additional allowed path: %OSDRIVE%\PROGRAMDATA\MICROSOFT\WINDOWS DEFENDER\*" Description="Allows Everyone to execute from %OSDRIVE%\PROGRAMDATA\MICROSOFT\WINDOWS DEFENDER\*" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%OSDRIVE%\PROGRAMDATA\MICROSOFT\WINDOWS DEFENDER\*" />
+        </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="c02e8976-dc4a-4816-bb0d-506668575501" Name="Additional allowed path: %PROGRAMFILES%\Microsoft Intune Management Extension\Content\*" Description="Allows Everyone to execute from %PROGRAMFILES%\Microsoft Intune Management Extension\Content\*" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%PROGRAMFILES%\Microsoft Intune Management Extension\Content\*" />
+        </Conditions>
+    </FilePathRule>
+    <FilePublisherRule Id="1755b736-c800-4f7b-b62e-dc000eb1bc4a" Name="Microsoft OneDrive: MICROSOFT SHAREPOINT NATIVE MESSAGING CLIENT" Description="Product: MICROSOFT SHAREPOINT NATIVE MESSAGING CLIENT&#xD;&#xA;Publisher: O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US&#xD;&#xA;File(s) found in: C:\Users\admin\AppData\Local\Microsoft\OneDrive" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT SHAREPOINT NATIVE MESSAGING CLIENT" BinaryName="*">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FilePublisherRule Id="7f5b89a3-2817-48b1-82c0-7db0677fedba" Name="Microsoft OneDrive: MICROSOFT SHAREPOINT" Description="Product: MICROSOFT SHAREPOINT&#xD;&#xA;Publisher: O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US&#xD;&#xA;File(s) found in: C:\Users\admin\AppData\Local\Microsoft\OneDrive" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT SHAREPOINT" BinaryName="*">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FilePublisherRule Id="91146c2a-3005-419b-96bc-7bb417f3a3a0" Name="Microsoft OneDrive: MICROSOFT ONEDRIVE" Description="Product: MICROSOFT ONEDRIVE&#xD;&#xA;Publisher: O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US&#xD;&#xA;File(s) found in: C:\Users\admin\AppData\Local\Microsoft\OneDrive" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT ONEDRIVE" BinaryName="*">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FileHashRule Id="456bd77c-5528-4a93-8ab8-51c6b950c541" Name="Rule set created 2022-05-24 12:29" Description="Never-applicable rule to document that this AppLocker rule set was created via AaronLocker at 2022-05-24 12:29" UserOrGroupSid="S-1-3-0" Action="Deny">
+        <Conditions>
+            <FileHashCondition>
+                <FileHash Type="SHA256" Data="0x0000000000000000000000000000000000000000000000000020220524122925" SourceFileName="DateTimeInfo" SourceFileLength="1" />
+            </FileHashCondition>
+        </Conditions>
+    </FileHashRule>
+    <FilePublisherRule Id="36096959-4e35-467d-8530-5edb28867242" Name="Microsoft Teams: Signer/product rule for O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US/MICROSOFT TEAMS" Description="Information acquired from TrustedSigners.ps1" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT TEAMS" BinaryName="*">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FilePublisherRule Id="f493e22c-63a9-4811-ab94-c5d8a8a968f5" Name="BgInfo: Disallow old versions of Sysinternals Bginfo.exe" Description="Disallow Sysinternals Bginfo.exe versions 4.25 and earlier that aren't AppLocker-aware" UserOrGroupSid="S-1-1-0" Action="Deny">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="BGINFO" BinaryName="BGINFO.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="4.25.0.0" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FilePathRule Id="ca980d44-b907-44ea-953d-6ac51eecad91" Name="Deny C:\Windows\Temp" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+        <Conditions>
+            <FilePathCondition Path="C:\Windows\Temp" />
+        </Conditions>
+    </FilePathRule>
+    <FilePublisherRule Id="f02c38df-c1a7-4e23-af01-1fb6468555f2" Name="OneDrive (Win10 v1607 initial state): MICROSOFT ONEDRIVE" Description="Product: MICROSOFT ONEDRIVE&#xD;&#xA;Publisher: O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US&#xD;&#xA;File(s) found in : %OSDRIVE%\USERS\testuser\APPDATA\LOCAL\MICROSOFT\ONEDRIVE" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT ONEDRIVE" BinaryName="*">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FilePublisherRule Id="5695973b-1322-4758-987e-648c072b8987" Name="OneDrive (Win10 v1607 initial state): ONEDRIVESETUP.EXE" Description="Product: WINDOWS LIVE&#xD;&#xA;Publisher: O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US&#xD;&#xA;Original path: %OSDRIVE%\USERS\testuser\APPDATA\LOCAL\MICROSOFT\ONEDRIVE\17.3.6381.0405\ONEDRIVESETUP.EXE" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="WINDOWS LIVE" BinaryName="ONEDRIVESETUP.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FileHashRule Id="9618840d-cd6c-4a76-a6f4-0e7aa24306fc" Name="OneDrive (Win10 v1607 initial state): OneDriveStandaloneUpdater.exe - HASH RULE" Description="Identified in: %OSDRIVE%\USERS\testuser\APPDATA\LOCAL\MICROSOFT\ONEDRIVE\17.3.6381.0405\ONEDRIVESTANDALONEUPDATER.EXE" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FileHashCondition>
+                <FileHash Type="SHA256" Data="0x276CDAADE8E65726684DE00F3AD85D5504BB82512495FA126EB78FA853A5FDA0" SourceFileName="OneDriveStandaloneUpdater.exe" SourceFileLength="493256" />
+            </FileHashCondition>
+        </Conditions>
+    </FileHashRule>
+    <FilePublisherRule Id="3de8ec77-379e-415a-8aa0-731729f75a06" Name="OneDrive (Win10 v1803 initial state): MICROSOFT ONEDRIVE" Description="Product: MICROSOFT ONEDRIVE&#xD;&#xA;Publisher: O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US&#xD;&#xA;File(s) found in: %OSDRIVE%\USERS\testuser\APPDATA\LOCAL\MICROSOFT\ONEDRIVE" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT ONEDRIVE" BinaryName="*">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FilePublisherRule Id="cc281084-bd23-40ce-b9ca-28ae5a9a4bb0" Name="OneDrive (Win10 v1803 initial state): ONEDRIVESETUP.EXE" Description="Product: WINDOWS LIVE&#xD;&#xA;Publisher: O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US&#xD;&#xA;Original path: %OSDRIVE%\USERS\testuser\APPDATA\LOCAL\MICROSOFT\ONEDRIVE\17.3.6816.0313\ONEDRIVESETUP.EXE" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="WINDOWS LIVE" BinaryName="ONEDRIVESETUP.EXE">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FilePublisherRule Id="8f7ccf65-1a4b-4369-af3d-05f3a1cf9268" Name="OneDrive (Win10 v1809 initial state): MICROSOFT ONEDRIVE" Description="Product: MICROSOFT ONEDRIVE&#xD;&#xA;Publisher: O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US&#xD;&#xA;File(s) found in: %OSDRIVE%\USERS\ABBY\APPDATA\LOCAL\MICROSOFT\ONEDRIVE" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT ONEDRIVE" BinaryName="*">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FilePublisherRule Id="6c5fe4e8-f534-435d-8f4e-ffa6cbeace5d" Name="Microsoft SharePoint: MICROSOFT SHAREPOINT signed by O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" Description="" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT SHAREPOINT" BinaryName="*">
+                <BinaryVersionRange LowSection="21.205.0.0" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+</RuleCollection>

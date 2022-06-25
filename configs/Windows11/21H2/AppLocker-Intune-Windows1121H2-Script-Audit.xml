@@ -1,0 +1,90 @@
+<RuleCollection Type="Script" EnforcementMode="AuditOnly">
+    <FilePathRule Id="ed97d0cb-15ff-430f-b82c-8d7832957725" Name="(Default Rule) All scripts" Description="Allows members of the local Administrators group to run all scripts." UserOrGroupSid="S-1-5-32-544" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="*" />
+        </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="742c089a-d5bc-4f1e-98dc-2535b7b164b5" Name="All scripts located in the Program Files folder" Description="Allows members of the Everyone group to run scripts that are located in the Program Files folder." UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%PROGRAMFILES%\*" />
+        </Conditions>
+        <Exceptions>
+            <FilePathCondition Path="%PROGRAMFILES%\microsoft\edge\application\setupmetrics\*" />
+        </Exceptions>
+    </FilePathRule>
+    <FilePathRule Id="2d2e2715-50d1-4f32-9885-7c935e189f44" Name="All scripts located in the Windows folder" Description="Allows members of the Everyone group to run scripts that are located in the Windows folder." UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%WINDIR%\*" />
+        </Conditions>
+        <Exceptions>
+            <FilePathCondition Path="%WINDIR%\debug\wia\*" />
+            <FilePathCondition Path="%WINDIR%\debug\wia:*" />
+            <FilePathCondition Path="%WINDIR%\registration\crmlog\*" />
+            <FilePathCondition Path="%SYSTEM32%\microsoft\crypto\rsa\machinekeys\*" />
+            <FilePathCondition Path="%SYSTEM32%\microsoft\crypto\rsa\machinekeys:*" />
+            <FilePathCondition Path="%SYSTEM32%\spool\drivers\color\*" />
+            <FilePathCondition Path="%SYSTEM32%\tasks\*" />
+            <FilePathCondition Path="%SYSTEM32%\tasks_migrated\*" />
+            <FilePathCondition Path="%WINDIR%\tasks\*" />
+            <FilePathCondition Path="%WINDIR%\tracing\*" />
+            <FilePathCondition Path="%WINDIR%\tracing:*" />
+        </Exceptions>
+    </FilePathRule>
+    <FilePathRule Id="e0c1d905-d379-47a8-953e-0eb0883e0875" Name="Additional allowed path: %OSDRIVE%\PROGRAMDATA\MICROSOFT\WINDOWS DEFENDER\*" Description="Allows Everyone to execute from %OSDRIVE%\PROGRAMDATA\MICROSOFT\WINDOWS DEFENDER\*" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%OSDRIVE%\PROGRAMDATA\MICROSOFT\WINDOWS DEFENDER\*" />
+        </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="34e151eb-b096-40bc-9b8d-c533770541d5" Name="Additional allowed path: %PROGRAMFILES%\Microsoft Intune Management Extension\Content\*" Description="Allows Everyone to execute from %PROGRAMFILES%\Microsoft Intune Management Extension\Content\*" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%PROGRAMFILES%\Microsoft Intune Management Extension\Content\*" />
+        </Conditions>
+    </FilePathRule>
+    <FileHashRule Id="98741235-3ffa-4814-b982-e08355284323" Name="Microsoft OneDrive: CollectSyncLogs.bat - HASH RULE" Description="Identified in: %OSDRIVE%\USERS\ADMIN\APPDATA\LOCAL\MICROSOFT\ONEDRIVE\21.220.1024.0005\COLLECTSYNCLOGS.BAT" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FileHashCondition>
+                <FileHash Type="SHA256" Data="0xC03FF7AFF74F7D118B5C71233B97FBD2D7D7A9C8CF96200DCFC34743E1160CE6" SourceFileName="CollectSyncLogs.bat" SourceFileLength="35286" />
+            </FileHashCondition>
+        </Conditions>
+    </FileHashRule>
+    <FilePublisherRule Id="1c448404-c97f-4918-ac43-fd20190d9021" Name="Microsoft Teams: Signer/product rule for O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US/MICROSOFT TEAMS" Description="Information acquired from TrustedSigners.ps1" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="MICROSOFT TEAMS" BinaryName="*">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FilePublisherRule Id="16387e63-d364-462a-a56b-f5c4525f9215" Name="Microsoft-signed script files: Signer rule for O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" Description="Information acquired from TrustedSigners.ps1" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePublisherCondition PublisherName="O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US" ProductName="*" BinaryName="*">
+                <BinaryVersionRange LowSection="*" HighSection="*" />
+            </FilePublisherCondition>
+        </Conditions>
+    </FilePublisherRule>
+    <FilePathRule Id="0fb507fe-9136-4a05-9cb6-ebc0c0189c5f" Name="Deny C:\Windows\Temp" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+        <Conditions>
+            <FilePathCondition Path="C:\Windows\Temp" />
+        </Conditions>
+    </FilePathRule>
+    <FileHashRule Id="f2f1e717-bb1b-4d6a-81c2-37e295edbf4f" Name="OneDrive (Win10 v1607 initial state): CollectOneDriveLogs.bat - HASH RULE" Description="Identified in: %OSDRIVE%\USERS\testuser\APPDATA\LOCAL\MICROSOFT\ONEDRIVE\17.3.6381.0405\COLLECTONEDRIVELOGS.BAT" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FileHashCondition>
+                <FileHash Type="SHA256" Data="0xCDFC28618E8831CFA2F2487587CC55F40D6868A4F912763738A5975EC5F490AB" SourceFileName="CollectOneDriveLogs.bat" SourceFileLength="5850" />
+            </FileHashCondition>
+        </Conditions>
+    </FileHashRule>
+    <FileHashRule Id="ac60014e-2a29-45da-abc6-e3bed54652fd" Name="OneDrive (Win10 v1803 initial state): OneDrivePersonal.cmd - HASH RULE" Description="Identified in: %OSDRIVE%\USERS\testuser\APPDATA\LOCAL\MICROSOFT\ONEDRIVE\ONEDRIVEPERSONAL.CMD" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FileHashCondition>
+                <FileHash Type="SHA256" Data="0x69A17A4899E1AD3E5FF42F7A24DD47C5130DBAD2CDEE7E3C8FBFDB238F5A20EE" SourceFileName="OneDrivePersonal.cmd" SourceFileLength="77" />
+            </FileHashCondition>
+        </Conditions>
+    </FileHashRule>
+    <FileHashRule Id="28e55e5d-f553-4be1-b1a6-d5c98701b817" Name="OneDrive (Win10 v1809 initial state): CollectSyncLogs.bat - HASH RULE" Description="Identified in: %OSDRIVE%\USERS\ABBY\APPDATA\LOCAL\MICROSOFT\ONEDRIVE\18.143.0717.0002\COLLECTSYNCLOGS.BAT" UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FileHashCondition>
+                <FileHash Type="SHA256" Data="0x3702A8CFC028A01B06A1E43354F02C99836EEF07F8876D4626DEF966446062AF" SourceFileName="CollectSyncLogs.bat" SourceFileLength="6420" />
+            </FileHashCondition>
+        </Conditions>
+    </FileHashRule>
+</RuleCollection>
