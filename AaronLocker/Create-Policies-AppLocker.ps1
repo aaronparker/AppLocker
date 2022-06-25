@@ -357,7 +357,7 @@ $fprRulesNotEmpty = $false
 $signersToBuildRulesFor = (& $ps1_TrustedSigners)
 $signersToBuildRulesFor | ForEach-Object {
     $label = $_.label
-    if ($label -eq $null) {
+    if ($Null -eq $label) {
         # Each hashtable must have a label.
         Write-Warning -Message ("Invalid syntax in $ps1_TrustedSigners. No `"label`" specified.")
     }
@@ -370,7 +370,7 @@ $signersToBuildRulesFor | ForEach-Object {
         if ($_.exemplar) {
             $filename = $_.exemplar
             $alfi = Get-AppLockerFileInformation $filename
-            if ($alfi -eq $null) {
+            if ($Null -eq $alfi) {
                 Write-Warning -Message ("Cannot get AppLockerFileInformation for $filename")
             }
             elseif (!($alfi.Publisher.HasPublisherName)) {

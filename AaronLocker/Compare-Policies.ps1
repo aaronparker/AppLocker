@@ -263,7 +263,7 @@ $ComparisonPolicy.AppLockerPolicy.RuleCollection | ForEach-Object {
             if ($rules.ContainsKey($oKey.Value)) {
                 # If there's already data in the second element, see whether it's a duplicate. If it's a duplicate, ignore; if it's a differing value, append it to the existing value
                 $existingVal = $rules[$oKey.Value][1]
-                if ($existingVal -eq $null) {
+                if ($Null -eq $existingVal) {
                     $rules[$oKey.Value][1] = $oValue.Value
                 }
                 else {

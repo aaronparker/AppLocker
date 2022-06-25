@@ -265,7 +265,7 @@ if ($SearchAllUserProfiles) {
     #Assume all unsafe paths
     # No special folder or environment variable available. Get user-profiles' root directory from the parent directory of the "all users" profile directory
     $UsersRoot = [System.IO.Path]::GetDirectoryName($env:PUBLIC)
-    # Skip app-compat juntions  (most disallow FILE_LIST_DIRECTORY)
+    # Skip app-compat junctions  (most disallow FILE_LIST_DIRECTORY)
     # Skip symlinks -- "All Users" is a symlinkd for \ProgramData but unlike most app-compat junctions it can be listed/traversed.
     # This code prevents that.
     Get-ChildItem -Force -Directory $UsersRoot | Where-Object { !$_.Attributes.HasFlag([System.IO.FileAttributes]::ReparsePoint) } | ForEach-Object {
@@ -441,7 +441,7 @@ $dirsToInspect.Keys | ForEach-Object {
     $safety = $dirsToInspect[$dirToInspect]
     if ($safety -eq $UnknownDir) {
         Write-Verbose -Message "about to inspect $dirToInspect for writable directories..."
-        if ((Get-Command AccessChk.exe -ErrorAction SilentlyContinue) -eq $null) {
+        if ($Null -eq (Get-Command AccessChk.exe -ErrorAction "SilentlyContinue")) {
             $errMsg = "Scanning for writable subdirectories requires that Sysinternals AccessChk.exe be in the Path or in the same directory with this script.`n" +
             "AccessChk.exe was not found.`n" +
             "(See .\Support\DownloadAccesschk.ps1 for help.)`n" +
@@ -473,15 +473,11 @@ if ($Excel) {
     $OutputEncoding = [System.Text.ASCIIEncoding]::Unicode
 
     $tempfile = [System.IO.Path]::GetTempFileName()
-
     $tabname = "Consider for potential rules"
-
     $csv | Out-File $tempfile -Encoding unicode
-
     CreateExcelFromCsvFile $tempfile $tabname # $linebreakSeq
-
+    
     Remove-Item $tempfile
-
     $OutputEncoding = $OutputEncodingPrevious
 }
 elseif ($GridView) {

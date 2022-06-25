@@ -63,7 +63,7 @@ $WDACPathsToAllow | ForEach-Object {
     $pathToAllow = $_
     if (!$pathToAllow.EndsWith("\*")) {
         $pathItem = Get-Item $pathToAllow -Force -ErrorAction SilentlyContinue
-        if ($pathItem -eq $null) {
+        if ($Null -eq $pathItem) {
             Write-Warning "Cannot verify path $pathToAllow; adding to rule set as is."
         }
         elseif ($pathItem -is [System.IO.DirectoryInfo]) {
@@ -105,7 +105,7 @@ $WDACsignersToBuildRulesFor | ForEach-Object {
             if ((Test-Path($exemplarFile))) {
                 if ($_.useProduct) {
                     $SpecificFileNameLevel = "ProductName"
-                    if (($_.level -eq $null) -or ($_.level -notin "FilePublisher", "FileName")) {
+                    if (($Null -eq $_.level) -or ($_.level -notin "FilePublisher", "FileName")) {
                         Write-Warning -Message ("useProduct can only be used when level is 'FilePublisher' or 'FileName'. Setting level to 'FilePublisher'");
                         $level = "FilePublisher"
                     }
@@ -114,7 +114,7 @@ $WDACsignersToBuildRulesFor | ForEach-Object {
                     $SpecificFileNameLevel = "None"
                 }
 
-                if ($_.level -eq $null) {
+                if ($Null -eq $_.level) {
                     $level = "Publisher"
                 }
                 Write-Verbose -Message "Creating rules for $exemplarFile at Level $level and SpecificFileNameLevel $SpecificFileNameLevel..."
@@ -190,7 +190,7 @@ $WDACsignersToBuildRulesFor | ForEach-Object {
                 $SignersNode.AppendChild($newSigner)
 
                 # Add AllowedSigners node under signing scenario 12 (user mode) if it doesn't exist
-                if ($WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:AllowedSigners", $nsBase) -eq $null) {
+                if ($Null -eq $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:AllowedSigners", $nsBase)) {
                     $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners", $nsBase).AppendChild($WDACAllowBaseXML.CreateElement("AllowedSigners", $nsuri))
                 }
 
@@ -235,7 +235,7 @@ $hashRuleData | ForEach-Object {
     $FileRulesNode.AppendChild($newFileAllow)
 
     # Add FileRulesRef node under signing scenario 12 (user mode) if it doesn't exist
-    if ($WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:FileRulesRef", $nsBase) -eq $null) {
+    if ($Null -eq $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners/si:FileRulesRef", $nsBase)) {
         $WDACAllowBaseXML.DocumentElement.SelectSingleNode("//si:SigningScenario[@Value = '12']/si:ProductSigners", $nsBase).AppendChild($WDACAllowBaseXML.CreateElement("FileRulesRef", $nsuri))
     }
 
@@ -374,7 +374,7 @@ foreach ($CurPolicyType in "Allow", "Deny") {
     }
 
     # Get the Policy ID and version from the previous WDAC policy (if it exists). Otherwise, set defaults.
-    if ($PreviousPolicyXMLFile -ne $null) {
+    if ($Null -ne $PreviousPolicyXMLFile) {
         [xml]$PreviousPolicyXML = Get-Content -Path $PreviousPolicyXMLFile
         $PreviousPolicyVersion = [version]$PreviousPolicyXML.SiPolicy.VersionEx
         $PolicyVersion = [version]::New($PreviousPolicyVersion.Major, $PreviousPolicyVersion.Minor, $PreviousPolicyVersion.Build, $PreviousPolicyVersion.Revision + 1)
