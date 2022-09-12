@@ -29,7 +29,7 @@ TODO: At some point, reimplement with hashtable output supporting "label" and "R
 # As an alternative, just output the paths explicitly; e.g., "\\corp.contoso.com\netlogon\*"
 # Note that if logon scripts invoke other scripts/programs using an explicit \\DC\netlogon\ syntax, these rules won't cover them. Need
 # explicit rules naming domain controllers. (I know that sucks.)
-$cs = Get-CimInstance -ClassName CIM_ComputerSystem
+$cs = Get-CimInstance -ClassName "CIM_ComputerSystem"
 if ($null -ne $cs) {
     if ($cs.PartOfDomain) {
         $computerDomain = $cs.Domain
@@ -47,11 +47,8 @@ if ($null -ne $cs) {
 }
 
 ### Windows Defender put their binaries in ProgramData for a while. Comment this back out when they move it back.
-"%OSDRIVE%\PROGRAMDATA\MICROSOFT\WINDOWS DEFENDER\*"
+"%OSDRIVE%\ProgramData\Microsoft\Windows Defender\Platform\*"
+"%OSDRIVE%\ProgramData\Microsoft\Windows Defender\Scans\*"
 
 ## Allow the Intune Management Extension to download and run packages
 "%PROGRAMFILES%\Microsoft Intune Management Extension\Content\*"
-
-# More paths
-# "%OSDRIVE%\Users\*\AppData\Local\GitHubDesktop\*"
-# "%OSDRIVE%\PROGRAMDATA\chocolatey\*"
