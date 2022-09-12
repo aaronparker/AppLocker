@@ -75,7 +75,7 @@
 # Defender DLLs still being listed as blocked even with path rules
 @{
   label              = "Microsoft Defender";
-  paths              = "$Env:ProgramData\Microsoft\Windows Defender\Platform\*", "$Env:ProgramData\Microsoft\Windows Defender\Scans";
+  paths              = "$Env:ProgramData\Microsoft\Windows Defender\Platform", "$Env:ProgramData\Microsoft\Windows Defender\Scans";
   pubruleGranularity = "pubProduct";
 }
 
