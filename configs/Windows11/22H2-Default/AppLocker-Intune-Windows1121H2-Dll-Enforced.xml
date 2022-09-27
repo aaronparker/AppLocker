@@ -1,0 +1,17 @@
+<RuleCollection Type="Dll" EnforcementMode="Enabled">
+    <FilePathRule Id="bac4b0bf-6f1b-40e8-8627-8545fa89c8b6" Name="(Default Rule) Microsoft Windows DLLs" Description="Allows members of the Everyone group to load DLLs located in the Windows folder." UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%WINDIR%\*" />
+        </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="3737732c-99b7-41d4-9037-9cddfb0de0d0" Name="(Default Rule) All DLLs located in the Program Files folder" Description="Allows members of the Everyone group to load DLLs that are located in the Program Files folder." UserOrGroupSid="S-1-1-0" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="%PROGRAMFILES%\*" />
+        </Conditions>
+    </FilePathRule>
+    <FilePathRule Id="fe64f59f-6fca-45e5-a731-0f6715327c38" Name="(Default Rule) All DLLs" Description="Allows members of the local Administrators group to load all DLLs." UserOrGroupSid="S-1-5-32-544" Action="Allow">
+        <Conditions>
+            <FilePathCondition Path="*" />
+        </Conditions>
+    </FilePathRule>
+</RuleCollection>
