@@ -40,4 +40,6 @@ try {
     $log.MaximumSizeInBytes = (1024 * 1024 * 1024)
     $log.SaveChanges()
 }
-catch {}
+catch {
+    Write-Information -MessageData "Error saving config for packaged apps." -InformationAction "Continue"
+}

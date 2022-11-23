@@ -478,7 +478,10 @@ function SidToNameLookup([string]$sid) {
     else {
         $oSID = New-Object System.Security.Principal.SecurityIdentifier($sid)
         $oUser = $null
-        try { $oUser = $oSID.Translate([System.Security.Principal.NTAccount]) } catch {}
+        try { $oUser = $oSID.Translate([System.Security.Principal.NTAccount]) }
+        catch {
+            Write-Information -MessageData "Failed to translate SID." -InformationAction "Continue"
+        }
         if ($null -ne $oUser) {
             $name = $oUser.Value
         }
