@@ -430,7 +430,7 @@ if ($EvtxLogFilePaths) {
         # Always ensure that $oEvents is an array, whether it contains 0, 1, or more items
         $oEvents = @(Get-WinEvent -Path $_ -FilterXPath $filter -ErrorAction SilentlyContinue -ErrorVariable gweErr)
         if ($gweErr.Count -gt 0) {
-            $gweErr | ForEach-Object { Write-Host ("--> " + $_.ToString()) }
+            $gweErr | ForEach-Object { Write-Information -InformationAction "Continue" -MessageData ("--> " + $_.ToString()) }
         }
         $ev.AddRange($oEvents)
     }
@@ -448,12 +448,12 @@ else {
             $oEvents = @(Get-WinEvent -LogName $_ -FilterXPath $filter -ErrorAction SilentlyContinue -ErrorVariable gweErr)
         }
         if ($gweErr.Count -gt 0) {
-            $gweErr | ForEach-Object { Write-Host ("--> " + $_.ToString()) }
+            $gweErr | ForEach-Object { Write-Information -InformationAction "Continue" -MessageData ("--> " + $_.ToString()) }
         }
         $ev.AddRange($oEvents)
     }
 }
-Write-Host ($ev.Count.ToString() + " events retrieved.")
+Write-Information -InformationAction "Continue" -MessageData ($ev.Count.ToString() + " events retrieved.")
 
 #
 # Create output array; add CSV headers

@@ -40,7 +40,7 @@ else {
 $Domain = [System.DirectoryServices.ActiveDirectory.Domain]::GetComputerDomain()
 $Server = $Domain.DomainControllers[0].Name
 if ($PSCmdlet.ShouldProcess($Gpo.DisplayName, "Clear AppLocker policy")) {
-    Write-Host "Clearing AppLocker policy on $($Gpo.DisplayName) in domain $($Domain.Name)" -ForegroundColor Cyan
+    Write-Information -InformationAction "Continue" -MessageData "Clearing AppLocker policy on $($Gpo.DisplayName) in domain $($Domain.Name)" -ForegroundColor Cyan
     $AppLockerPolicy = [Microsoft.Security.ApplicationId.PolicyManagement.PolicyModel.AppLockerPolicy]::new()
     Set-AppLockerPolicy -PolicyObject $AppLockerPolicy -Ldap "LDAP://$Server/$($Gpo.Path)"
 }

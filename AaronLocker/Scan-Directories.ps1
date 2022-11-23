@@ -341,7 +341,7 @@ function InspectFiles([string]$directory, [string]$safety, [ref] [string[]]$writ
                 $alfi = Get-AppLockerFileInformation $file.FullName -ErrorAction SilentlyContinue -ErrorVariable alfiErr
                 # Diagnostics. Seeing sharing violations on some operations
                 if ($alfiErr.Count -gt 0) {
-                    Write-Host ($file.FullName + "`tLength = " + $file.Length.ToString()) -ForegroundColor Yellow -BackgroundColor Black
+                    Write-Information -InformationAction "Continue" -MessageData ($file.FullName + "`tLength = " + $file.Length.ToString()) -ForegroundColor Yellow -BackgroundColor Black
                     $alfiErr | ForEach-Object { Write-Error -Message $_.Exception.Message }
                 }
                 if ($null -ne $alfi) {
@@ -476,7 +476,7 @@ if ($Excel) {
     $tabname = "Consider for potential rules"
     $csv | Out-File $tempfile -Encoding unicode
     CreateExcelFromCsvFile $tempfile $tabname # $linebreakSeq
-    
+
     Remove-Item $tempfile
     $OutputEncoding = $OutputEncodingPrevious
 }

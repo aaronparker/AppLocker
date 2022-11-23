@@ -77,30 +77,28 @@ Specifies whether to trust executables deemed reputable by Microsoft's Intellige
 
 param(
     # If set, forces rescans for user-writable directories under Windows and ProgramFiles
-    [switch]
-    $Rescan = $false,
+    [Parameter()]
+    [System.Management.Automation.SwitchParameter] $Rescan = $false,
 
     # If set, replaces current user name with another in "unsafe paths"
-    [parameter(Mandatory = $false)]
-    [String]
-    $ForUser,
+    [Parameter(Mandatory = $false)]
+    [System.String] $ForUser,
 
     # If specified, also creates Excel spreadsheets representing the generated rules.
-    [switch]
-    $Excel,
+    [Parameter()]
+    [System.Management.Automation.SwitchParameter] $Excel,
 
     # Specifies whether to create policies for WDAC only, AppLocker only, or Both (default)
     [ValidateSet("Both", "AppLocker", "WDAC")]
-    [String]
-    $AppLockerOrWDAC = "AppLocker",
+    [System.String] $AppLockerOrWDAC = "AppLocker",
 
     # If set, enables managed installer(s) for WDAC
-    [switch]
-    $WDACTrustManagedInstallers = $true,
+    [Parameter()]
+    [System.Management.Automation.SwitchParameter] $WDACTrustManagedInstallers,
 
     # If set, enables the option to trust reputable apps based on Microsoft's ISG
-    [switch]
-    $WDACTrustISG = $false
+    [Parameter()]
+    [System.Management.Automation.SwitchParameter] $WDACTrustISG
 )
 
 ####################################################################################################
@@ -134,7 +132,7 @@ if ( ($AppLockerOrWDAC -eq "WDAC") -and ($OSBuild -lt 18362) ) {
     return
 }
 elseif ( ($AppLockerOrWDAC -eq "Both") -and ($OSBuild -lt 18362) ) {
-    Write-Host ("AaronLocker supports WDAC on Windows 10 version 1903 (build 18362) and greater. Current build is " + $OSBuild + ". Processing AppLocker only.")
+    Write-Information -InformationAction "Continue" -MessageData ("AaronLocker supports WDAC on Windows 10 version 1903 (build 18362) and greater. Current build is " + $OSBuild + ". Processing AppLocker only.")
     $AppLockerOrWDAC = "AppLocker"
 }
 # --------------------------------------------------------------------------------

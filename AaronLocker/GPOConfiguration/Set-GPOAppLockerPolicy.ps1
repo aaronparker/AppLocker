@@ -59,7 +59,7 @@ else {
     $Domain = [System.DirectoryServices.ActiveDirectory.Domain]::GetComputerDomain()
     $Server = $Domain.DomainControllers[0].Name
     if ($PSCmdlet.ShouldProcess($Gpo.DisplayName, "Set AppLocker policy using $policyFile")) {
-        Write-Host "Applying $policyFile to $($Gpo.DisplayName) in domain $($Domain.Name)" -ForegroundColor Cyan
+        Write-Information -InformationAction "Continue" -MessageData "Applying $policyFile to $($Gpo.DisplayName) in domain $($Domain.Name)" -ForegroundColor Cyan
         Set-AppLockerPolicy -XmlPolicy $policyFile -Ldap "LDAP://$Server/$($Gpo.Path)"
     }
 }

@@ -127,7 +127,7 @@ if ( $Rescan -or !(Test-Path($ExeDenyListData) ) ) {
             if (!$pubCollection.ContainsKey($pubKey)) { $pubCollection.Add($pubKey, $pub) }
         }
         else {
-            Write-Warning "UNABLE TO BUILD DENYLIST RULE FOR $_"
+            Write-Warning "Unable to build DenyList rule for $_"
         }
     }
 
@@ -429,7 +429,7 @@ $signersToBuildRulesFor | ForEach-Object {
             else {
                 $fpr.Description = "Information acquired from $fname_TrustedSigners"
             }
-            Write-Host ("`t" + $fpr.Name)
+            Write-Information -InformationAction "Continue" -MessageData ("`t" + $fpr.Name)
 
             if ($publisher.ToLower().Contains("microsoft") -and $product.Length -eq 0 -and ($ruleCollection.Length -eq 0 -or $ruleCollection -eq "Exe")) {
                 Write-Warning -Message ("Warning: Trusting all Microsoft-signed files is an overly-broad AllowListing strategy")
@@ -550,7 +550,8 @@ $UnsafePathsToBuildRulesFor | ForEach-Object {
     if ($null -ne $_.pubruleGranularity) {
         $pubruleGranularity = $_.pubruleGranularity
     }
-    elseif ($null -ne $_.enforceMinVersion) { # enforceMinVersion not considered if pubruleGranularity explicitly specified
+    elseif ($null -ne $_.enforceMinVersion) {
+        # enforceMinVersion not considered if pubruleGranularity explicitly specified
         if ($_.enforceMinVersion) {
             $pubruleGranularity = "pubProdBinVer";
         }
@@ -565,7 +566,7 @@ $UnsafePathsToBuildRulesFor | ForEach-Object {
         $outfileHash = [System.IO.Path]::Combine($mergeRulesDynamicDir, $rulesFileBase + $label + " (" + $ixOutfile.ToString() + ") Hash Rules.xml")
         $ixOutfile++
     }
-    Write-Host ("Scanning $label`:", $paths) -Separator "`n`t"
+    Write-Information -InformationAction "Continue" -MessageData ("Scanning $label`:", $paths) -Separator "`n`t"
     & $ps1_BuildRulesForFilesInWritableDirectories -FileSystemPaths $paths -RecurseDirectories: $recurse -PubRuleGranularity $pubruleGranularity -RuleNamePrefix $label -OutputPubFileName $outfilePub -OutputHashFileName $outfileHash
 }
 
@@ -610,7 +611,7 @@ Write-Verbose -Message "Loading custom rule sets..."
 # Excludes WDAC-specific files.
 Get-ChildItem $mergeRulesDynamicDir\*.xml, $mergeRulesStaticDir\*.xml -Exclude $WDACrulesFileBase*.* | ForEach-Object {
     $policyFileToMerge = $_
-    Write-Host ("`tMerging " + $_.Directory.Name + "\" + $_.Name)
+    Write-Information -InformationAction "Continue" -MessageData ("`tMerging " + $_.Directory.Name + "\" + $_.Name)
     $policyToMerge = [Microsoft.Security.ApplicationId.PolicyManagement.PolicyModel.AppLockerPolicy]::Load($policyFileToMerge)
     $masterPolicy.Merge($policyToMerge)
 }

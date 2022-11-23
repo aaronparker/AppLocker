@@ -416,7 +416,7 @@ foreach ($CurPolicyType in "Allow", "Deny") {
     # Some may have been created in the previous step; others might have been dropped in from other sources.
     Get-ChildItem $mergeRulesDynamicDir\$WDACrulesFileBase*.xml, $mergeRulesStaticDir\$WDACrulesFileBase*.xml -Exclude $Exclusion | ForEach-Object {
         $policyFileToMerge = $_
-        Write-Host ("`tMerging " + $_.Directory.Name + "\" + $_.Name)
+        Write-Information -InformationAction "Continue" -MessageData ("`tMerging " + $_.Directory.Name + "\" + $_.Name)
         Merge-CIPolicy -OutputFilePath $CurAuditPolicyXMLFile -PolicyPaths $CurAuditPolicyXMLFile, $policyFileToMerge
     }
 
