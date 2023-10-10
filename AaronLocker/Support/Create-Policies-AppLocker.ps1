@@ -566,7 +566,7 @@ $UnsafePathsToBuildRulesFor | ForEach-Object {
         $outfileHash = [System.IO.Path]::Combine($mergeRulesDynamicDir, $rulesFileBase + $label + " (" + $ixOutfile.ToString() + ") Hash Rules.xml")
         $ixOutfile++
     }
-    Write-Information -InformationAction "Continue" -MessageData ("Scanning $label`:", $paths) -Separator "`n`t"
+    Write-Information -InformationAction "Continue" -MessageData ("Scanning $label`:", $paths)
     & $ps1_BuildRulesForFilesInWritableDirectories -FileSystemPaths $paths -RecurseDirectories: $recurse -PubRuleGranularity $pubruleGranularity -RuleNamePrefix $label -OutputPubFileName $outfilePub -OutputHashFileName $outfileHash
 }
 
