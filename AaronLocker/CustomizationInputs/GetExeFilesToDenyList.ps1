@@ -33,7 +33,7 @@ $dotnetProgramsToDenyList =
 "RegSvcs.exe",
 "System.Management.Automation.dll"
 $dotnetProgramsToDenyList | ForEach-Object {
-    Get-ChildItem -Path "$env:windir\Microsoft.NET" -Recurse -Include $_ | ForEach-Object { $_.FullName }
+    Get-ChildItem -Path "$Env:SystemRoot\Microsoft.NET" -Recurse -Include $_ | ForEach-Object { $_.FullName }
 }
 
 # Additional Microsoft recommended executables to deny
@@ -44,26 +44,26 @@ $dotnetProgramsToDenyList | ForEach-Object {
 # Additional Microsoft recommended executables to deny
 "bash.exe", "wsl.exe", "wslconfig.exe", "wslhost.exe", "system.management.automation.dll", "lxssmanager.dll", "cscript.exe", "wscript.exe" | `
     ForEach-Object {
-    Get-ChildItem -Path "$Env:SystemRoot\servicing\LCU" -Recurse -Include $_ | ForEach-Object { $_.FullName }
+    Get-ChildItem -Path "$Env:SystemRoot\servicing\LCU" -Recurse -Include $_ -ErrorAction "Ignore" | ForEach-Object { $_.FullName }
 }
 
-"$env:windir\System32\mshta.exe"
-"$env:windir\System32\PresentationHost.exe"
-"$env:windir\System32\wbem\WMIC.exe"
+@("$Env:SystemRoot\System32\mshta.exe",
+    "$Env:SystemRoot\System32\PresentationHost.exe",
+    "$Env:SystemRoot\System32\wbem\WMIC.exe") | ForEach-Object { Get-ChildItem -Path $_ | ForEach-Object { $_.FullName } }
 # Note: also need Code Integrity rules to block other bypasses
 
 # --------------------------------------------------------------------------------
 # Files used by ransomware / lolbins
-"$env:windir\System32\cipher.exe"
-"$env:windir\System32\certreq.exe"
-"$env:windir\System32\certutil.exe"
-"$env:windir\System32\Cmdl32.exe"
-"$env:windir\System32\msdt.exe"
+@("$Env:SystemRoot\System32\cipher.exe",
+    "$Env:SystemRoot\System32\certreq.exe",
+    "$Env:SystemRoot\System32\certutil.exe",
+    "$Env:SystemRoot\System32\Cmdl32.exe",
+    "$Env:SystemRoot\System32\msdt.exe") | ForEach-Object { Get-ChildItem -Path $_ | ForEach-Object { $_.FullName } }
 
 # --------------------------------------------------------------------------------
 # Block common credential exposure risk (also need to disable GUI option via registry, and SecondaryLogon service)
-"$env:windir\System32\runas.exe"
+@("$Env:SystemRoot\System32\runas.exe") | ForEach-Object { Get-ChildItem -Path $_ | ForEach-Object { $_.FullName } }
 
 # Block Scripting host
-"$env:windir\System32\cscript.exe"
-"$env:windir\System32\wscript.exe"
+@("$Env:SystemRoot\System32\cscript.exe",
+    "$Env:SystemRoot\System32\wscript.exe") | ForEach-Object { Get-ChildItem -Path $_ | ForEach-Object { $_.FullName } }
