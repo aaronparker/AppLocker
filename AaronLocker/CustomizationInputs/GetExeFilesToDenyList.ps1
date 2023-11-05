@@ -21,7 +21,7 @@
 
 # https://learn.microsoft.com/en-us/windows/security/application-security/application-control/windows-defender-application-control/design/applications-that-can-bypass-wdac
 
-@("addinprocess.exe",
+$Files = @("addinprocess.exe",
     "addinprocess32.exe",
     "addinutil.exe",
     "aspnet_compiler.exe",
@@ -68,5 +68,6 @@
     "wscript.exe",
     "wsl.exe",
     "wslconfig.exe",
-    "wslhost.exe") | Get-ChildItem -Path "$Env:SystemRoot" -Include $Files -Recurse -ErrorAction "SilentlyContinue" | `
+    "wslhost.exe")
+Get-ChildItem -Path "$Env:SystemRoot" -Include $Files -Recurse -ErrorAction "SilentlyContinue" | `
     Select-Object -ExpandProperty "FullName" 
