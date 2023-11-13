@@ -20,6 +20,12 @@
       </Conditions>
     </FilePathRule>
   </RuleCollection>
-  <RuleCollection Type="Dll" EnforcementMode="NotConfigured" />
+  <RuleCollection Type="Dll" EnforcementMode="NotConfigured">
+    <FilePathRule Id="249e1181-606a-4d94-beea-1e197505e603" Name="Deny C:\Windows\Temp" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+      <Conditions>
+        <FilePathCondition Path="C:\Windows\Temp" />
+      </Conditions>
+    </FilePathRule>
+  </RuleCollection>
   <RuleCollection Type="Appx" EnforcementMode="NotConfigured" />
 </AppLockerPolicy>

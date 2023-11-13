@@ -52,3 +52,7 @@ if ($null -ne $cs) {
 
 ## Allow the Intune Management Extension to download and run packages
 "%PROGRAMFILES%\Microsoft Intune Management Extension\Content\*"
+
+# Allow paths for Azure virtual machines
+"%OSDRIVE%\Packages\Plugins\*"
+"%OSDRIVE%\WindowsAzure\*"

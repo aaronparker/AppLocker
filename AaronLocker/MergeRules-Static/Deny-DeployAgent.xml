@@ -1,0 +1,31 @@
+<AppLockerPolicy Version="1">
+  <RuleCollection Type="Exe" EnforcementMode="NotConfigured">
+    <FilePathRule Id="bb7b9d02-eec7-4b65-a4d5-5af57c15ab2e" Name="Deny C:\DeployAgent" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+      <Conditions>
+        <FilePathCondition Path="C:\DeployAgent" />
+      </Conditions>
+    </FilePathRule>
+  </RuleCollection>
+  <RuleCollection Type="Msi" EnforcementMode="NotConfigured">
+    <FilePathRule Id="c0f083bb-3f42-4f8a-9eaa-787e1615be7f" Name="Deny C:\DeployAgent" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+      <Conditions>
+        <FilePathCondition Path="C:\DeployAgent" />
+      </Conditions>
+    </FilePathRule>
+  </RuleCollection>
+  <RuleCollection Type="Script" EnforcementMode="NotConfigured">
+    <FilePathRule Id="f227b7f8-4c1d-4b21-b311-3e60fc203f3f" Name="Deny C:\DeployAgent" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+      <Conditions>
+        <FilePathCondition Path="C:\DeployAgent" />
+      </Conditions>
+    </FilePathRule>
+  </RuleCollection>
+  <RuleCollection Type="Dll" EnforcementMode="NotConfigured">
+    <FilePathRule Id="5131b0f7-25e5-425a-96c7-ba0673c27265" Name="Deny C:\DeployAgent" Description="" UserOrGroupSid="S-1-1-0" Action="Deny">
+      <Conditions>
+        <FilePathCondition Path="C:\DeployAgent" />
+      </Conditions>
+    </FilePathRule>
+  </RuleCollection>
+  <RuleCollection Type="Appx" EnforcementMode="NotConfigured" />
+</AppLockerPolicy>
