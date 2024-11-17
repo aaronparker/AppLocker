@@ -1,0 +1,54 @@
+Set-StrictMode -Version 'Latest'
+$ErrorActionPreference = 'Stop'
+$( try {
+        $guid = '{d26bff32-33a2-48a3-b037-10357ee48427}'
+        $xml = "C:\Windows\System32\CodeIntegrity\CiPolicies\Active\${guid}.xml"
+        $binary = "C:\Windows\System32\CodeIntegrity\CiPolicies\Active\${guid}.cip"
+        Copy-Item -LiteralPath 'C:\Windows\schemas\CodeIntegrity\ExamplePolicies\DefaultWindows_Enforced.xml' -Destination $xml
+        Set-RuleOption -FilePath $xml -Option 0
+        Set-RuleOption -FilePath $xml -Option 6
+        Set-RuleOption -FilePath $xml -Option 9
+        Set-RuleOption -FilePath $xml -Option 16
+        Set-RuleOption -FilePath $xml -Option 18
+        Set-RuleOption -FilePath $xml -Option 5 -Delete
+        Set-RuleOption -FilePath $xml -Option 10
+        Merge-CIPolicy -PolicyPaths $xml -OutputFilePath $xml -Rules $( @( New-CIPolicyRule -FilePathRule 'C:\Windows\*'
+                New-CIPolicyRule -FilePathRule 'C:\Program Files\*'
+                New-CIPolicyRule -FilePathRule 'C:\Program Files (x86)\*'
+                New-CIPolicyRule -FilePathRule '%WINDIR%\debug\WIA\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\PLA\Reports\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\PLA\Rules\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\PLA\Templates\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\Registration\CRMLog\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\System32\Com\dmp\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\System32\FxsTmp\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\System32\LogFiles\WMI\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\System32\Microsoft\Crypto\RSA\MachineKeys\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\System32\spool\drivers\color\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\System32\spool\PRINTERS\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\System32\spool\SERVERS\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\System32\Tasks_Migrated\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\System32\Tasks\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\SysWOW64\Com\dmp\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\SysWOW64\FxsTmp\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\SysWOW64\Tasks\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\Tasks\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\Temp\*' -Deny
+                New-CIPolicyRule -FilePathRule '%WINDIR%\tracing\*' -Deny
+            ) | ForEach-Object -Process { $_
+            }
+        )
+        $doc = [xml]::new()
+        $doc.Load( $xml )
+        $nsmgr = [System.Xml.XmlNamespaceManager]::new( $doc.NameTable )
+        $nsmgr.AddNamespace( 'pol', 'urn:schemas-microsoft-com:sipolicy' )
+        $doc.SelectSingleNode( '/pol:SiPolicy/pol:PolicyID', $nsmgr ).InnerText = $guid
+        $doc.SelectSingleNode( '/pol:SiPolicy/pol:BasePolicyID', $nsmgr ).InnerText = $guid
+        $node = $doc.SelectSingleNode( '//pol:SigningScenario[@Value="12"]/pol:ProductSigners/pol:AllowedSigners', $nsmgr )
+        $node.ParentNode.RemoveChild( $node )
+        $doc.Save( $xml )
+        ConvertFrom-CIPolicy -XmlFilePath $xml -BinaryFilePath $binary
+    }
+    catch {
+        $_
+    } ) *>&1 | Out-File -Append -FilePath "$env:TEMP\wdac.log"
