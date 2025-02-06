@@ -6,7 +6,7 @@ AppLocker baseline configuration using the [AaronLocker](https://github.com/micr
 
 ### Inbox executables
 
-Additional inbox executables that Microsoft recommends blocking are found here: [Microsoft recommended block rules](https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/microsoft-recommended-block-rules). These files can be tested for and formatting for adding to `GetExeFilesToDenyList.ps1` with:
+Additional inbox executables that Microsoft recommends blocking are found here: [Microsoft recommended block rules](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/design/applications-that-can-bypass-appcontrol). These files can be tested for and formatting for adding to `GetExeFilesToDenyList.ps1` with:
 
 ```powershell
 $Files = @("addinprocess.exe",
@@ -20,6 +20,7 @@ $Files = @("addinprocess.exe",
 "csi.exe",
 "dbghost.exe",
 "dbgsvc.exe",
+"dbgsrv.exe",
 "dnx.exe",
 "dotnet.exe",
 "fsi.exe",
@@ -32,7 +33,7 @@ $Files = @("addinprocess.exe",
 "Microsoft.Build.dll",
 "Microsoft.Build.Framework.dll",
 "Microsoft.Workflow.Compiler.exe",
-"msbuild.exe2",
+"msbuild.exe",
 "msbuild.dll",
 "mshta.exe",
 "ntkd.exe",
@@ -43,6 +44,8 @@ $Files = @("addinprocess.exe",
 "texttransform.exe",
 "visualuiaverifynative.exe",
 "system.management.automation.dll",
+"webclnt.dll",
+"davsvc.dll",
 "wfc.exe",
 "windbg.exe",
 "wmic.exe",
